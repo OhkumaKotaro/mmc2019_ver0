@@ -53,12 +53,27 @@
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
+/*********************define******************************/
+//full color
+#define WHITE 0
+#define YELLOW 1
+#define MAGENTA 2
+#define RED 3
+#define CYAN 4
+#define GREEN 5
+#define BLUE 6
+#define DARK 0
+//side Led
+#define LED_L 2
+#define LED_R 1
 
 /* USER CODE END Private defines */
 
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void Gpio_FullColor(unsigned char color);
+void Gpio_SideLed(unsigned char led_side);
 
 /* USER CODE END Prototypes */
 

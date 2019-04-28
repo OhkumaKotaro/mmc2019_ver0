@@ -48,14 +48,24 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "stdint.h"
 /* USER CODE END Includes */
 
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
 
 /* USER CODE BEGIN Private defines */
-
+// sensor data
+typedef struct
+{
+  int16_t now;
+  int16_t befor_1ms;
+  int16_t reference; // 真ん中のとき�?�センサー値
+  int16_t threshold; // 閾値
+  int16_t diff;      // 差�?
+  int16_t diff_1ms;  // 1msec�?
+  uint8_t is_wall;   // 壁があるかど�?か判断
+} sensor_t;
 /* USER CODE END Private defines */
 
 extern void _Error_Handler(char *, int);
@@ -64,7 +74,15 @@ void MX_ADC1_Init(void);
 void MX_ADC2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void Adc_SetSensorConstant(void);
+void Adc_IrSensorStart(void);
+void Adc_IrSensorFinish(void);
 
+void Adc_SetReference(void);
+void Adc_CheckConvert(void);
+void Adc_UpdateSensorData(void);
+void Adc_GetSensor(void);
+float Adc_GetBatt(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

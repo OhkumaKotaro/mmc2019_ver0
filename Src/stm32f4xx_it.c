@@ -38,6 +38,7 @@
 /* USER CODE BEGIN 0 */
 #include "spi.h"
 #include "tim.h"
+#include "adc.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -184,6 +185,7 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 1 */
   Update_gyro();
   Update_accel();
+  Adc_CheckConvert();
   Tim_UpdateEncoder();
   /* USER CODE END SysTick_IRQn 1 */
 }
@@ -210,6 +212,9 @@ void DMA2_Stream2_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-
+void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc)
+{
+  Adc_GetSensor();
+}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

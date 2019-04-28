@@ -45,6 +45,29 @@
 
 /* USER CODE BEGIN 0 */
 
+//define
+#define OFF_VALUE 0
+#define FRONT_VALUE 1
+#define SIDE_VALUE 2
+#define FINISH_CONVERT 3
+#define IRSENSOR_OFF 4
+
+#define ADC_CONVERT_DATA_SIZE ((uint32_t)  4)
+
+#define TRUE 1
+#define FALSE 0
+
+//valuable
+sensor_t sen_l;
+sensor_t sen_fl;
+sensor_t sen_front;
+sensor_t sen_fr;
+sensor_t sen_r;
+
+uint16_t ADCBuff[ADC_CONVERT_DATA_SIZE];
+uint16_t ADCOffData[ADC_CONVERT_DATA_SIZE];
+uint16_t ADCOntData[ADC_CONVERT_DATA_SIZE];
+int16_t adc_counter;
 /* USER CODE END 0 */
 
 ADC_HandleTypeDef hadc1;
@@ -269,7 +292,184 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+void Adc_SetSensorConstant(void)
+{
+  sen_l.reference = 578;
+  sen_l.threshold = 472;
 
+  sen_fl.reference = 786;
+
+  sen_front.reference = 793;
+  sen_front.threshold = 610;
+
+  sen_fr.reference = 803;
+
+  sen_r.reference = 670;
+  sen_r.threshold = 570;
+}
+
+void update_sensor_data(void)
+{
+
+  sen_front.now = (sen_fl.now + sen_fr.now) / 2;
+
+  if (sen_front.now < sen_front.threshold)
+  {
+    sen_front.is_wall = FALSE;
+  }
+  else
+  {
+    sen_front.is_wall = TRUE;
+  }
+
+  if (sen_l.now < sen_l.threshold)
+  {
+    sen_l.is_wall = FALSE;
+  }
+  else
+  {
+    sen_l.is_wall = TRUE;
+  }
+
+  if (sen_r.now < sen_r.threshold)
+  {
+    sen_r.is_wall = FALSE;
+  }
+  else
+  {
+    sen_r.is_wall = TRUE;
+  }
+}
+
+void Adc_IrSensorStart(void)
+{
+  adc_counter = 0;
+  HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff, ADC_CONVERT_DATA_SIZE);
+}
+
+void Adc_IrSensorFinish(void)
+{
+  adc_counter = IRSENSOR_OFF;
+  HAL_GPIO_WritePin(ir_front_GPIO_Port,ir_front_Pin,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(ir_side_GPIO_Port,ir_side_Pin,GPIO_PIN_RESET);
+}
+
+void Adc_CheckConvert(void)
+{
+  if (adc_counter == FINISH_CONVERT)
+  {
+    update_sensor_data();
+    adc_counter = 0;
+    HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff, ADC_CONVERT_DATA_SIZE);
+
+    sen_l.diff_1ms = sen_l.now - sen_l.befor_1ms;
+    sen_l.befor_1ms = sen_l.now;
+
+    sen_r.diff_1ms = sen_r.now - sen_r.befor_1ms;
+    sen_r.befor_1ms = sen_r.now;
+  }
+}
+
+// DMA の変換式を記�?
+void Adc_GetSensor(void)
+{
+  volatile unsigned char i;
+  switch (adc_counter)
+  {
+  case OFF_VALUE:
+    HAL_ADC_Stop_DMA(&hadc2);
+    ADCOffData[0] = ADCBuff[0];
+    ADCOffData[1] = ADCBuff[1];
+    ADCOffData[2] = ADCBuff[2];
+    ADCOffData[3] = ADCBuff[3];
+
+    HAL_GPIO_WritePin(ir_front_GPIO_Port, ir_front_Pin, GPIO_PIN_SET);
+    
+    for (i = 0; i < 200; i++)
+    {
+    }
+    
+    adc_counter = FRONT_VALUE;
+
+    HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff,ADC_CONVERT_DATA_SIZE);
+    break;
+
+  case FRONT_VALUE:
+    HAL_ADC_Stop_DMA(&hadc2);
+    HAL_GPIO_WritePin(ir_front_GPIO_Port, ir_front_Pin, GPIO_PIN_RESET);
+
+    ADCOntData[1] = ADCBuff[1];
+    ADCOntData[2] = ADCBuff[2];
+
+    //sen_l.diff = sen_l.now - (ADCOntData[2] - ADCOffData[2]);
+    sen_fl.now = ADCOntData[1] - ADCOffData[1];
+
+    //sen_fl.diff = sen_fl.now - (ADCOntData[3] - ADCOffData[3]);
+    sen_fr.now = ADCOntData[2] - ADCOffData[2];
+
+    HAL_GPIO_WritePin(ir_side_GPIO_Port, ir_side_Pin, GPIO_PIN_SET);
+
+    
+    for (i = 0; i < 200; i++)
+    {
+    }
+    
+    adc_counter = SIDE_VALUE;
+
+    HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff,ADC_CONVERT_DATA_SIZE);
+    break;
+
+  case SIDE_VALUE:
+    HAL_ADC_Stop_DMA(&hadc2);
+    HAL_GPIO_WritePin(ir_side_GPIO_Port, ir_side_Pin, GPIO_PIN_RESET);
+
+    ADCOntData[0] = ADCBuff[0];
+    ADCOntData[3] = ADCBuff[3];
+
+    //sen_fr.diff = sen_fr.now - (ADCOntData[0] - ADCOffData[0]);
+    sen_l.now = ADCOntData[0] - ADCOffData[0];
+
+    //sen_r.diff = sen_r.now - (ADCOntData[1] - ADCOffData[1]);
+    sen_r.now = ADCOntData[3] - ADCOffData[3];
+    
+    for (i = 0; i < 200; i++)
+    {
+    }
+    
+    adc_counter = FINISH_CONVERT;
+    break;
+
+  default:
+    break;
+  }
+}
+
+float Adc_GetBatt(void)
+{
+  float batt = 0;
+  for (int i = 0; i < 10; i++)
+  {
+    HAL_ADC_Start(&hadc1); // ad convert start
+    while (HAL_ADC_PollForConversion(&hadc1, 50) != HAL_OK)
+    {
+    } // trans
+    batt += HAL_ADC_GetValue(&hadc1);
+    HAL_ADC_Stop(&hadc1);
+  }
+  batt = batt / 10.0f / 4095.0f * 3.2f * 3.3f;
+  /*
+  //finish
+  while(1){
+    LED_Control((unsigned char)batt);
+    if(Push()==1){
+      Output_Buzzer(HZ_C_H);
+      HAL_Delay(500);
+      break;
+    }
+  }
+  */
+  return batt;
+}
 /* USER CODE END 1 */
 
 /**

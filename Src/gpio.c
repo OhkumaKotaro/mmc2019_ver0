@@ -40,7 +40,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "gpio.h"
 /* USER CODE BEGIN 0 */
-
+#include "main.h"
 /* USER CODE END 0 */
 
 /*----------------------------------------------------------------------------*/
@@ -69,17 +69,17 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, led_b_Pin|GPIO_PIN_4|right_in2_Pin|right_in1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, led_g_Pin|GPIO_PIN_4|right_in2_Pin|right_in1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, ir_side_Pin|ir_front_Pin|led1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, gyro_cs_Pin|left_in2_Pin|left_in1_Pin|led2_Pin 
-                          |led_r_Pin|led_g_Pin, GPIO_PIN_RESET);
+                          |led_r_Pin|led_b_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PCPin PC4 PCPin PCPin */
-  GPIO_InitStruct.Pin = led_b_Pin|GPIO_PIN_4|right_in2_Pin|right_in1_Pin;
+  GPIO_InitStruct.Pin = led_g_Pin|GPIO_PIN_4|right_in2_Pin|right_in1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -95,7 +95,7 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin 
                            PBPin PBPin */
   GPIO_InitStruct.Pin = gyro_cs_Pin|left_in2_Pin|left_in1_Pin|led2_Pin 
-                          |led_r_Pin|led_g_Pin;
+                          |led_r_Pin|led_b_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -104,7 +104,16 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
+void Gpio_FullColor(unsigned char color){
+  HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,color&0b100);
+  HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,color&0b010);
+  HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,color&0b001);
+}
 
+void Gpio_SideLed(unsigned char led_side){
+  HAL_GPIO_WritePin(led1_GPIO_Port,led1_Pin,(~(led_side&0b01))&0b01);
+  HAL_GPIO_WritePin(led2_GPIO_Port,led2_Pin,(~(led_side&0b10))&0b10);
+}
 /* USER CODE END 2 */
 
 /**

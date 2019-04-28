@@ -49,8 +49,8 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define led_b_Pin GPIO_PIN_14
-#define led_b_GPIO_Port GPIOC
+#define led_g_Pin GPIO_PIN_14
+#define led_g_GPIO_Port GPIOC
 #define ir_side_Pin GPIO_PIN_0
 #define ir_side_GPIO_Port GPIOA
 #define ir_front_Pin GPIO_PIN_1
@@ -71,8 +71,8 @@
 #define led2_GPIO_Port GPIOB
 #define led_r_Pin GPIO_PIN_8
 #define led_r_GPIO_Port GPIOB
-#define led_g_Pin GPIO_PIN_9
-#define led_g_GPIO_Port GPIOB
+#define led_b_Pin GPIO_PIN_9
+#define led_b_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**
