@@ -77,10 +77,11 @@ extern void _Error_Handler(char *, int);
 void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-  void set_mpu6500(void);
-  void Update_gyro(void);
-  void Update_accel(void);
-  void gyro_offset_calc_reset(void);
+void Spi_SetGyro(void);
+void Spi_UpdateGyro_Z(void);
+void Spi_UpdateGyro_Y(void);
+void Spi_UpdateAccel(void);
+void Spi_GyroReset(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

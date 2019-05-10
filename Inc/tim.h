@@ -64,7 +64,7 @@ extern TIM_HandleTypeDef htim8;
 #define HZ_E 121
 #define HZ_F 114
 #define HZ_G 102
-#define HZ_A 91
+#define HZ_A 91 
 #define HZ_B 81
 #define HZ_C_H 76
 #define HZ_NORMAL 10

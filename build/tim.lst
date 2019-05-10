@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
   29:Src/tim.c     ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
   30:Src/tim.c     ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
   31:Src/tim.c     ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 2
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 2
 
 
   32:Src/tim.c     ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
   44 000a 0023     		movs	r3, #0
   45 000c 4360     		str	r3, [r0, #4]
   70:Src/tim.c     ****   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 3
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 3
 
 
   46              		.loc 1 70 0
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
   82 0038 0193     		str	r3, [sp, #4]
   89:Src/tim.c     ****   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   83              		.loc 1 89 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 4
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 4
 
 
   84 003a 0293     		str	r3, [sp, #8]
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  131              		.fpu fpv4-sp-d16
  133              	MX_TIM8_Init:
  134              	.LFB162:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 5
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 5
 
 
   96:Src/tim.c     **** /* TIM2 init function */
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  150:Src/tim.c     ****   }
  151:Src/tim.c     **** 
  152:Src/tim.c     ****   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 6
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 6
 
 
  153:Src/tim.c     ****   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  156 0010 4FF6FF72 		movw	r2, #65535
  157 0014 C260     		str	r2, [r0, #12]
  186:Src/tim.c     ****   htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 7
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 7
 
 
  158              		.loc 1 186 0
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  194 003e 0848     		ldr	r0, .L15
  195 0040 FFF7FEFF 		bl	HAL_TIMEx_MasterConfigSynchronization
  196              	.LVL5:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 8
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 8
 
 
  197 0044 38B9     		cbnz	r0, .L14
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  243              		.cfi_startproc
  244              		@ args = 0, pretend = 0, frame = 32
  245              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 9
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 9
 
 
  246              	.LVL8:
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  248:Src/tim.c     ****     PC7     ------> TIM8_CH2 
  249:Src/tim.c     ****     */
  250:Src/tim.c     ****     GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 10
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 10
 
 
  251:Src/tim.c     ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  232:Src/tim.c     **** 
  302              		.loc 1 232 0
  303 0044 03A9     		add	r1, sp, #12
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 11
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 11
 
 
  304 0046 1148     		ldr	r0, .L23+8
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  351 0090 00080240 		.word	1073874944
  352              		.cfi_endproc
  353              	.LFE163:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 12
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 12
 
 
  355              		.section	.text.HAL_TIM_PWM_MspInit,"ax",%progbits
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  383              		.loc 1 288 0
  384 0010 02B0     		add	sp, sp, #8
  385              	.LCFI13:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 13
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 13
 
 
  386              		.cfi_remember_state
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  440              	.LFB165:
  289:Src/tim.c     **** void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
  290:Src/tim.c     **** {
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 14
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 14
 
 
  441              		.loc 1 290 0
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  465              	.L33:
  321:Src/tim.c     ****   {
  322:Src/tim.c     ****   /* USER CODE BEGIN TIM3_MspPostInit 0 */
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 15
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 15
 
 
  323:Src/tim.c     **** 
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  494              	.LVL20:
  495 002e FFF7FEFF 		bl	HAL_GPIO_Init
  496              	.LVL21:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 16
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 16
 
 
  309:Src/tim.c     ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  539              	.L39:
  540 0064 00040040 		.word	1073742848
  541 0068 00000240 		.word	1073872896
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 17
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 17
 
 
  542 006c 00040240 		.word	1073873920
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  589              		.loc 1 113 0
  590 0024 0993     		str	r3, [sp, #36]
  114:Src/tim.c     ****   {
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 18
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 18
 
 
  591              		.loc 1 114 0
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  109:Src/tim.c     ****   }
  637              		.loc 1 109 0
  638 0060 6D21     		movs	r1, #109
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 19
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 19
 
 
  639 0062 0A48     		ldr	r0, .L51+4
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  691              	.LCFI24:
  692              		.cfi_def_cfa_offset 48
  142:Src/tim.c     ****   htim3.Init.Prescaler = 0;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 20
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 20
 
 
  693              		.loc 1 142 0
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  734 0036 01A9     		add	r1, sp, #4
  735 0038 1248     		ldr	r0, .L63
  736 003a FFF7FEFF 		bl	HAL_TIM_PWM_ConfigChannel
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 21
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 21
 
 
  737              	.LVL37:
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  784 0078 AA21     		movs	r1, #170
  785 007a 0448     		ldr	r0, .L63+8
  786 007c FFF7FEFF 		bl	_Error_Handler
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 22
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 22
 
 
  787              	.LVL43:
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  363:Src/tim.c     ****   /* USER CODE END TIM1_MspDeInit 1 */
  364:Src/tim.c     ****   }
  365:Src/tim.c     ****   else if(tim_encoderHandle->Instance==TIM8)
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 23
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 23
 
 
  823              		.loc 1 365 0
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  855              	.LVL50:
  856 003a FFF7FEFF 		bl	HAL_GPIO_DeInit
  857              	.LVL51:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 24
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 24
 
 
  858              		.loc 1 383 0
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  403:Src/tim.c     ****   /* USER CODE END TIM3_MspDeInit 0 */
  404:Src/tim.c     ****     /* Peripheral clock disable */
  405:Src/tim.c     ****     __HAL_RCC_TIM3_CLK_DISABLE();
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 25
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 25
 
 
  406:Src/tim.c     ****   /* USER CODE BEGIN TIM3_MspDeInit 1 */
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  934              	.LVL53:
  935 0000 10B5     		push	{r4, lr}
  936              	.LCFI28:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 26
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 26
 
 
  937              		.cfi_def_cfa_offset 8
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  436:Src/tim.c     ****   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
  976              		.loc 1 436 0
  977 0030 0B61     		str	r3, [r1, #16]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 27
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 27
 
 
  437:Src/tim.c     ****   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1018              	.LVL62:
  1019              		.loc 1 447 0
  1020 006e ECE7     		b	.L80
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 28
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 28
 
 
  1021              	.L89:
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  460:Src/tim.c     ****   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
  1065              		.loc 1 460 0
  1066 0012 5A61     		str	r2, [r3, #20]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 29
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 29
 
 
  461:Src/tim.c     ****   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
@@ -1738,14 +1738,14 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  478:Src/tim.c     ****   //set left_pwm
  479:Src/tim.c     ****   if(left_pwm < 0){
  1102              		.loc 1 479 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 30
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 30
 
 
  1103 003e 0028     		cmp	r0, #0
  1104 0040 19DB     		blt	.L106
  480:Src/tim.c     ****     sConfigOC.Pulse = -1 * left_pwm;
- 481:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
- 482:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
+ 481:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
+ 482:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
  483:Src/tim.c     ****     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
  484:Src/tim.c     ****     {
  485:Src/tim.c     ****       _Error_Handler(__FILE__, __LINE__);
@@ -1756,8 +1756,8 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1106 0042 0028     		cmp	r0, #0
  1107 0044 34DC     		bgt	.L107
  489:Src/tim.c     ****     sConfigOC.Pulse = left_pwm;
- 490:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
- 491:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
+ 490:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
+ 491:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
  492:Src/tim.c     ****     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
  493:Src/tim.c     ****     {
  494:Src/tim.c     ****       _Error_Handler(__FILE__, __LINE__);
@@ -1770,8 +1770,8 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1111              	.LVL71:
  1112              	.L94:
  498:Src/tim.c     ****     sConfigOC.Pulse = 0;
- 499:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
- 500:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
+ 499:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
+ 500:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
  501:Src/tim.c     ****   }
  502:Src/tim.c     **** 
  503:Src/tim.c     ****   //set right_pwm
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  518:Src/tim.c     ****     {
  519:Src/tim.c     ****       _Error_Handler(__FILE__, __LINE__);
  520:Src/tim.c     ****     }
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 31
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 31
 
 
  521:Src/tim.c     ****   }
@@ -1841,24 +1841,24 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1141 0074 70BD     		pop	{r4, r5, r6, pc}
  1142              	.LVL75:
  1143              	.L106:
- 480:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
+ 480:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
  1144              		.loc 1 480 0
  1145 0076 4042     		negs	r0, r0
  1146              	.LVL76:
  1147 0078 514D     		ldr	r5, .L114
  1148 007a 6860     		str	r0, [r5, #4]
- 481:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
+ 481:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
  1149              		.loc 1 481 0
  1150 007c 534E     		ldr	r6, .L114+12
- 1151 007e 0122     		movs	r2, #1
+ 1151 007e 0022     		movs	r2, #0
  1152 0080 4FF40041 		mov	r1, #32768
  1153 0084 3046     		mov	r0, r6
  1154 0086 FFF7FEFF 		bl	HAL_GPIO_WritePin
  1155              	.LVL77:
  482:Src/tim.c     ****     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
  1156              		.loc 1 482 0
- 1157 008a 0022     		movs	r2, #0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 32
+ 1157 008a 0122     		movs	r2, #1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 32
 
 
  1158 008c 4FF48041 		mov	r1, #16384
@@ -1883,14 +1883,14 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1175 00ae CCE7     		b	.L94
  1176              	.LVL81:
  1177              	.L107:
- 489:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
+ 489:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
  1178              		.loc 1 489 0
  1179 00b0 434D     		ldr	r5, .L114
  1180 00b2 6860     		str	r0, [r5, #4]
- 490:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
+ 490:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
  1181              		.loc 1 490 0
  1182 00b4 454E     		ldr	r6, .L114+12
- 1183 00b6 0022     		movs	r2, #0
+ 1183 00b6 0122     		movs	r2, #1
  1184 00b8 4FF40041 		mov	r1, #32768
  1185 00bc 3046     		mov	r0, r6
  1186              	.LVL82:
@@ -1898,7 +1898,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1188              	.LVL83:
  491:Src/tim.c     ****     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
  1189              		.loc 1 491 0
- 1190 00c2 0122     		movs	r2, #1
+ 1190 00c2 0022     		movs	r2, #0
  1191 00c4 4FF48041 		mov	r1, #16384
  1192 00c8 3046     		mov	r0, r6
  1193 00ca FFF7FEFF 		bl	HAL_GPIO_WritePin
@@ -1918,31 +1918,31 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1205 00e0 3B48     		ldr	r0, .L114+16
  1206 00e2 FFF7FEFF 		bl	_Error_Handler
  1207              	.LVL86:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 33
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 33
 
 
  1208 00e6 B0E7     		b	.L94
  1209              	.LVL87:
  1210              	.L108:
- 498:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
+ 498:Src/tim.c     ****     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
  1211              		.loc 1 498 0
- 1212 00e8 354B     		ldr	r3, .L114
- 1213 00ea 0022     		movs	r2, #0
- 1214 00ec 5A60     		str	r2, [r3, #4]
- 499:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
+ 1212 00e8 0025     		movs	r5, #0
+ 1213 00ea 354B     		ldr	r3, .L114
+ 1214 00ec 5D60     		str	r5, [r3, #4]
+ 499:Src/tim.c     ****     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
  1215              		.loc 1 499 0
- 1216 00ee 374D     		ldr	r5, .L114+12
- 1217 00f0 0122     		movs	r2, #1
+ 1216 00ee 374E     		ldr	r6, .L114+12
+ 1217 00f0 2A46     		mov	r2, r5
  1218 00f2 4FF40041 		mov	r1, #32768
- 1219 00f6 2846     		mov	r0, r5
+ 1219 00f6 3046     		mov	r0, r6
  1220              	.LVL88:
  1221 00f8 FFF7FEFF 		bl	HAL_GPIO_WritePin
  1222              	.LVL89:
  500:Src/tim.c     ****   }
  1223              		.loc 1 500 0
- 1224 00fc 0122     		movs	r2, #1
+ 1224 00fc 2A46     		mov	r2, r5
  1225 00fe 4FF48041 		mov	r1, #16384
- 1226 0102 2846     		mov	r0, r5
+ 1226 0102 3046     		mov	r0, r6
  1227 0104 FFF7FEFF 		bl	HAL_GPIO_WritePin
  1228              	.LVL90:
  1229 0108 9FE7     		b	.L94
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1255 0134 0028     		cmp	r0, #0
  1256 0136 8FD0     		beq	.L97
  510:Src/tim.c     ****     }
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 34
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 34
 
 
  1257              		.loc 1 510 0
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1304              	.LVL103:
  1305 0188 04F50234 		add	r4, r4, #133120
  1306 018c 0122     		movs	r2, #1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 35
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 35
 
 
  1307 018e 4FF40071 		mov	r1, #512
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  541:Src/tim.c     ****  * return   : void
  542:Src/tim.c     **** ********************************************************************************************/
  543:Src/tim.c     **** void Tim_UpdateEncoder(void){
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 36
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 36
 
 
  1355              		.loc 1 543 0
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1388 0024 27EE277A 		vmul.f32	s14, s14, s15
  1389 0028 F1EE056A 		vmov.f32	s13, #5.25e+0
  1390 002c C7EE267A 		vdiv.f32	s15, s14, s13
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 37
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 37
 
 
  1391 0030 9FED167A 		vldr.32	s14, .L118+12
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1442      74696D2E 
  1442      6300
  1443              		.text
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 38
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 38
 
 
  1444              	.Letext0:
@@ -2238,55 +2238,55 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 1
  1458              		.file 15 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h"
  1459              		.file 16 "Inc/tim.h"
  1460              		.file 17 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 39
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 39
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 tim.c
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:18     .text.MX_TIM1_Init:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:25     .text.MX_TIM1_Init:00000000 MX_TIM1_Init
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:119    .text.MX_TIM1_Init:00000060 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:18     .text.MX_TIM1_Init:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:25     .text.MX_TIM1_Init:00000000 MX_TIM1_Init
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:119    .text.MX_TIM1_Init:00000060 $d
                             *COM*:0000003c htim1
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:126    .text.MX_TIM8_Init:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:133    .text.MX_TIM8_Init:00000000 MX_TIM8_Init
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:226    .text.MX_TIM8_Init:00000060 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:126    .text.MX_TIM8_Init:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:133    .text.MX_TIM8_Init:00000000 MX_TIM8_Init
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:226    .text.MX_TIM8_Init:00000060 $d
                             *COM*:0000003c htim8
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:233    .text.HAL_TIM_Encoder_MspInit:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:240    .text.HAL_TIM_Encoder_MspInit:00000000 HAL_TIM_Encoder_MspInit
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:348    .text.HAL_TIM_Encoder_MspInit:00000084 $d
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:356    .text.HAL_TIM_PWM_MspInit:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:363    .text.HAL_TIM_PWM_MspInit:00000000 HAL_TIM_PWM_MspInit
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:426    .text.HAL_TIM_PWM_MspInit:00000048 $d
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:432    .text.HAL_TIM_MspPostInit:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:439    .text.HAL_TIM_MspPostInit:00000000 HAL_TIM_MspPostInit
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:540    .text.HAL_TIM_MspPostInit:00000064 $d
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:547    .text.MX_TIM2_Init:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:554    .text.MX_TIM2_Init:00000000 MX_TIM2_Init
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:667    .text.MX_TIM2_Init:00000088 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:233    .text.HAL_TIM_Encoder_MspInit:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:240    .text.HAL_TIM_Encoder_MspInit:00000000 HAL_TIM_Encoder_MspInit
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:348    .text.HAL_TIM_Encoder_MspInit:00000084 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:356    .text.HAL_TIM_PWM_MspInit:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:363    .text.HAL_TIM_PWM_MspInit:00000000 HAL_TIM_PWM_MspInit
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:426    .text.HAL_TIM_PWM_MspInit:00000048 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:432    .text.HAL_TIM_MspPostInit:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:439    .text.HAL_TIM_MspPostInit:00000000 HAL_TIM_MspPostInit
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:540    .text.HAL_TIM_MspPostInit:00000064 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:547    .text.MX_TIM2_Init:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:554    .text.MX_TIM2_Init:00000000 MX_TIM2_Init
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:667    .text.MX_TIM2_Init:00000088 $d
                             *COM*:0000003c htim2
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:673    .text.MX_TIM3_Init:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:680    .text.MX_TIM3_Init:00000000 MX_TIM3_Init
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:792    .text.MX_TIM3_Init:00000084 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:673    .text.MX_TIM3_Init:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:680    .text.MX_TIM3_Init:00000000 MX_TIM3_Init
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:792    .text.MX_TIM3_Init:00000084 $d
                             *COM*:0000003c htim3
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:799    .text.HAL_TIM_Encoder_MspDeInit:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:806    .text.HAL_TIM_Encoder_MspDeInit:00000000 HAL_TIM_Encoder_MspDeInit
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:863    .text.HAL_TIM_Encoder_MspDeInit:00000040 $d
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:871    .text.HAL_TIM_PWM_MspDeInit:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:878    .text.HAL_TIM_PWM_MspDeInit:00000000 HAL_TIM_PWM_MspDeInit
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:915    .text.HAL_TIM_PWM_MspDeInit:0000002c $d
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:921    .text.Tim_BuzzerPwm:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:928    .text.Tim_BuzzerPwm:00000000 Tim_BuzzerPwm
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1024   .text.Tim_BuzzerPwm:00000070 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:799    .text.HAL_TIM_Encoder_MspDeInit:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:806    .text.HAL_TIM_Encoder_MspDeInit:00000000 HAL_TIM_Encoder_MspDeInit
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:863    .text.HAL_TIM_Encoder_MspDeInit:00000040 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:871    .text.HAL_TIM_PWM_MspDeInit:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:878    .text.HAL_TIM_PWM_MspDeInit:00000000 HAL_TIM_PWM_MspDeInit
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:915    .text.HAL_TIM_PWM_MspDeInit:0000002c $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:921    .text.Tim_BuzzerPwm:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:928    .text.Tim_BuzzerPwm:00000000 Tim_BuzzerPwm
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1024   .text.Tim_BuzzerPwm:00000070 $d
                             *COM*:0000001c sConfigOC
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1032   .text.Tim_MotorPwm:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1039   .text.Tim_MotorPwm:00000000 Tim_MotorPwm
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1336   .text.Tim_MotorPwm:000001c0 $d
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1346   .text.Tim_UpdateEncoder:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1353   .text.Tim_UpdateEncoder:00000000 Tim_UpdateEncoder
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1422   .text.Tim_UpdateEncoder:00000080 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1032   .text.Tim_MotorPwm:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1039   .text.Tim_MotorPwm:00000000 Tim_MotorPwm
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1336   .text.Tim_MotorPwm:000001c0 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1346   .text.Tim_UpdateEncoder:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1353   .text.Tim_UpdateEncoder:00000000 Tim_UpdateEncoder
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1422   .text.Tim_UpdateEncoder:00000080 $d
                             *COM*:0000000c enc
                             *COM*:00000008 sMasterConfig
-C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s:1440   .rodata.MX_TIM1_Init.str1.4:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s:1440   .rodata.MX_TIM1_Init.str1.4:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_TIM_Encoder_Init
@@ -2298,6 +2298,6 @@ HAL_TIM_PWM_ConfigChannel
 HAL_GPIO_DeInit
 HAL_TIM_PWM_Start
 HAL_GPIO_WritePin
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccSxEgvM.s 			page 40
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\cc9XQE9I.s 			page 40
 
 

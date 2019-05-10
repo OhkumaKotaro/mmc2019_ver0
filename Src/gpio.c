@@ -111,8 +111,8 @@ void Gpio_FullColor(unsigned char color){
 }
 
 void Gpio_SideLed(unsigned char led_side){
-  HAL_GPIO_WritePin(led1_GPIO_Port,led1_Pin,(~(led_side&0b01))&0b01);
-  HAL_GPIO_WritePin(led2_GPIO_Port,led2_Pin,(~(led_side&0b10))&0b10);
+  HAL_GPIO_WritePin(led1_GPIO_Port,led1_Pin,(~led_side)&0b10);
+  HAL_GPIO_WritePin(led2_GPIO_Port,led2_Pin,(~led_side)&0b01);
 }
 /* USER CODE END 2 */
 

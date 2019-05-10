@@ -39,6 +39,7 @@
 #include "spi.h"
 #include "tim.h"
 #include "adc.h"
+#include "control.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -183,10 +184,12 @@ void SysTick_Handler(void)
   HAL_IncTick();
   HAL_SYSTICK_IRQHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-  Update_gyro();
-  Update_accel();
+  Spi_UpdateGyro_Z();
+  Spi_UpdateGyro_Y();
+  Spi_UpdateAccel();
   Adc_CheckConvert();
   Tim_UpdateEncoder();
+  Control_UpdatePwm();
   /* USER CODE END SysTick_IRQn 1 */
 }
 

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
   29:Src/gpio.c    ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
   30:Src/gpio.c    ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
   31:Src/gpio.c    ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 2
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 2
 
 
   32:Src/gpio.c    ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
   47 0008 0194     		str	r4, [sp, #4]
   48 000a 2F4B     		ldr	r3, .L3
   49 000c 1A6B     		ldr	r2, [r3, #48]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 3
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 3
 
 
   50 000e 42F00402 		orr	r2, r2, #4
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
   74:Src/gpio.c    ****   /*Configure GPIO pin Output Level */
   75:Src/gpio.c    ****   HAL_GPIO_WritePin(GPIOA, ir_side_Pin|ir_front_Pin|led1_Pin, GPIO_PIN_RESET);
   97              		.loc 1 75 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 4
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 4
 
 
   98 006a 184F     		ldr	r7, .L3+4
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
   93:Src/gpio.c    ****   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
  135              		.loc 1 93 0
  136 00a4 05A9     		add	r1, sp, #20
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 5
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 5
 
 
  137 00a6 3846     		mov	r0, r7
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
  107:Src/gpio.c    **** void Gpio_FullColor(unsigned char color){
  180              		.loc 1 107 0
  181              		.cfi_startproc
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 6
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 6
 
 
  182              		@ args = 0, pretend = 0, frame = 0
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
  113:Src/gpio.c    **** void Gpio_SideLed(unsigned char led_side){
  233              		.loc 1 113 0
  234              		.cfi_startproc
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 7
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 7
 
 
  235              		@ args = 0, pretend = 0, frame = 0
@@ -370,19 +370,19 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
  241              		.cfi_offset 4, -8
  242              		.cfi_offset 14, -4
  243 0002 0446     		mov	r4, r0
- 114:Src/gpio.c    ****   HAL_GPIO_WritePin(led1_GPIO_Port,led1_Pin,(~(led_side&0b01))&0b01);
+ 114:Src/gpio.c    ****   HAL_GPIO_WritePin(led1_GPIO_Port,led1_Pin,(~led_side)&0b10);
  244              		.loc 1 114 0
- 245 0004 80F00102 		eor	r2, r0, #1
- 246 0008 02F00102 		and	r2, r2, #1
- 247 000c 1021     		movs	r1, #16
- 248 000e 0548     		ldr	r0, .L11
+ 245 0004 C243     		mvns	r2, r0
+ 246 0006 02F00202 		and	r2, r2, #2
+ 247 000a 1021     		movs	r1, #16
+ 248 000c 0548     		ldr	r0, .L11
  249              	.LVL12:
- 250 0010 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 250 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
  251              	.LVL13:
- 115:Src/gpio.c    ****   HAL_GPIO_WritePin(led2_GPIO_Port,led2_Pin,(~(led_side&0b10))&0b10);
+ 115:Src/gpio.c    ****   HAL_GPIO_WritePin(led2_GPIO_Port,led2_Pin,(~led_side)&0b01);
  252              		.loc 1 115 0
- 253 0014 E243     		mvns	r2, r4
- 254 0016 02F00202 		and	r2, r2, #2
+ 253 0012 84F00102 		eor	r2, r4, #1
+ 254 0016 02F00102 		and	r2, r2, #1
  255 001a 8021     		movs	r1, #128
  256 001c 0248     		ldr	r0, .L11+4
  257 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
@@ -409,20 +409,20 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 1
  278              		.file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\lib\\gcc\\arm-none-eabi
  279              		.file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include
  280              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s 			page 8
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 gpio.c
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:18     .text.MX_GPIO_Init:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:25     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:163    .text.MX_GPIO_Init:000000c8 $d
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:171    .text.Gpio_FullColor:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:178    .text.Gpio_FullColor:00000000 Gpio_FullColor
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:218    .text.Gpio_FullColor:00000034 $d
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:224    .text.Gpio_SideLed:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:231    .text.Gpio_SideLed:00000000 Gpio_SideLed
-C:\Users\kotaro\AppData\Local\Temp\ccwTdWBA.s:264    .text.Gpio_SideLed:00000024 $d
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:18     .text.MX_GPIO_Init:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:25     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:163    .text.MX_GPIO_Init:000000c8 $d
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:171    .text.Gpio_FullColor:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:178    .text.Gpio_FullColor:00000000 Gpio_FullColor
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:218    .text.Gpio_FullColor:00000034 $d
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:224    .text.Gpio_SideLed:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:231    .text.Gpio_SideLed:00000000 Gpio_SideLed
+C:\Users\kotaro\AppData\Local\Temp\ccBmjzcD.s:264    .text.Gpio_SideLed:00000024 $d
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

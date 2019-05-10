@@ -46,7 +46,7 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "mode.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -62,11 +62,10 @@ void __io_putchar(uint8_t ch)
   HAL_UART_Transmit(&huart3, &ch, 1, 1);
 }
 /* Private variables ---------------------------------------------------------*/
-extern sensor_t sen_l;
-extern sensor_t sen_fl;
-extern sensor_t sen_front;
-extern sensor_t sen_fr;
-extern sensor_t sen_r;
+extern accel_t accel;
+extern float gyro_y;
+extern gyro_t gyro_z;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,7 +73,7 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+void Init_Main(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -89,7 +88,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -120,48 +119,15 @@ int main(void)
   MX_TIM8_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  setbuf(stdout, NULL);//printf
-  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
-  HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);
-  Tim_BuzzerPwm(HZ_A,300);
-  HAL_Delay(200);
-  Tim_BuzzerPwm(HZ_NORMAL,0);
-  printf("batt:%f\n",Adc_GetBatt());
-  /*
-  set_mpu6500();
-  HAL_Delay(2000);
-  gyro_offset_calc_reset();
-  HAL_Delay(1000);
-  */
-  Tim_BuzzerPwm(HZ_C,200);
-  HAL_Delay(500);
-  Tim_BuzzerPwm(HZ_NORMAL,0);
-  Adc_IrSensorStart();
+  Init_Main();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    Gpio_FullColor(RED);
-    Gpio_SideLed(LED_L);
-    HAL_Delay(500);
-    Gpio_FullColor(MAGENTA);
-    HAL_Delay(500);
-
-    Gpio_FullColor(BLUE);
-    Gpio_SideLed(LED_L|LED_R);
-    HAL_Delay(500);
-    Gpio_FullColor(CYAN);
-    HAL_Delay(500);
-
-    Gpio_FullColor(GREEN);
-    Gpio_SideLed(LED_R);
-    HAL_Delay(500);
-    Gpio_FullColor(YELLOW);
-    HAL_Delay(500);
-    
-
+    Mode_Mouse(Mode_Select());
+    //printf("%f\t%f\r\n",gyro_y,accel.z);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -194,7 +160,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 10;
-  RCC_OscInitStruct.PLL.PLLN = 160;
+  RCC_OscInitStruct.PLL.PLLN = 80;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -208,10 +174,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
@@ -229,7 +195,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void Init_Main(void){
+  setbuf(stdout, NULL);//printf
+  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+  HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);
+  Adc_SetSensorValue();
+  Spi_SetGyro();
+  Tim_BuzzerPwm(HZ_A,300);
+  HAL_Delay(200);
+  Tim_BuzzerPwm(HZ_NORMAL,0);
+  printf("batt:%f\n\r",Adc_GetBatt());
+}
 /* USER CODE END 4 */
 
 /**

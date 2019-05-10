@@ -478,15 +478,6 @@ void Tim_MotorPwm(int16_t left_pwm,int16_t right_pwm){
   //set left_pwm
   if(left_pwm < 0){
     sConfigOC.Pulse = -1 * left_pwm;
-    HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
-    HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
-    if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
-    {
-      _Error_Handler(__FILE__, __LINE__);
-    }
-  }
-  else  if(left_pwm > 0){
-    sConfigOC.Pulse = left_pwm;
     HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
     HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
@@ -494,10 +485,19 @@ void Tim_MotorPwm(int16_t left_pwm,int16_t right_pwm){
       _Error_Handler(__FILE__, __LINE__);
     }
   }
+  else  if(left_pwm > 0){
+    sConfigOC.Pulse = left_pwm;
+    HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
+    if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+    {
+      _Error_Handler(__FILE__, __LINE__);
+    }
+  }
   else if(left_pwm == 0){
     sConfigOC.Pulse = 0;
-    HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
-    HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
   }
 
   //set right_pwm

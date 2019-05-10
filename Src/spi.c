@@ -50,8 +50,15 @@
 #define GYRO_CONFIG   0x1B
 #define ACCEL_CONFIG  0x1C
 #define PWR_MGMT_1    0x6B
-#define GYRO_OUT_Z_L  0x48
+
+#define GYRO_OUT_X_H  0x43
+#define GYRO_OUT_X_L  0x44
+
+#define GYRO_OUT_Y_H  0x45
+#define GYRO_OUT_Y_L  0x46
+
 #define GYRO_OUT_Z_H  0x47
+#define GYRO_OUT_Z_L  0x48
 
 #define ACCEL_XOUT_H  0x3B
 #define ACCEL_XOUT_L  0x3C
@@ -65,14 +72,16 @@
 #define SETTING       0x80  //0b1000 0000 8bitの上位bitを立てると
 
 #define GYRO_FACTOR  16.4f
-#define ACCEL_FACTOR 418.0f//4096/9.80665(-2~+2)
+#define ACCEL_FACTOR 418.0f//4096/9.80665(-16~+16[/g])
 
 #define TRUE 0
 #define FALSE 1
 
 #define dt 0.001f
 
-gyro_t gyro;
+volatile float gyro_x;
+volatile float gyro_y;
+gyro_t gyro_z;
 uint8_t flag_gyro_calc;
 volatile accel_t accel;
 /* USER CODE END 0 */
@@ -90,7 +99,7 @@ void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -166,7 +175,6 @@ uint8_t read_byte(uint8_t reg){
   uint8_t ret,val;
   HAL_GPIO_WritePin(gyro_cs_GPIO_Port,gyro_cs_Pin,GPIO_PIN_RESET);
   ret = reg|SETTING ;
-  //HAL_SPI_TransmitReceive(&hspi2,&ret,&val,1,400); //not work
   HAL_SPI_Transmit(&hspi1,&ret,1,100);
   HAL_SPI_Receive(&hspi1,&val,1,100);
   HAL_GPIO_WritePin(gyro_cs_GPIO_Port,gyro_cs_Pin,GPIO_PIN_SET);
@@ -184,7 +192,6 @@ int16_t read_shift_byte(uint8_t reg){
   int16_t val_2;
   HAL_GPIO_WritePin(gyro_cs_GPIO_Port,gyro_cs_Pin,GPIO_PIN_RESET);
   address = reg | SETTING ;
-  //HAL_SPI_TransmitReceive(&hspi2,&address,&val_1,1,100); //not work
   HAL_SPI_Transmit(&hspi1,&address,1,100);
   HAL_SPI_Receive(&hspi1,&val_1,1,100);
   val_2 = (int16_t)(val_1 << 8);
@@ -213,7 +220,7 @@ void write_byte( uint8_t reg,uint8_t val){
  * argument : void
  * return   : void
  ****************************************************************/
-void set_mpu6500(void){
+void Spi_SetGyro(void){
   uint8_t val = 0x00;
   while(val!=Certain){
     val = read_byte(WHO_AM_I);
@@ -223,6 +230,9 @@ void set_mpu6500(void){
   write_byte(CONFIG,0x00);
   write_byte(GYRO_CONFIG,0x18);
   write_byte(ACCEL_CONFIG,0x10);
+
+  //reset value
+  gyro_x = 0;
 }
 
 
@@ -231,11 +241,11 @@ void set_mpu6500(void){
  * argument : void
  * Return   : degree (2000 deg/sec)
  ****************************************************************/
-int16_t get_gyro(void){
-  int16_t gyro_z;
-  gyro_z = (int16_t)(read_shift_byte(GYRO_OUT_Z_H) | read_byte(GYRO_OUT_Z_L));
-  gyro_z -= (int16_t)gyro.offset;
-  return gyro_z;
+int16_t get_gyro_z(void){
+  int16_t buff_gyro;
+  buff_gyro = (int16_t)(read_shift_byte(GYRO_OUT_Z_H) | read_byte(GYRO_OUT_Z_L));
+  buff_gyro -= (int16_t)gyro_z.offset;
+  return buff_gyro;
 }
 
 /*****************************************************************
@@ -244,47 +254,52 @@ int16_t get_gyro(void){
  * Return   : void
  ****************************************************************/
 void gyro_offset_calc(void){
-  int16_t gyro_z;
+  int16_t buff_gyro;
 
-  gyro_z = (int16_t)(read_shift_byte(GYRO_OUT_Z_H) | read_byte(GYRO_OUT_Z_L));
+  buff_gyro = (int16_t)(read_shift_byte(GYRO_OUT_Z_H) | read_byte(GYRO_OUT_Z_L));
 
-  if(gyro.offset_cnt<1000){
-    gyro.offset += gyro_z;
-    gyro.offset_cnt++;
+  if(gyro_z.offset_cnt<1024){
+    gyro_z.offset += buff_gyro;
+    gyro_z.offset_cnt++;
   }else{
-    gyro.offset /= 1000;
+    gyro_z.offset /= 1024;
     flag_gyro_calc = TRUE;
   }
 }
 
-void Update_gyro(void){
+void Spi_UpdateGyro_Z(void){
   if(flag_gyro_calc == TRUE){
-    gyro.velocity = (float)get_gyro()/GYRO_FACTOR;
-    gyro.degree += (float)get_gyro()/GYRO_FACTOR * dt;
+    gyro_z.velocity = (float)get_gyro_z()/GYRO_FACTOR;
+    gyro_z.degree += (float)get_gyro_z()/GYRO_FACTOR/1000.0f;
   }else{
     gyro_offset_calc();
   }
 }
 
+void Spi_UpdateGyro_Y(void){
+  gyro_y = (float)(read_shift_byte(GYRO_OUT_Y_H) | read_byte(GYRO_OUT_Y_L))/GYRO_FACTOR;
+}
 
-void Update_accel(void){
+
+void Spi_UpdateAccel(void){
   accel.x = (float)(read_shift_byte(ACCEL_XOUT_H) | read_byte(ACCEL_XOUT_L))/ACCEL_FACTOR;
   accel.y = (float)(read_shift_byte(ACCEL_YOUT_H) | read_byte(ACCEL_YOUT_L))/ACCEL_FACTOR;
   accel.z = (float)(read_shift_byte(ACCEL_ZOUT_H) | read_byte(ACCEL_ZOUT_L))/ACCEL_FACTOR;
 }
+
 
 /*****************************************************************
  * Overview : reset gyro offset variable
  * argument : void
  * Return   : void
  ****************************************************************/
-void gyro_offset_calc_reset(void){
-  gyro.offset = 0;
-  gyro.offset_cnt = 0;
+void Spi_GyroReset(void){
+  gyro_z.offset = 0;
+  gyro_z.offset_cnt = 0;
 
   flag_gyro_calc = FALSE;
 
-  gyro.degree = 0;
+  gyro_z.degree = 0;
 }
 /* USER CODE END 1 */
 

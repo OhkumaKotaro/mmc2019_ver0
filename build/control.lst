@@ -1,0 +1,1047 @@
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"control.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.PID_value,"ax",%progbits
+  18              		.align	1
+  19              		.global	PID_value
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	PID_value:
+  26              	.LFB126:
+  27              		.file 1 "Src/control.c"
+   1:Src/control.c **** #include "stdint.h"
+   2:Src/control.c **** #include "tim.h"
+   3:Src/control.c **** #include "spi.h"
+   4:Src/control.c **** #include "control.h"
+   5:Src/control.c **** 
+   6:Src/control.c **** extern enc_t enc;
+   7:Src/control.c **** extern gyro_t gyro_z;
+   8:Src/control.c **** 
+   9:Src/control.c **** #define dt 0.0010f
+  10:Src/control.c **** #define TRUE 1
+  11:Src/control.c **** #define FALSE 0
+  12:Src/control.c **** 
+  13:Src/control.c **** 
+  14:Src/control.c **** extern volatile uint8_t motion_end_flag;
+  15:Src/control.c **** 
+  16:Src/control.c **** //straight
+  17:Src/control.c **** typedef struct 
+  18:Src/control.c **** {
+  19:Src/control.c ****     float up_term;
+  20:Src/control.c ****     float const_term;
+  21:Src/control.c ****     float down_term;
+  22:Src/control.c ****     float v_now;
+  23:Src/control.c ****     float accel;
+  24:Src/control.c ****     float dir;
+  25:Src/control.c **** }target_t;
+  26:Src/control.c **** target_t straight;
+  27:Src/control.c **** volatile float dist_idial;
+  28:Src/control.c **** float error_sum;
+  29:Src/control.c **** float error_old;
+  30:Src/control.c **** 
+  31:Src/control.c **** //loger
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 2
+
+
+  32:Src/control.c **** typedef struct{
+  33:Src/control.c ****     float target_velo[3000];
+  34:Src/control.c ****     float target_velo_ang[3000];
+  35:Src/control.c ****     float velo[3000];
+  36:Src/control.c ****     float velo_ang[3000];
+  37:Src/control.c **** }loger_t;
+  38:Src/control.c **** 
+  39:Src/control.c **** //angle
+  40:Src/control.c **** target_t angle;
+  41:Src/control.c **** loger_t loger;
+  42:Src/control.c **** uint16_t ms_counter;
+  43:Src/control.c **** volatile float ang_idial;
+  44:Src/control.c **** float error_ang_sum;
+  45:Src/control.c **** float error_ang_old;
+  46:Src/control.c **** 
+  47:Src/control.c **** volatile uint8_t motor_flag;
+  48:Src/control.c **** 
+  49:Src/control.c **** /****************************************************************************************
+  50:Src/control.c ****  * outline  : PID control
+  51:Src/control.c ****  * argument : 
+  52:Src/control.c ****  * return   : control value
+  53:Src/control.c **** ********************************************************************************************/
+  54:Src/control.c **** float PID_value(float target, float measured, float *sum, float *old, float Kp, float Ki, float Kd)
+  55:Src/control.c **** {
+  28              		.loc 1 55 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  56:Src/control.c ****     float error;
+  57:Src/control.c ****     float p, i, d;
+  58:Src/control.c **** 
+  59:Src/control.c ****     error = target - measured;
+  34              		.loc 1 59 0
+  35 0000 70EE600A 		vsub.f32	s1, s0, s1
+  36              	.LVL1:
+  60:Src/control.c ****     p = Kp * error;
+  37              		.loc 1 60 0
+  38 0004 20EE811A 		vmul.f32	s2, s1, s2
+  39              	.LVL2:
+  61:Src/control.c **** 
+  62:Src/control.c ****     *sum += error * dt;
+  40              		.loc 1 62 0
+  41 0008 DFED0C7A 		vldr.32	s15, .L2
+  42 000c 60EEA77A 		vmul.f32	s15, s1, s15
+  43 0010 90ED000A 		vldr.32	s0, [r0]
+  44              	.LVL3:
+  45 0014 77EE807A 		vadd.f32	s15, s15, s0
+  46 0018 C0ED007A 		vstr.32	s15, [r0]
+  63:Src/control.c ****     i = *sum * Ki;
+  47              		.loc 1 63 0
+  48 001c 67EEA11A 		vmul.f32	s3, s15, s3
+  49              	.LVL4:
+  64:Src/control.c **** 
+  65:Src/control.c ****     d = Kd * (error - *old);
+  50              		.loc 1 65 0
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 3
+
+
+  51 0020 91ED007A 		vldr.32	s14, [r1]
+  52 0024 30EEC77A 		vsub.f32	s14, s1, s14
+  53 0028 27EE022A 		vmul.f32	s4, s14, s4
+  54              	.LVL5:
+  66:Src/control.c ****     *old = error;
+  55              		.loc 1 66 0
+  56 002c C1ED000A 		vstr.32	s1, [r1]
+  67:Src/control.c **** 
+  68:Src/control.c ****     return (p + i + d);
+  57              		.loc 1 68 0
+  58 0030 71EE211A 		vadd.f32	s3, s2, s3
+  59              	.LVL6:
+  69:Src/control.c **** }
+  60              		.loc 1 69 0
+  61 0034 31EE820A 		vadd.f32	s0, s3, s4
+  62 0038 7047     		bx	lr
+  63              	.L3:
+  64 003a 00BF     		.align	2
+  65              	.L2:
+  66 003c 6F12833A 		.word	981668463
+  67              		.cfi_endproc
+  68              	.LFE126:
+  70              		.global	__aeabi_f2d
+  71              		.section	.text.Control_StrCalculator,"ax",%progbits
+  72              		.align	1
+  73              		.global	Control_StrCalculator
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  77              		.fpu fpv4-sp-d16
+  79              	Control_StrCalculator:
+  80              	.LFB127:
+  70:Src/control.c **** 
+  71:Src/control.c **** /****************************************************************************************
+  72:Src/control.c ****  * outline  : calcurate accele distance
+  73:Src/control.c ****  * argument : var[mm],velo_m[mm/s],velo_e[mm/s],accel[mm/s],dir
+  74:Src/control.c ****  * return   : void
+  75:Src/control.c **** ********************************************************************************************/
+  76:Src/control.c **** void Control_StrCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir){
+  81              		.loc 1 76 0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              	.LVL7:
+  86 0000 30B5     		push	{r4, r5, lr}
+  87              	.LCFI0:
+  88              		.cfi_def_cfa_offset 12
+  89              		.cfi_offset 4, -12
+  90              		.cfi_offset 5, -8
+  91              		.cfi_offset 14, -4
+  92 0002 2DED028B 		vpush.64	{d8}
+  93              	.LCFI1:
+  94              		.cfi_def_cfa_offset 20
+  95              		.cfi_offset 80, -20
+  96              		.cfi_offset 81, -16
+  97 0006 85B0     		sub	sp, sp, #20
+  98              	.LCFI2:
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 4
+
+
+  99              		.cfi_def_cfa_offset 40
+ 100 0008 F0EE408A 		vmov.f32	s17, s0
+  77:Src/control.c ****     straight.up_term = (velo_m*velo_m - straight.v_now*straight.v_now) / 2.0f / accel;
+ 101              		.loc 1 77 0
+ 102 000c 21EE011A 		vmul.f32	s2, s2, s2
+ 103              	.LVL8:
+ 104 0010 1E4B     		ldr	r3, .L6
+ 105 0012 D3ED037A 		vldr.32	s15, [r3, #12]
+ 106 0016 67EEA77A 		vmul.f32	s15, s15, s15
+ 107 001a 71EE677A 		vsub.f32	s15, s2, s15
+ 108 001e F6EE006A 		vmov.f32	s13, #5.0e-1
+ 109 0022 67EEA67A 		vmul.f32	s15, s15, s13
+ 110 0026 87EE827A 		vdiv.f32	s14, s15, s4
+ 111 002a 83ED007A 		vstr.32	s14, [r3]
+  78:Src/control.c ****     straight.const_term = var - (velo_m*velo_m - velo_e*velo_e) / 2.0f / accel;
+ 112              		.loc 1 78 0
+ 113 002e 61EEA11A 		vmul.f32	s3, s3, s3
+ 114              	.LVL9:
+ 115 0032 31EE611A 		vsub.f32	s2, s2, s3
+ 116 0036 21EE261A 		vmul.f32	s2, s2, s13
+ 117 003a 81EE028A 		vdiv.f32	s16, s2, s4
+ 118 003e 30EE488A 		vsub.f32	s16, s0, s16
+ 119 0042 83ED018A 		vstr.32	s16, [r3, #4]
+  79:Src/control.c ****     straight.down_term = var;
+ 120              		.loc 1 79 0
+ 121 0046 83ED020A 		vstr.32	s0, [r3, #8]
+  80:Src/control.c ****     straight.v_now = velo_s;
+ 122              		.loc 1 80 0
+ 123 004a C3ED030A 		vstr.32	s1, [r3, #12]
+  81:Src/control.c ****     straight.accel = accel;
+ 124              		.loc 1 81 0
+ 125 004e 83ED042A 		vstr.32	s4, [r3, #16]
+  82:Src/control.c ****     straight.dir = dir;
+ 126              		.loc 1 82 0
+ 127 0052 C3ED052A 		vstr.32	s5, [r3, #20]
+  83:Src/control.c ****     printf("up:%f,cnt:%f,dwn:%f\r\n",straight.up_term,straight.const_term,straight.down_term);
+ 128              		.loc 1 83 0
+ 129 0056 17EE100A 		vmov	r0, s14
+ 130 005a FFF7FEFF 		bl	__aeabi_f2d
+ 131              	.LVL10:
+ 132 005e 0446     		mov	r4, r0
+ 133 0060 0D46     		mov	r5, r1
+ 134 0062 18EE900A 		vmov	r0, s17
+ 135 0066 FFF7FEFF 		bl	__aeabi_f2d
+ 136              	.LVL11:
+ 137 006a CDE90201 		strd	r0, [sp, #8]
+ 138 006e 18EE100A 		vmov	r0, s16
+ 139 0072 FFF7FEFF 		bl	__aeabi_f2d
+ 140              	.LVL12:
+ 141 0076 CDE90001 		strd	r0, [sp]
+ 142 007a 2246     		mov	r2, r4
+ 143 007c 2B46     		mov	r3, r5
+ 144 007e 0448     		ldr	r0, .L6+4
+ 145 0080 FFF7FEFF 		bl	printf
+ 146              	.LVL13:
+  84:Src/control.c **** }
+ 147              		.loc 1 84 0
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 5
+
+
+ 148 0084 05B0     		add	sp, sp, #20
+ 149              	.LCFI3:
+ 150              		.cfi_def_cfa_offset 20
+ 151              		@ sp needed
+ 152 0086 BDEC028B 		vldm	sp!, {d8}
+ 153              	.LCFI4:
+ 154              		.cfi_restore 80
+ 155              		.cfi_restore 81
+ 156              		.cfi_def_cfa_offset 12
+ 157 008a 30BD     		pop	{r4, r5, pc}
+ 158              	.L7:
+ 159              		.align	2
+ 160              	.L6:
+ 161 008c 00000000 		.word	straight
+ 162 0090 00000000 		.word	.LC0
+ 163              		.cfi_endproc
+ 164              	.LFE127:
+ 166              		.section	.text.Control_AngCalculator,"ax",%progbits
+ 167              		.align	1
+ 168              		.global	Control_AngCalculator
+ 169              		.syntax unified
+ 170              		.thumb
+ 171              		.thumb_func
+ 172              		.fpu fpv4-sp-d16
+ 174              	Control_AngCalculator:
+ 175              	.LFB128:
+  85:Src/control.c **** 
+  86:Src/control.c **** /****************************************************************************************
+  87:Src/control.c ****  * outline  : calcurate accele distance
+  88:Src/control.c ****  * argument : var[mm],velo_m[mm/s],velo_e[mm/s],accel[mm/s],dir
+  89:Src/control.c ****  * return   : void
+  90:Src/control.c **** ********************************************************************************************/
+  91:Src/control.c **** void Control_AngCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir){
+ 176              		.loc 1 91 0
+ 177              		.cfi_startproc
+ 178              		@ args = 0, pretend = 0, frame = 0
+ 179              		@ frame_needed = 0, uses_anonymous_args = 0
+ 180              		@ link register save eliminated.
+ 181              	.LVL14:
+  92:Src/control.c ****     angle.up_term = (velo_m*velo_m - angle.v_now*angle.v_now) / 2.0f / accel;
+ 182              		.loc 1 92 0
+ 183 0000 21EE011A 		vmul.f32	s2, s2, s2
+ 184              	.LVL15:
+ 185 0004 114B     		ldr	r3, .L9
+ 186 0006 D3ED037A 		vldr.32	s15, [r3, #12]
+ 187 000a 67EEA77A 		vmul.f32	s15, s15, s15
+ 188 000e 71EE677A 		vsub.f32	s15, s2, s15
+ 189 0012 B6EE007A 		vmov.f32	s14, #5.0e-1
+ 190 0016 67EE877A 		vmul.f32	s15, s15, s14
+ 191 001a C7EE826A 		vdiv.f32	s13, s15, s4
+ 192 001e C3ED006A 		vstr.32	s13, [r3]
+  93:Src/control.c ****     angle.const_term = var - (velo_m*velo_m - velo_e*velo_e) / 2.0f / accel;
+ 193              		.loc 1 93 0
+ 194 0022 61EEA11A 		vmul.f32	s3, s3, s3
+ 195              	.LVL16:
+ 196 0026 31EE611A 		vsub.f32	s2, s2, s3
+ 197 002a 21EE071A 		vmul.f32	s2, s2, s14
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 6
+
+
+ 198 002e C1EE027A 		vdiv.f32	s15, s2, s4
+ 199 0032 70EE677A 		vsub.f32	s15, s0, s15
+ 200 0036 C3ED017A 		vstr.32	s15, [r3, #4]
+  94:Src/control.c ****     angle.down_term = var;
+ 201              		.loc 1 94 0
+ 202 003a 83ED020A 		vstr.32	s0, [r3, #8]
+  95:Src/control.c ****     angle.v_now = velo_s;
+ 203              		.loc 1 95 0
+ 204 003e C3ED030A 		vstr.32	s1, [r3, #12]
+  96:Src/control.c ****     angle.accel = accel;
+ 205              		.loc 1 96 0
+ 206 0042 83ED042A 		vstr.32	s4, [r3, #16]
+  97:Src/control.c ****     angle.dir = dir;
+ 207              		.loc 1 97 0
+ 208 0046 C3ED052A 		vstr.32	s5, [r3, #20]
+  98:Src/control.c **** }
+ 209              		.loc 1 98 0
+ 210 004a 7047     		bx	lr
+ 211              	.L10:
+ 212              		.align	2
+ 213              	.L9:
+ 214 004c 00000000 		.word	angle
+ 215              		.cfi_endproc
+ 216              	.LFE128:
+ 218              		.section	.text.UpdateTargets,"ax",%progbits
+ 219              		.align	1
+ 220              		.global	UpdateTargets
+ 221              		.syntax unified
+ 222              		.thumb
+ 223              		.thumb_func
+ 224              		.fpu fpv4-sp-d16
+ 226              	UpdateTargets:
+ 227              	.LFB129:
+  99:Src/control.c **** 
+ 100:Src/control.c **** void UpdateTargets(volatile float *var,float *velo,float accel){
+ 228              		.loc 1 100 0
+ 229              		.cfi_startproc
+ 230              		@ args = 0, pretend = 0, frame = 8
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232              		@ link register save eliminated.
+ 233              	.LVL17:
+ 234 0000 82B0     		sub	sp, sp, #8
+ 235              	.LCFI5:
+ 236              		.cfi_def_cfa_offset 8
+ 101:Src/control.c ****     volatile float buff;
+ 102:Src/control.c **** 
+ 103:Src/control.c ****     buff = *velo * 1000.0f;
+ 237              		.loc 1 103 0
+ 238 0002 91ED007A 		vldr.32	s14, [r1]
+ 239 0006 DFED137A 		vldr.32	s15, .L13
+ 240 000a 27EE277A 		vmul.f32	s14, s14, s15
+ 241 000e 8DED017A 		vstr.32	s14, [sp, #4]
+ 104:Src/control.c ****     buff += accel;
+ 242              		.loc 1 104 0
+ 243 0012 9DED017A 		vldr.32	s14, [sp, #4]
+ 244 0016 37EE000A 		vadd.f32	s0, s14, s0
+ 245              	.LVL18:
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 7
+
+
+ 246 001a 8DED010A 		vstr.32	s0, [sp, #4]
+ 105:Src/control.c ****     *velo = buff / 1000.0f;
+ 247              		.loc 1 105 0
+ 248 001e DDED016A 		vldr.32	s13, [sp, #4]
+ 249 0022 86EEA77A 		vdiv.f32	s14, s13, s15
+ 250 0026 81ED007A 		vstr.32	s14, [r1]
+ 106:Src/control.c **** 
+ 107:Src/control.c ****     buff = *var * 1000.0f;
+ 251              		.loc 1 107 0
+ 252 002a D0ED006A 		vldr.32	s13, [r0]
+ 253 002e 66EEA76A 		vmul.f32	s13, s13, s15
+ 254 0032 CDED016A 		vstr.32	s13, [sp, #4]
+ 108:Src/control.c ****     buff += *velo;
+ 255              		.loc 1 108 0
+ 256 0036 DDED016A 		vldr.32	s13, [sp, #4]
+ 257 003a 37EE267A 		vadd.f32	s14, s14, s13
+ 258 003e 8DED017A 		vstr.32	s14, [sp, #4]
+ 109:Src/control.c ****     *var = buff / 1000.0f;
+ 259              		.loc 1 109 0
+ 260 0042 DDED016A 		vldr.32	s13, [sp, #4]
+ 261 0046 86EEA77A 		vdiv.f32	s14, s13, s15
+ 262 004a 80ED007A 		vstr.32	s14, [r0]
+ 110:Src/control.c **** }
+ 263              		.loc 1 110 0
+ 264 004e 02B0     		add	sp, sp, #8
+ 265              	.LCFI6:
+ 266              		.cfi_def_cfa_offset 0
+ 267              		@ sp needed
+ 268 0050 7047     		bx	lr
+ 269              	.L14:
+ 270 0052 00BF     		.align	2
+ 271              	.L13:
+ 272 0054 00007A44 		.word	1148846080
+ 273              		.cfi_endproc
+ 274              	.LFE129:
+ 276              		.section	.text.TargetGenerator,"ax",%progbits
+ 277              		.align	1
+ 278              		.global	TargetGenerator
+ 279              		.syntax unified
+ 280              		.thumb
+ 281              		.thumb_func
+ 282              		.fpu fpv4-sp-d16
+ 284              	TargetGenerator:
+ 285              	.LFB130:
+ 111:Src/control.c **** 
+ 112:Src/control.c **** 
+ 113:Src/control.c **** /****************************************************************************************
+ 114:Src/control.c ****  * outline  : output pwm for trapezoid accele straight by feadbuck control
+ 115:Src/control.c ****  * argument : void
+ 116:Src/control.c ****  * return   : void
+ 117:Src/control.c **** ********************************************************************************************/
+ 118:Src/control.c **** void TargetGenerator(volatile float *var_idial,target_t *buff)
+ 119:Src/control.c **** {
+ 286              		.loc 1 119 0
+ 287              		.cfi_startproc
+ 288              		@ args = 0, pretend = 0, frame = 0
+ 289              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 8
+
+
+ 290              	.LVL19:
+ 291 0000 08B5     		push	{r3, lr}
+ 292              	.LCFI7:
+ 293              		.cfi_def_cfa_offset 8
+ 294              		.cfi_offset 3, -8
+ 295              		.cfi_offset 14, -4
+ 120:Src/control.c ****     if (buff->dir == 0.0f)
+ 296              		.loc 1 120 0
+ 297 0002 D1ED057A 		vldr.32	s15, [r1, #20]
+ 298 0006 F5EE407A 		vcmp.f32	s15, #0
+ 299 000a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 300 000e 27D0     		beq	.L32
+ 121:Src/control.c ****     {
+ 122:Src/control.c ****         buff->v_now=0.0f;
+ 123:Src/control.c ****     }
+ 124:Src/control.c ****     else
+ 125:Src/control.c ****     {
+ 126:Src/control.c ****         if (*var_idial < buff->up_term)
+ 301              		.loc 1 126 0
+ 302 0010 90ED007A 		vldr.32	s14, [r0]
+ 303 0014 D1ED007A 		vldr.32	s15, [r1]
+ 304 0018 B4EEE77A 		vcmpe.f32	s14, s15
+ 305 001c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 306 0020 21D4     		bmi	.L33
+ 127:Src/control.c ****         {
+ 128:Src/control.c ****             UpdateTargets(var_idial,&buff->v_now,buff->accel);
+ 129:Src/control.c ****         }
+ 130:Src/control.c ****         else if (*var_idial < buff->const_term)
+ 307              		.loc 1 130 0
+ 308 0022 90ED007A 		vldr.32	s14, [r0]
+ 309 0026 D1ED017A 		vldr.32	s15, [r1, #4]
+ 310 002a B4EEE77A 		vcmpe.f32	s14, s15
+ 311 002e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 312 0032 1ED4     		bmi	.L34
+ 131:Src/control.c ****         {
+ 132:Src/control.c ****             UpdateTargets(var_idial,&buff->v_now,0);
+ 133:Src/control.c ****         }
+ 134:Src/control.c ****         else if (*var_idial < buff->down_term && buff->v_now > 0.0f)
+ 313              		.loc 1 134 0
+ 314 0034 90ED007A 		vldr.32	s14, [r0]
+ 315 0038 D1ED027A 		vldr.32	s15, [r1, #8]
+ 316 003c B4EEE77A 		vcmpe.f32	s14, s15
+ 317 0040 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 318 0044 06D5     		bpl	.L22
+ 319              		.loc 1 134 0 is_stmt 0 discriminator 1
+ 320 0046 D1ED037A 		vldr.32	s15, [r1, #12]
+ 321 004a F5EEC07A 		vcmpe.f32	s15, #0
+ 322 004e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 323 0052 14DC     		bgt	.L35
+ 324              	.L22:
+ 135:Src/control.c ****         {
+ 136:Src/control.c ****             UpdateTargets(var_idial,&buff->v_now,-(buff->accel));
+ 137:Src/control.c ****         }
+ 138:Src/control.c ****         else
+ 139:Src/control.c ****         {
+ 140:Src/control.c ****             *var_idial = 0.0f;
+ 325              		.loc 1 140 0 is_stmt 1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 9
+
+
+ 326 0054 0023     		movs	r3, #0
+ 327 0056 0360     		str	r3, [r0]	@ float
+ 141:Src/control.c ****             motion_end_flag = TRUE;
+ 328              		.loc 1 141 0
+ 329 0058 0D4B     		ldr	r3, .L36
+ 330 005a 0122     		movs	r2, #1
+ 331 005c 1A70     		strb	r2, [r3]
+ 142:Src/control.c ****         }
+ 143:Src/control.c ****     }
+ 144:Src/control.c **** }
+ 332              		.loc 1 144 0
+ 333 005e 01E0     		b	.L15
+ 334              	.L32:
+ 122:Src/control.c ****     }
+ 335              		.loc 1 122 0
+ 336 0060 0023     		movs	r3, #0
+ 337 0062 CB60     		str	r3, [r1, #12]	@ float
+ 338              	.LVL20:
+ 339              	.L15:
+ 340              		.loc 1 144 0
+ 341 0064 08BD     		pop	{r3, pc}
+ 342              	.LVL21:
+ 343              	.L33:
+ 128:Src/control.c ****         }
+ 344              		.loc 1 128 0
+ 345 0066 91ED040A 		vldr.32	s0, [r1, #16]
+ 346 006a 0C31     		adds	r1, r1, #12
+ 347              	.LVL22:
+ 348 006c FFF7FEFF 		bl	UpdateTargets
+ 349              	.LVL23:
+ 350 0070 F8E7     		b	.L15
+ 351              	.LVL24:
+ 352              	.L34:
+ 132:Src/control.c ****         }
+ 353              		.loc 1 132 0
+ 354 0072 9FED080A 		vldr.32	s0, .L36+4
+ 355 0076 0C31     		adds	r1, r1, #12
+ 356              	.LVL25:
+ 357 0078 FFF7FEFF 		bl	UpdateTargets
+ 358              	.LVL26:
+ 359 007c F2E7     		b	.L15
+ 360              	.LVL27:
+ 361              	.L35:
+ 136:Src/control.c ****         }
+ 362              		.loc 1 136 0
+ 363 007e 91ED040A 		vldr.32	s0, [r1, #16]
+ 364 0082 B1EE400A 		vneg.f32	s0, s0
+ 365 0086 0C31     		adds	r1, r1, #12
+ 366              	.LVL28:
+ 367 0088 FFF7FEFF 		bl	UpdateTargets
+ 368              	.LVL29:
+ 369 008c EAE7     		b	.L15
+ 370              	.L37:
+ 371 008e 00BF     		.align	2
+ 372              	.L36:
+ 373 0090 00000000 		.word	motion_end_flag
+ 374 0094 00000000 		.word	0
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 10
+
+
+ 375              		.cfi_endproc
+ 376              	.LFE130:
+ 378              		.section	.text.UpdateLoger,"ax",%progbits
+ 379              		.align	1
+ 380              		.global	UpdateLoger
+ 381              		.syntax unified
+ 382              		.thumb
+ 383              		.thumb_func
+ 384              		.fpu fpv4-sp-d16
+ 386              	UpdateLoger:
+ 387              	.LFB131:
+ 145:Src/control.c **** 
+ 146:Src/control.c **** void UpdateLoger(void){
+ 388              		.loc 1 146 0
+ 389              		.cfi_startproc
+ 390              		@ args = 0, pretend = 0, frame = 0
+ 391              		@ frame_needed = 0, uses_anonymous_args = 0
+ 392              		@ link register save eliminated.
+ 393 0000 10B4     		push	{r4}
+ 394              	.LCFI8:
+ 395              		.cfi_def_cfa_offset 4
+ 396              		.cfi_offset 4, -4
+ 147:Src/control.c ****     loger.target_velo[ms_counter] = straight.v_now;
+ 397              		.loc 1 147 0
+ 398 0002 1748     		ldr	r0, .L41
+ 399 0004 0388     		ldrh	r3, [r0]
+ 400 0006 174A     		ldr	r2, .L41+4
+ 401 0008 D468     		ldr	r4, [r2, #12]	@ float
+ 402 000a 174A     		ldr	r2, .L41+8
+ 403 000c 02EB8301 		add	r1, r2, r3, lsl #2
+ 404 0010 0C60     		str	r4, [r1]	@ float
+ 148:Src/control.c ****     loger.target_velo_ang[ms_counter] = angle.v_now;
+ 405              		.loc 1 148 0
+ 406 0012 1649     		ldr	r1, .L41+12
+ 407 0014 CC68     		ldr	r4, [r1, #12]	@ float
+ 408 0016 03F6B831 		addw	r1, r3, #3000
+ 409 001a 02EB8101 		add	r1, r2, r1, lsl #2
+ 410 001e 0C60     		str	r4, [r1]	@ float
+ 149:Src/control.c ****     loger.velo[ms_counter] = enc.velocity;
+ 411              		.loc 1 149 0
+ 412 0020 1349     		ldr	r1, .L41+16
+ 413 0022 4C68     		ldr	r4, [r1, #4]	@ float
+ 414 0024 03F5BB51 		add	r1, r3, #5984
+ 415 0028 1031     		adds	r1, r1, #16
+ 416 002a 02EB8101 		add	r1, r2, r1, lsl #2
+ 417 002e 0C60     		str	r4, [r1]	@ float
+ 150:Src/control.c ****     loger.velo_ang[ms_counter] = gyro_z.velocity;
+ 418              		.loc 1 150 0
+ 419 0030 1049     		ldr	r1, .L41+20
+ 420 0032 0C68     		ldr	r4, [r1]	@ float
+ 421 0034 03F50C51 		add	r1, r3, #8960
+ 422 0038 2831     		adds	r1, r1, #40
+ 423 003a 02EB8102 		add	r2, r2, r1, lsl #2
+ 424 003e 1460     		str	r4, [r2]	@ float
+ 151:Src/control.c ****     ms_counter++;
+ 425              		.loc 1 151 0
+ 426 0040 0133     		adds	r3, r3, #1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 11
+
+
+ 427 0042 9BB2     		uxth	r3, r3
+ 428 0044 0380     		strh	r3, [r0]	@ movhi
+ 152:Src/control.c ****     if(ms_counter>3000){
+ 429              		.loc 1 152 0
+ 430 0046 40F6B832 		movw	r2, #3000
+ 431 004a 9342     		cmp	r3, r2
+ 432 004c 05D9     		bls	.L38
+ 153:Src/control.c ****         motion_end_flag = TRUE;
+ 433              		.loc 1 153 0
+ 434 004e 0A4B     		ldr	r3, .L41+24
+ 435 0050 0122     		movs	r2, #1
+ 436 0052 1A70     		strb	r2, [r3]
+ 154:Src/control.c ****         motor_flag = FALSE;
+ 437              		.loc 1 154 0
+ 438 0054 094B     		ldr	r3, .L41+28
+ 439 0056 0022     		movs	r2, #0
+ 440 0058 1A70     		strb	r2, [r3]
+ 441              	.L38:
+ 155:Src/control.c ****     }
+ 156:Src/control.c **** }
+ 442              		.loc 1 156 0
+ 443 005a 5DF8044B 		ldr	r4, [sp], #4
+ 444              	.LCFI9:
+ 445              		.cfi_restore 4
+ 446              		.cfi_def_cfa_offset 0
+ 447 005e 7047     		bx	lr
+ 448              	.L42:
+ 449              		.align	2
+ 450              	.L41:
+ 451 0060 00000000 		.word	ms_counter
+ 452 0064 00000000 		.word	straight
+ 453 0068 00000000 		.word	loger
+ 454 006c 00000000 		.word	angle
+ 455 0070 00000000 		.word	enc
+ 456 0074 00000000 		.word	gyro_z
+ 457 0078 00000000 		.word	motion_end_flag
+ 458 007c 00000000 		.word	motor_flag
+ 459              		.cfi_endproc
+ 460              	.LFE131:
+ 462              		.section	.text.Control_PrintLoger,"ax",%progbits
+ 463              		.align	1
+ 464              		.global	Control_PrintLoger
+ 465              		.syntax unified
+ 466              		.thumb
+ 467              		.thumb_func
+ 468              		.fpu fpv4-sp-d16
+ 470              	Control_PrintLoger:
+ 471              	.LFB132:
+ 157:Src/control.c **** 
+ 158:Src/control.c **** void Control_PrintLoger(void){
+ 472              		.loc 1 158 0
+ 473              		.cfi_startproc
+ 474              		@ args = 0, pretend = 0, frame = 0
+ 475              		@ frame_needed = 0, uses_anonymous_args = 0
+ 476 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 477              	.LCFI10:
+ 478              		.cfi_def_cfa_offset 20
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 12
+
+
+ 479              		.cfi_offset 4, -20
+ 480              		.cfi_offset 5, -16
+ 481              		.cfi_offset 6, -12
+ 482              		.cfi_offset 7, -8
+ 483              		.cfi_offset 14, -4
+ 484 0002 83B0     		sub	sp, sp, #12
+ 485              	.LCFI11:
+ 486              		.cfi_def_cfa_offset 32
+ 159:Src/control.c ****     printf("str\tang\r\n");
+ 487              		.loc 1 159 0
+ 488 0004 1148     		ldr	r0, .L47
+ 489 0006 FFF7FEFF 		bl	puts
+ 490              	.LVL30:
+ 491              	.LBB2:
+ 160:Src/control.c ****     for(uint16_t i = 0; i < ms_counter; i++)
+ 492              		.loc 1 160 0
+ 493 000a 0024     		movs	r4, #0
+ 494 000c 18E0     		b	.L44
+ 495              	.LVL31:
+ 496              	.L45:
+ 161:Src/control.c ****     {
+ 162:Src/control.c ****         printf("%f\t%f\r\n",loger.target_velo[i],loger.target_velo_ang[i]);
+ 497              		.loc 1 162 0 discriminator 3
+ 498 000e 104B     		ldr	r3, .L47+4
+ 499 0010 03EB8402 		add	r2, r3, r4, lsl #2
+ 500 0014 04F6B831 		addw	r1, r4, #3000
+ 501 0018 03EB8103 		add	r3, r3, r1, lsl #2
+ 502 001c 1D68     		ldr	r5, [r3]	@ float
+ 503 001e 1068     		ldr	r0, [r2]	@ float
+ 504 0020 FFF7FEFF 		bl	__aeabi_f2d
+ 505              	.LVL32:
+ 506 0024 0646     		mov	r6, r0
+ 507 0026 0F46     		mov	r7, r1
+ 508 0028 2846     		mov	r0, r5	@ float
+ 509 002a FFF7FEFF 		bl	__aeabi_f2d
+ 510              	.LVL33:
+ 511 002e CDE90001 		strd	r0, [sp]
+ 512 0032 3246     		mov	r2, r6
+ 513 0034 3B46     		mov	r3, r7
+ 514 0036 0748     		ldr	r0, .L47+8
+ 515 0038 FFF7FEFF 		bl	printf
+ 516              	.LVL34:
+ 160:Src/control.c ****     for(uint16_t i = 0; i < ms_counter; i++)
+ 517              		.loc 1 160 0 discriminator 3
+ 518 003c 0134     		adds	r4, r4, #1
+ 519              	.LVL35:
+ 520 003e A4B2     		uxth	r4, r4
+ 521              	.LVL36:
+ 522              	.L44:
+ 160:Src/control.c ****     for(uint16_t i = 0; i < ms_counter; i++)
+ 523              		.loc 1 160 0 is_stmt 0 discriminator 1
+ 524 0040 054B     		ldr	r3, .L47+12
+ 525 0042 1B88     		ldrh	r3, [r3]
+ 526 0044 A342     		cmp	r3, r4
+ 527 0046 E2D8     		bhi	.L45
+ 528              	.LBE2:
+ 163:Src/control.c ****     }
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 13
+
+
+ 164:Src/control.c ****     
+ 165:Src/control.c **** }
+ 529              		.loc 1 165 0 is_stmt 1
+ 530 0048 03B0     		add	sp, sp, #12
+ 531              	.LCFI12:
+ 532              		.cfi_def_cfa_offset 20
+ 533              		@ sp needed
+ 534 004a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 535              	.LVL37:
+ 536              	.L48:
+ 537              		.align	2
+ 538              	.L47:
+ 539 004c 00000000 		.word	.LC1
+ 540 0050 00000000 		.word	loger
+ 541 0054 0C000000 		.word	.LC2
+ 542 0058 00000000 		.word	ms_counter
+ 543              		.cfi_endproc
+ 544              	.LFE132:
+ 546              		.section	.text.Control_UpdatePwm,"ax",%progbits
+ 547              		.align	1
+ 548              		.global	Control_UpdatePwm
+ 549              		.syntax unified
+ 550              		.thumb
+ 551              		.thumb_func
+ 552              		.fpu fpv4-sp-d16
+ 554              	Control_UpdatePwm:
+ 555              	.LFB133:
+ 166:Src/control.c **** 
+ 167:Src/control.c **** void Control_UpdatePwm(void){
+ 556              		.loc 1 167 0
+ 557              		.cfi_startproc
+ 558              		@ args = 0, pretend = 0, frame = 0
+ 559              		@ frame_needed = 0, uses_anonymous_args = 0
+ 560 0000 38B5     		push	{r3, r4, r5, lr}
+ 561              	.LCFI13:
+ 562              		.cfi_def_cfa_offset 16
+ 563              		.cfi_offset 3, -16
+ 564              		.cfi_offset 4, -12
+ 565              		.cfi_offset 5, -8
+ 566              		.cfi_offset 14, -4
+ 567 0002 2DED028B 		vpush.64	{d8}
+ 568              	.LCFI14:
+ 569              		.cfi_def_cfa_offset 24
+ 570              		.cfi_offset 80, -24
+ 571              		.cfi_offset 81, -20
+ 168:Src/control.c ****     if(motor_flag==TRUE){
+ 572              		.loc 1 168 0
+ 573 0006 284B     		ldr	r3, .L54
+ 574 0008 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 575 000a DBB2     		uxtb	r3, r3
+ 576 000c 012B     		cmp	r3, #1
+ 577 000e 06D0     		beq	.L53
+ 169:Src/control.c ****         TargetGenerator(&dist_idial,&straight);
+ 170:Src/control.c ****         TargetGenerator(&ang_idial,&angle);
+ 171:Src/control.c ****         int16_t str_buff = (int16_t)PID_value(straight.dir*straight.v_now,enc.velocity,&error_sum,&
+ 172:Src/control.c ****         int16_t ang_buff = (int16_t)PID_value(angle.dir*angle.v_now,gyro_z.velocity,&error_ang_sum,
+ 173:Src/control.c ****         Tim_MotorPwm(str_buff-ang_buff,str_buff+ang_buff);
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 14
+
+
+ 174:Src/control.c ****         //UpdateLoger();
+ 175:Src/control.c ****     }else{
+ 176:Src/control.c ****         Tim_MotorPwm(0,0);
+ 578              		.loc 1 176 0
+ 579 0010 0021     		movs	r1, #0
+ 580 0012 0846     		mov	r0, r1
+ 581 0014 FFF7FEFF 		bl	Tim_MotorPwm
+ 582              	.LVL38:
+ 583              	.L49:
+ 177:Src/control.c ****     }
+ 178:Src/control.c **** }
+ 584              		.loc 1 178 0
+ 585 0018 BDEC028B 		vldm	sp!, {d8}
+ 586              	.LCFI15:
+ 587              		.cfi_remember_state
+ 588              		.cfi_restore 80
+ 589              		.cfi_restore 81
+ 590              		.cfi_def_cfa_offset 16
+ 591 001c 38BD     		pop	{r3, r4, r5, pc}
+ 592              	.L53:
+ 593              	.LCFI16:
+ 594              		.cfi_restore_state
+ 595              	.LBB3:
+ 169:Src/control.c ****         TargetGenerator(&dist_idial,&straight);
+ 596              		.loc 1 169 0
+ 597 001e 234C     		ldr	r4, .L54+4
+ 598 0020 2146     		mov	r1, r4
+ 599 0022 2348     		ldr	r0, .L54+8
+ 600 0024 FFF7FEFF 		bl	TargetGenerator
+ 601              	.LVL39:
+ 170:Src/control.c ****         int16_t str_buff = (int16_t)PID_value(straight.dir*straight.v_now,enc.velocity,&error_sum,&
+ 602              		.loc 1 170 0
+ 603 0028 224D     		ldr	r5, .L54+12
+ 604 002a 2946     		mov	r1, r5
+ 605 002c 2248     		ldr	r0, .L54+16
+ 606 002e FFF7FEFF 		bl	TargetGenerator
+ 607              	.LVL40:
+ 171:Src/control.c ****         int16_t ang_buff = (int16_t)PID_value(angle.dir*angle.v_now,gyro_z.velocity,&error_ang_sum,
+ 608              		.loc 1 171 0
+ 609 0032 94ED050A 		vldr.32	s0, [r4, #20]
+ 610 0036 D4ED037A 		vldr.32	s15, [r4, #12]
+ 611 003a 9FED208A 		vldr.32	s16, .L54+20
+ 612 003e B0EE482A 		vmov.f32	s4, s16
+ 613 0042 F0EE481A 		vmov.f32	s3, s16
+ 614 0046 B0EE481A 		vmov.f32	s2, s16
+ 615 004a 1D49     		ldr	r1, .L54+24
+ 616 004c 1D48     		ldr	r0, .L54+28
+ 617 004e 1E4B     		ldr	r3, .L54+32
+ 618 0050 D3ED010A 		vldr.32	s1, [r3, #4]
+ 619 0054 20EE270A 		vmul.f32	s0, s0, s15
+ 620 0058 FFF7FEFF 		bl	PID_value
+ 621              	.LVL41:
+ 622 005c BDEEC00A 		vcvt.s32.f32	s0, s0
+ 623 0060 10EE103A 		vmov	r3, s0	@ int
+ 624 0064 1CB2     		sxth	r4, r3
+ 625              	.LVL42:
+ 172:Src/control.c ****         Tim_MotorPwm(str_buff-ang_buff,str_buff+ang_buff);
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 15
+
+
+ 626              		.loc 1 172 0
+ 627 0066 95ED050A 		vldr.32	s0, [r5, #20]
+ 628 006a D5ED037A 		vldr.32	s15, [r5, #12]
+ 629 006e B0EE482A 		vmov.f32	s4, s16
+ 630 0072 F0EE481A 		vmov.f32	s3, s16
+ 631 0076 B7EE001A 		vmov.f32	s2, #1.0e+0
+ 632 007a 1449     		ldr	r1, .L54+36
+ 633 007c 1448     		ldr	r0, .L54+40
+ 634 007e 154B     		ldr	r3, .L54+44
+ 635 0080 D3ED000A 		vldr.32	s1, [r3]
+ 636 0084 20EE270A 		vmul.f32	s0, s0, s15
+ 637 0088 FFF7FEFF 		bl	PID_value
+ 638              	.LVL43:
+ 639 008c BDEEC00A 		vcvt.s32.f32	s0, s0
+ 640              	.LVL44:
+ 173:Src/control.c ****         //UpdateLoger();
+ 641              		.loc 1 173 0
+ 642 0090 A1B2     		uxth	r1, r4
+ 643 0092 10EE103A 		vmov	r3, s0	@ int
+ 644 0096 9BB2     		uxth	r3, r3
+ 645 0098 C81A     		subs	r0, r1, r3
+ 646 009a 1944     		add	r1, r1, r3
+ 647 009c 09B2     		sxth	r1, r1
+ 648 009e 00B2     		sxth	r0, r0
+ 649 00a0 FFF7FEFF 		bl	Tim_MotorPwm
+ 650              	.LVL45:
+ 651              	.LBE3:
+ 652 00a4 B8E7     		b	.L49
+ 653              	.L55:
+ 654 00a6 00BF     		.align	2
+ 655              	.L54:
+ 656 00a8 00000000 		.word	motor_flag
+ 657 00ac 00000000 		.word	straight
+ 658 00b0 00000000 		.word	dist_idial
+ 659 00b4 00000000 		.word	angle
+ 660 00b8 00000000 		.word	ang_idial
+ 661 00bc 00000000 		.word	0
+ 662 00c0 00000000 		.word	error_old
+ 663 00c4 00000000 		.word	error_sum
+ 664 00c8 00000000 		.word	enc
+ 665 00cc 00000000 		.word	error_ang_old
+ 666 00d0 00000000 		.word	error_ang_sum
+ 667 00d4 00000000 		.word	gyro_z
+ 668              		.cfi_endproc
+ 669              	.LFE133:
+ 671              		.section	.text.Control_ResetVelo,"ax",%progbits
+ 672              		.align	1
+ 673              		.global	Control_ResetVelo
+ 674              		.syntax unified
+ 675              		.thumb
+ 676              		.thumb_func
+ 677              		.fpu fpv4-sp-d16
+ 679              	Control_ResetVelo:
+ 680              	.LFB134:
+ 179:Src/control.c **** 
+ 180:Src/control.c **** void Control_ResetVelo(void){
+ 681              		.loc 1 180 0
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 16
+
+
+ 682              		.cfi_startproc
+ 683              		@ args = 0, pretend = 0, frame = 0
+ 684              		@ frame_needed = 0, uses_anonymous_args = 0
+ 685              		@ link register save eliminated.
+ 181:Src/control.c ****     straight.v_now = 0.0f;
+ 686              		.loc 1 181 0
+ 687 0000 0023     		movs	r3, #0
+ 688 0002 064A     		ldr	r2, .L57
+ 689 0004 D360     		str	r3, [r2, #12]	@ float
+ 182:Src/control.c ****     dist_idial = 0.0f;
+ 690              		.loc 1 182 0
+ 691 0006 064A     		ldr	r2, .L57+4
+ 692 0008 1360     		str	r3, [r2]	@ float
+ 183:Src/control.c ****     angle.v_now = 0.0f;
+ 693              		.loc 1 183 0
+ 694 000a 064A     		ldr	r2, .L57+8
+ 695 000c D360     		str	r3, [r2, #12]	@ float
+ 184:Src/control.c ****     ang_idial = 0.0f;
+ 696              		.loc 1 184 0
+ 697 000e 064A     		ldr	r2, .L57+12
+ 698 0010 1360     		str	r3, [r2]	@ float
+ 185:Src/control.c ****     ms_counter = 0;
+ 699              		.loc 1 185 0
+ 700 0012 064B     		ldr	r3, .L57+16
+ 701 0014 0022     		movs	r2, #0
+ 702 0016 1A80     		strh	r2, [r3]	@ movhi
+ 186:Src/control.c **** }...
+ 703              		.loc 1 186 0
+ 704 0018 7047     		bx	lr
+ 705              	.L58:
+ 706 001a 00BF     		.align	2
+ 707              	.L57:
+ 708 001c 00000000 		.word	straight
+ 709 0020 00000000 		.word	dist_idial
+ 710 0024 00000000 		.word	angle
+ 711 0028 00000000 		.word	ang_idial
+ 712 002c 00000000 		.word	ms_counter
+ 713              		.cfi_endproc
+ 714              	.LFE134:
+ 716              		.comm	motor_flag,1,1
+ 717              		.comm	error_ang_old,4,4
+ 718              		.comm	error_ang_sum,4,4
+ 719              		.comm	ang_idial,4,4
+ 720              		.comm	ms_counter,2,2
+ 721              		.comm	loger,48000,4
+ 722              		.comm	angle,24,4
+ 723              		.comm	error_old,4,4
+ 724              		.comm	error_sum,4,4
+ 725              		.comm	dist_idial,4,4
+ 726              		.comm	straight,24,4
+ 727              		.section	.rodata.Control_PrintLoger.str1.4,"aMS",%progbits,1
+ 728              		.align	2
+ 729              	.LC1:
+ 730 0000 73747209 		.ascii	"str\011ang\015\000"
+ 730      616E670D 
+ 730      00
+ 731 0009 000000   		.space	3
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 17
+
+
+ 732              	.LC2:
+ 733 000c 25660925 		.ascii	"%f\011%f\015\012\000"
+ 733      660D0A00 
+ 734              		.section	.rodata.Control_StrCalculator.str1.4,"aMS",%progbits,1
+ 735              		.align	2
+ 736              	.LC0:
+ 737 0000 75703A25 		.ascii	"up:%f,cnt:%f,dwn:%f\015\012\000"
+ 737      662C636E 
+ 737      743A2566 
+ 737      2C64776E 
+ 737      3A25660D 
+ 738              		.text
+ 739              	.Letext0:
+ 740              		.file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 741              		.file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 742              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 743              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 744              		.file 6 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f405xx.h"
+ 745              		.file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 746              		.file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 747              		.file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\lib\\gcc\\arm-none-eabi
+ 748              		.file 10 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include
+ 749              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 750              		.file 12 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 751              		.file 13 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 752              		.file 14 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 753              		.file 15 "Inc/tim.h"
+ 754              		.file 16 "Inc/spi.h"
+ 755              		.file 17 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include
+ 756              		.file 18 "<built-in>"
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 control.c
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:18     .text.PID_value:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:25     .text.PID_value:00000000 PID_value
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:66     .text.PID_value:0000003c $d
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:72     .text.Control_StrCalculator:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:79     .text.Control_StrCalculator:00000000 Control_StrCalculator
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:161    .text.Control_StrCalculator:0000008c $d
+                            *COM*:00000018 straight
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:167    .text.Control_AngCalculator:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:174    .text.Control_AngCalculator:00000000 Control_AngCalculator
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:214    .text.Control_AngCalculator:0000004c $d
+                            *COM*:00000018 angle
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:219    .text.UpdateTargets:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:226    .text.UpdateTargets:00000000 UpdateTargets
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:272    .text.UpdateTargets:00000054 $d
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:277    .text.TargetGenerator:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:284    .text.TargetGenerator:00000000 TargetGenerator
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:373    .text.TargetGenerator:00000090 $d
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:379    .text.UpdateLoger:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:386    .text.UpdateLoger:00000000 UpdateLoger
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:451    .text.UpdateLoger:00000060 $d
+                            *COM*:00000002 ms_counter
+                            *COM*:0000bb80 loger
+                            *COM*:00000001 motor_flag
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:463    .text.Control_PrintLoger:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:470    .text.Control_PrintLoger:00000000 Control_PrintLoger
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:539    .text.Control_PrintLoger:0000004c $d
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:547    .text.Control_UpdatePwm:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:554    .text.Control_UpdatePwm:00000000 Control_UpdatePwm
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:656    .text.Control_UpdatePwm:000000a8 $d
+                            *COM*:00000004 dist_idial
+                            *COM*:00000004 ang_idial
+                            *COM*:00000004 error_old
+                            *COM*:00000004 error_sum
+                            *COM*:00000004 error_ang_old
+                            *COM*:00000004 error_ang_sum
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:672    .text.Control_ResetVelo:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:679    .text.Control_ResetVelo:00000000 Control_ResetVelo
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:708    .text.Control_ResetVelo:0000001c $d
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:728    .rodata.Control_PrintLoger.str1.4:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccVkiyaB.s:735    .rodata.Control_StrCalculator.str1.4:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_f2d
+printf
+motion_end_flag
+enc
+gyro_z
+puts
+Tim_MotorPwm

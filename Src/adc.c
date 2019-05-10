@@ -44,7 +44,7 @@
 #include "dma.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "stdint.h"
 //define
 #define OFF_VALUE 0
 #define FRONT_VALUE 1
@@ -82,7 +82,7 @@ void MX_ADC1_Init(void)
     /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
     */
   hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.ScanConvMode = DISABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
@@ -117,7 +117,7 @@ void MX_ADC2_Init(void)
     /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
     */
   hadc2.Instance = ADC2;
-  hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   hadc2.Init.Resolution = ADC_RESOLUTION_10B;
   hadc2.Init.ScanConvMode = ENABLE;
   hadc2.Init.ContinuousConvMode = ENABLE;
@@ -292,20 +292,19 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-void Adc_SetSensorConstant(void)
-{
-  sen_l.reference = 578;
-  sen_l.threshold = 472;
+void Adc_SetSensorValue(void){
+  sen_l.reference = 119;
+  sen_l.threshold = 90;
 
-  sen_fl.reference = 786;
+  sen_fl.reference = 191;
 
-  sen_front.reference = 793;
-  sen_front.threshold = 610;
+  sen_front.reference = 195;
+  sen_front.threshold = 120;
 
-  sen_fr.reference = 803;
+  sen_fr.reference = 201;
 
-  sen_r.reference = 670;
-  sen_r.threshold = 570;
+  sen_r.reference = 146;
+  sen_r.threshold = 120;
 }
 
 void update_sensor_data(void)

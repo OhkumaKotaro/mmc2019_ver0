@@ -1,0 +1,457 @@
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"motion.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Motion_enkai,"ax",%progbits
+  18              		.align	1
+  19              		.global	Motion_enkai
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	Motion_enkai:
+  26              	.LFB0:
+  27              		.file 1 "Src/motion.c"
+   1:Src/motion.c  **** #include "motion.h"
+   2:Src/motion.c  **** #include "stdint.h"
+   3:Src/motion.c  **** #include "control.h"
+   4:Src/motion.c  **** 
+   5:Src/motion.c  **** #define TRUE 1
+   6:Src/motion.c  **** #define FALSE 0
+   7:Src/motion.c  **** 
+   8:Src/motion.c  **** volatile uint8_t motion_end_flag;
+   9:Src/motion.c  **** 
+  10:Src/motion.c  **** void Motion_enkai(void){
+  28              		.loc 1 10 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  37 0002 2DED028B 		vpush.64	{d8}
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 16
+  40              		.cfi_offset 80, -16
+  41              		.cfi_offset 81, -12
+  11:Src/motion.c  ****     Control_ResetVelo();
+  42              		.loc 1 11 0
+  43 0006 FFF7FEFF 		bl	Control_ResetVelo
+  44              	.LVL0:
+  12:Src/motion.c  ****     Control_StrCalculator(0,0,0,0,1,0);
+  45              		.loc 1 12 0
+  46 000a 9FED108A 		vldr.32	s16, .L3
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 2
+
+
+  47 000e F0EE482A 		vmov.f32	s5, s16
+  48 0012 B7EE002A 		vmov.f32	s4, #1.0e+0
+  49 0016 F0EE481A 		vmov.f32	s3, s16
+  50 001a B0EE481A 		vmov.f32	s2, s16
+  51 001e F0EE480A 		vmov.f32	s1, s16
+  52 0022 B0EE480A 		vmov.f32	s0, s16
+  53 0026 FFF7FEFF 		bl	Control_StrCalculator
+  54              	.LVL1:
+  13:Src/motion.c  ****     Control_AngCalculator(0,0,0,0,1,0);
+  55              		.loc 1 13 0
+  56 002a F0EE482A 		vmov.f32	s5, s16
+  57 002e B7EE002A 		vmov.f32	s4, #1.0e+0
+  58 0032 F0EE481A 		vmov.f32	s3, s16
+  59 0036 B0EE481A 		vmov.f32	s2, s16
+  60 003a F0EE480A 		vmov.f32	s1, s16
+  61 003e B0EE480A 		vmov.f32	s0, s16
+  62 0042 FFF7FEFF 		bl	Control_AngCalculator
+  63              	.LVL2:
+  14:Src/motion.c  **** }
+  64              		.loc 1 14 0
+  65 0046 BDEC028B 		vldm	sp!, {d8}
+  66              	.LCFI2:
+  67              		.cfi_restore 80
+  68              		.cfi_restore 81
+  69              		.cfi_def_cfa_offset 8
+  70 004a 08BD     		pop	{r3, pc}
+  71              	.L4:
+  72              		.align	2
+  73              	.L3:
+  74 004c 00000000 		.word	0
+  75              		.cfi_endproc
+  76              	.LFE0:
+  78              		.section	.text.Motion_Start,"ax",%progbits
+  79              		.align	1
+  80              		.global	Motion_Start
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  84              		.fpu fpv4-sp-d16
+  86              	Motion_Start:
+  87              	.LFB1:
+  15:Src/motion.c  **** 
+  16:Src/motion.c  **** void Motion_Start(void){
+  88              		.loc 1 16 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92 0000 08B5     		push	{r3, lr}
+  93              	.LCFI3:
+  94              		.cfi_def_cfa_offset 8
+  95              		.cfi_offset 3, -8
+  96              		.cfi_offset 14, -4
+  97 0002 2DED028B 		vpush.64	{d8}
+  98              	.LCFI4:
+  99              		.cfi_def_cfa_offset 16
+ 100              		.cfi_offset 80, -16
+ 101              		.cfi_offset 81, -12
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 3
+
+
+  17:Src/motion.c  ****     Control_ResetVelo();
+ 102              		.loc 1 17 0
+ 103 0006 FFF7FEFF 		bl	Control_ResetVelo
+ 104              	.LVL3:
+  18:Src/motion.c  ****     Control_StrCalculator(90.0f,0.0f,400.0f,400.0f,4000.0f,1);
+ 105              		.loc 1 18 0
+ 106 000a 9FED141A 		vldr.32	s2, .L8
+ 107 000e 9FED148A 		vldr.32	s16, .L8+4
+ 108 0012 F7EE002A 		vmov.f32	s5, #1.0e+0
+ 109 0016 9FED132A 		vldr.32	s4, .L8+8
+ 110 001a F0EE411A 		vmov.f32	s3, s2
+ 111 001e F0EE480A 		vmov.f32	s1, s16
+ 112 0022 9FED110A 		vldr.32	s0, .L8+12
+ 113 0026 FFF7FEFF 		bl	Control_StrCalculator
+ 114              	.LVL4:
+  19:Src/motion.c  ****     Control_AngCalculator(0,0,0,0,1,0);
+ 115              		.loc 1 19 0
+ 116 002a F0EE482A 		vmov.f32	s5, s16
+ 117 002e B7EE002A 		vmov.f32	s4, #1.0e+0
+ 118 0032 F0EE481A 		vmov.f32	s3, s16
+ 119 0036 B0EE481A 		vmov.f32	s2, s16
+ 120 003a F0EE480A 		vmov.f32	s1, s16
+ 121 003e B0EE480A 		vmov.f32	s0, s16
+ 122 0042 FFF7FEFF 		bl	Control_AngCalculator
+ 123              	.LVL5:
+  20:Src/motion.c  ****     motion_end_flag = FALSE;
+ 124              		.loc 1 20 0
+ 125 0046 094B     		ldr	r3, .L8+16
+ 126 0048 0022     		movs	r2, #0
+ 127 004a 1A70     		strb	r2, [r3]
+ 128              	.L6:
+  21:Src/motion.c  ****     while(motion_end_flag==FALSE);
+ 129              		.loc 1 21 0 discriminator 1
+ 130 004c 074B     		ldr	r3, .L8+16
+ 131 004e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 132 0050 002B     		cmp	r3, #0
+ 133 0052 FBD0     		beq	.L6
+  22:Src/motion.c  **** }
+ 134              		.loc 1 22 0
+ 135 0054 BDEC028B 		vldm	sp!, {d8}
+ 136              	.LCFI5:
+ 137              		.cfi_restore 80
+ 138              		.cfi_restore 81
+ 139              		.cfi_def_cfa_offset 8
+ 140 0058 08BD     		pop	{r3, pc}
+ 141              	.L9:
+ 142 005a 00BF     		.align	2
+ 143              	.L8:
+ 144 005c 0000C843 		.word	1137180672
+ 145 0060 00000000 		.word	0
+ 146 0064 00007A45 		.word	1165623296
+ 147 0068 0000B442 		.word	1119092736
+ 148 006c 00000000 		.word	motion_end_flag
+ 149              		.cfi_endproc
+ 150              	.LFE1:
+ 152              		.section	.text.Motion_End,"ax",%progbits
+ 153              		.align	1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 4
+
+
+ 154              		.global	Motion_End
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.fpu fpv4-sp-d16
+ 160              	Motion_End:
+ 161              	.LFB2:
+  23:Src/motion.c  **** 
+  24:Src/motion.c  **** void Motion_End(void){
+ 162              		.loc 1 24 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166 0000 08B5     		push	{r3, lr}
+ 167              	.LCFI6:
+ 168              		.cfi_def_cfa_offset 8
+ 169              		.cfi_offset 3, -8
+ 170              		.cfi_offset 14, -4
+ 171 0002 2DED028B 		vpush.64	{d8}
+ 172              	.LCFI7:
+ 173              		.cfi_def_cfa_offset 16
+ 174              		.cfi_offset 80, -16
+ 175              		.cfi_offset 81, -12
+  25:Src/motion.c  ****     Control_StrCalculator(90.0f,400.0f,400.0f,0.0f,4000.0f,1);
+ 176              		.loc 1 25 0
+ 177 0006 9FED148A 		vldr.32	s16, .L13
+ 178 000a DFED140A 		vldr.32	s1, .L13+4
+ 179 000e F7EE002A 		vmov.f32	s5, #1.0e+0
+ 180 0012 9FED132A 		vldr.32	s4, .L13+8
+ 181 0016 F0EE481A 		vmov.f32	s3, s16
+ 182 001a B0EE601A 		vmov.f32	s2, s1
+ 183 001e 9FED110A 		vldr.32	s0, .L13+12
+ 184 0022 FFF7FEFF 		bl	Control_StrCalculator
+ 185              	.LVL6:
+  26:Src/motion.c  ****     Control_AngCalculator(0,0,0,0,1,0);
+ 186              		.loc 1 26 0
+ 187 0026 F0EE482A 		vmov.f32	s5, s16
+ 188 002a B7EE002A 		vmov.f32	s4, #1.0e+0
+ 189 002e F0EE481A 		vmov.f32	s3, s16
+ 190 0032 B0EE481A 		vmov.f32	s2, s16
+ 191 0036 F0EE480A 		vmov.f32	s1, s16
+ 192 003a B0EE480A 		vmov.f32	s0, s16
+ 193 003e FFF7FEFF 		bl	Control_AngCalculator
+ 194              	.LVL7:
+  27:Src/motion.c  ****     motion_end_flag = FALSE;
+ 195              		.loc 1 27 0
+ 196 0042 094B     		ldr	r3, .L13+16
+ 197 0044 0022     		movs	r2, #0
+ 198 0046 1A70     		strb	r2, [r3]
+ 199              	.L11:
+  28:Src/motion.c  ****     while(motion_end_flag==FALSE);
+ 200              		.loc 1 28 0 discriminator 1
+ 201 0048 074B     		ldr	r3, .L13+16
+ 202 004a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 203 004c 002B     		cmp	r3, #0
+ 204 004e FBD0     		beq	.L11
+  29:Src/motion.c  **** }
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 5
+
+
+ 205              		.loc 1 29 0
+ 206 0050 BDEC028B 		vldm	sp!, {d8}
+ 207              	.LCFI8:
+ 208              		.cfi_restore 80
+ 209              		.cfi_restore 81
+ 210              		.cfi_def_cfa_offset 8
+ 211 0054 08BD     		pop	{r3, pc}
+ 212              	.L14:
+ 213 0056 00BF     		.align	2
+ 214              	.L13:
+ 215 0058 00000000 		.word	0
+ 216 005c 0000C843 		.word	1137180672
+ 217 0060 00007A45 		.word	1165623296
+ 218 0064 0000B442 		.word	1119092736
+ 219 0068 00000000 		.word	motion_end_flag
+ 220              		.cfi_endproc
+ 221              	.LFE2:
+ 223              		.section	.text.Motion_Straight,"ax",%progbits
+ 224              		.align	1
+ 225              		.global	Motion_Straight
+ 226              		.syntax unified
+ 227              		.thumb
+ 228              		.thumb_func
+ 229              		.fpu fpv4-sp-d16
+ 231              	Motion_Straight:
+ 232              	.LFB3:
+  30:Src/motion.c  **** 
+  31:Src/motion.c  **** void Motion_Straight(void){
+ 233              		.loc 1 31 0
+ 234              		.cfi_startproc
+ 235              		@ args = 0, pretend = 0, frame = 0
+ 236              		@ frame_needed = 0, uses_anonymous_args = 0
+ 237 0000 08B5     		push	{r3, lr}
+ 238              	.LCFI9:
+ 239              		.cfi_def_cfa_offset 8
+ 240              		.cfi_offset 3, -8
+ 241              		.cfi_offset 14, -4
+ 242 0002 2DED028B 		vpush.64	{d8}
+ 243              	.LCFI10:
+ 244              		.cfi_def_cfa_offset 16
+ 245              		.cfi_offset 80, -16
+ 246              		.cfi_offset 81, -12
+  32:Src/motion.c  ****     Control_ResetVelo();
+ 247              		.loc 1 32 0
+ 248 0006 FFF7FEFF 		bl	Control_ResetVelo
+ 249              	.LVL8:
+  33:Src/motion.c  ****     Control_StrCalculator(180.0f,0.0f,400.0f,0.0f,4000.0f,1);
+ 250              		.loc 1 33 0
+ 251 000a 9FED148A 		vldr.32	s16, .L18
+ 252 000e F7EE002A 		vmov.f32	s5, #1.0e+0
+ 253 0012 9FED132A 		vldr.32	s4, .L18+4
+ 254 0016 F0EE481A 		vmov.f32	s3, s16
+ 255 001a 9FED121A 		vldr.32	s2, .L18+8
+ 256 001e F0EE480A 		vmov.f32	s1, s16
+ 257 0022 9FED110A 		vldr.32	s0, .L18+12
+ 258 0026 FFF7FEFF 		bl	Control_StrCalculator
+ 259              	.LVL9:
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 6
+
+
+  34:Src/motion.c  ****     Control_AngCalculator(0,0,0,0,1,0);
+ 260              		.loc 1 34 0
+ 261 002a F0EE482A 		vmov.f32	s5, s16
+ 262 002e B7EE002A 		vmov.f32	s4, #1.0e+0
+ 263 0032 F0EE481A 		vmov.f32	s3, s16
+ 264 0036 B0EE481A 		vmov.f32	s2, s16
+ 265 003a F0EE480A 		vmov.f32	s1, s16
+ 266 003e B0EE480A 		vmov.f32	s0, s16
+ 267 0042 FFF7FEFF 		bl	Control_AngCalculator
+ 268              	.LVL10:
+  35:Src/motion.c  ****     motion_end_flag = FALSE;
+ 269              		.loc 1 35 0
+ 270 0046 094B     		ldr	r3, .L18+16
+ 271 0048 0022     		movs	r2, #0
+ 272 004a 1A70     		strb	r2, [r3]
+ 273              	.L16:
+  36:Src/motion.c  ****     while(motion_end_flag==FALSE);
+ 274              		.loc 1 36 0 discriminator 1
+ 275 004c 074B     		ldr	r3, .L18+16
+ 276 004e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 277 0050 002B     		cmp	r3, #0
+ 278 0052 FBD0     		beq	.L16
+  37:Src/motion.c  **** }
+ 279              		.loc 1 37 0
+ 280 0054 BDEC028B 		vldm	sp!, {d8}
+ 281              	.LCFI11:
+ 282              		.cfi_restore 80
+ 283              		.cfi_restore 81
+ 284              		.cfi_def_cfa_offset 8
+ 285 0058 08BD     		pop	{r3, pc}
+ 286              	.L19:
+ 287 005a 00BF     		.align	2
+ 288              	.L18:
+ 289 005c 00000000 		.word	0
+ 290 0060 00007A45 		.word	1165623296
+ 291 0064 0000C843 		.word	1137180672
+ 292 0068 00003443 		.word	1127481344
+ 293 006c 00000000 		.word	motion_end_flag
+ 294              		.cfi_endproc
+ 295              	.LFE3:
+ 297              		.section	.text.Motion_SpinTurn,"ax",%progbits
+ 298              		.align	1
+ 299              		.global	Motion_SpinTurn
+ 300              		.syntax unified
+ 301              		.thumb
+ 302              		.thumb_func
+ 303              		.fpu fpv4-sp-d16
+ 305              	Motion_SpinTurn:
+ 306              	.LFB4:
+  38:Src/motion.c  **** 
+  39:Src/motion.c  **** void Motion_SpinTurn(void){
+ 307              		.loc 1 39 0
+ 308              		.cfi_startproc
+ 309              		@ args = 0, pretend = 0, frame = 0
+ 310              		@ frame_needed = 0, uses_anonymous_args = 0
+ 311 0000 08B5     		push	{r3, lr}
+ 312              	.LCFI12:
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 7
+
+
+ 313              		.cfi_def_cfa_offset 8
+ 314              		.cfi_offset 3, -8
+ 315              		.cfi_offset 14, -4
+ 316 0002 2DED028B 		vpush.64	{d8}
+ 317              	.LCFI13:
+ 318              		.cfi_def_cfa_offset 16
+ 319              		.cfi_offset 80, -16
+ 320              		.cfi_offset 81, -12
+  40:Src/motion.c  ****     Control_StrCalculator(180.0f,0.0f,400.0f,0.0f,4000.0f,-1);
+ 321              		.loc 1 40 0
+ 322 0006 9FED148A 		vldr.32	s16, .L23
+ 323 000a FFEE002A 		vmov.f32	s5, #-1.0e+0
+ 324 000e 9FED132A 		vldr.32	s4, .L23+4
+ 325 0012 F0EE481A 		vmov.f32	s3, s16
+ 326 0016 9FED121A 		vldr.32	s2, .L23+8
+ 327 001a F0EE480A 		vmov.f32	s1, s16
+ 328 001e 9FED110A 		vldr.32	s0, .L23+12
+ 329 0022 FFF7FEFF 		bl	Control_StrCalculator
+ 330              	.LVL11:
+  41:Src/motion.c  ****     Control_AngCalculator(0,0,0,0,1,0);
+ 331              		.loc 1 41 0
+ 332 0026 F0EE482A 		vmov.f32	s5, s16
+ 333 002a B7EE002A 		vmov.f32	s4, #1.0e+0
+ 334 002e F0EE481A 		vmov.f32	s3, s16
+ 335 0032 B0EE481A 		vmov.f32	s2, s16
+ 336 0036 F0EE480A 		vmov.f32	s1, s16
+ 337 003a B0EE480A 		vmov.f32	s0, s16
+ 338 003e FFF7FEFF 		bl	Control_AngCalculator
+ 339              	.LVL12:
+  42:Src/motion.c  ****     motion_end_flag = FALSE;
+ 340              		.loc 1 42 0
+ 341 0042 094B     		ldr	r3, .L23+16
+ 342 0044 0022     		movs	r2, #0
+ 343 0046 1A70     		strb	r2, [r3]
+ 344              	.L21:
+  43:Src/motion.c  ****     while(motion_end_flag==FALSE);
+ 345              		.loc 1 43 0 discriminator 1
+ 346 0048 074B     		ldr	r3, .L23+16
+ 347 004a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 348 004c 002B     		cmp	r3, #0
+ 349 004e FBD0     		beq	.L21
+  44:Src/motion.c  **** }
+ 350              		.loc 1 44 0
+ 351 0050 BDEC028B 		vldm	sp!, {d8}
+ 352              	.LCFI14:
+ 353              		.cfi_restore 80
+ 354              		.cfi_restore 81
+ 355              		.cfi_def_cfa_offset 8
+ 356 0054 08BD     		pop	{r3, pc}
+ 357              	.L24:
+ 358 0056 00BF     		.align	2
+ 359              	.L23:
+ 360 0058 00000000 		.word	0
+ 361 005c 00007A45 		.word	1165623296
+ 362 0060 0000C843 		.word	1137180672
+ 363 0064 00003443 		.word	1127481344
+ 364 0068 00000000 		.word	motion_end_flag
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 8
+
+
+ 365              		.cfi_endproc
+ 366              	.LFE4:
+ 368              		.comm	motion_end_flag,1,1
+ 369              		.text
+ 370              	.Letext0:
+ 371              		.file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 372              		.file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 373              		.file 4 "Inc/control.h"
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 motion.c
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:18     .text.Motion_enkai:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:25     .text.Motion_enkai:00000000 Motion_enkai
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:74     .text.Motion_enkai:0000004c $d
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:79     .text.Motion_Start:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:86     .text.Motion_Start:00000000 Motion_Start
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:144    .text.Motion_Start:0000005c $d
+                            *COM*:00000001 motion_end_flag
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:153    .text.Motion_End:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:160    .text.Motion_End:00000000 Motion_End
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:215    .text.Motion_End:00000058 $d
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:224    .text.Motion_Straight:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:231    .text.Motion_Straight:00000000 Motion_Straight
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:289    .text.Motion_Straight:0000005c $d
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:298    .text.Motion_SpinTurn:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:305    .text.Motion_SpinTurn:00000000 Motion_SpinTurn
+C:\Users\kotaro\AppData\Local\Temp\ccd3Xqhe.s:360    .text.Motion_SpinTurn:00000058 $d
+
+UNDEFINED SYMBOLS
+Control_ResetVelo
+Control_StrCalculator
+Control_AngCalculator
