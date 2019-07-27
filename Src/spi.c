@@ -270,7 +270,7 @@ void gyro_offset_calc(void){
 void Spi_UpdateGyro_Z(void){
   if(flag_gyro_calc == TRUE){
     gyro_z.velocity = (float)get_gyro_z()/GYRO_FACTOR;
-    gyro_z.degree += (float)get_gyro_z()/GYRO_FACTOR/1000.0f;
+    gyro_z.degree += gyro_z.velocity*0.001;
   }else{
     gyro_offset_calc();
   }

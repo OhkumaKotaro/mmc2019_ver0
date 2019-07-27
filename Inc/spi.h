@@ -59,6 +59,7 @@ extern SPI_HandleTypeDef hspi1;
   {
     float velocity;
     float degree;
+    float before;
     uint16_t offset_cnt;
     int32_t offset;
   } gyro_t;

@@ -71,13 +71,13 @@ extern TIM_HandleTypeDef htim8;
 
 //encoder
 #define ENC_CUL_ROT 1024.0f//512 * 2
-#define TIRE_RADIUS 12.3f  //[mm] 24.58mm
-#define GEAR_RATE 5.25f
+#define TIRE_RADIUS 12.4f  //[mm] 24.58mm
+#define GEAR_RATE 3.5f
 
 typedef struct{
-  float distance;
-  float velocity;
-  int16_t offset;
+  volatile float distance;
+  volatile float velocity;
+  volatile float offset;
 }enc_t;
 /* USER CODE END Private defines */
 
@@ -94,7 +94,9 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE BEGIN Prototypes */
 void Tim_BuzzerPwm(int hz,int vol);
 void Tim_MotorPwm(int16_t left_pwm,int16_t right_pwm);
+void Tim_MotorBrake(void);
 void Tim_UpdateEncoder(void);
+void Tim_FanPwm(int vol);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

@@ -416,7 +416,7 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* tim_pwmHandle)
  * argument : hz(frequency),vol(volume 0~Period)
  * return   : void
 ********************************************************************************************/
-void Tim_BuzzerPwm(int hz,int vol)
+void Tim_BuzzerPwm(int hz, int vol)
 {
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = hz;
@@ -441,7 +441,8 @@ void Tim_BuzzerPwm(int hz,int vol)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  if(HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2)!=HAL_OK){
+  if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2) != HAL_OK)
+  {
     Error_Handler();
   }
 }
@@ -451,7 +452,8 @@ void Tim_BuzzerPwm(int hz,int vol)
  * argument : left pwm , reft pwm (-Period~Period,max 800)
  * return   : void
 ********************************************************************************************/
-void Tim_MotorPwm(int16_t left_pwm,int16_t right_pwm){
+void Tim_MotorPwm(int16_t left_pwm, int16_t right_pwm)
+{
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
@@ -461,109 +463,168 @@ void Tim_MotorPwm(int16_t left_pwm,int16_t right_pwm){
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
 
   //max and min
-  if(left_pwm > 799){
+  if (left_pwm > 799)
+  {
     left_pwm = 799;
   }
-  if(left_pwm < -799){
+  if (left_pwm < -799)
+  {
     left_pwm = -799;
   }
 
-  if(right_pwm > 799){
+  if (right_pwm > 799)
+  {
     right_pwm = 799;
   }
-  if(right_pwm < -799){
+  if (right_pwm < -799)
+  {
     right_pwm = -799;
   }
 
   //set left_pwm
-  if(left_pwm < 0){
+  if (left_pwm < 0)
+  {
     sConfigOC.Pulse = -1 * left_pwm;
-    HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(left_in1_GPIO_Port, left_in1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(left_in2_GPIO_Port, left_in2_Pin, GPIO_PIN_SET);
     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
     }
   }
-  else  if(left_pwm > 0){
+  else if (left_pwm > 0)
+  {
     sConfigOC.Pulse = left_pwm;
-    HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_SET);
-    HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(left_in1_GPIO_Port, left_in1_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(left_in2_GPIO_Port, left_in2_Pin, GPIO_PIN_RESET);
     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
     }
   }
-  else if(left_pwm == 0){
+  else if (left_pwm == 0)
+  {
     sConfigOC.Pulse = 0;
-    HAL_GPIO_WritePin(left_in1_GPIO_Port,left_in1_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(left_in2_GPIO_Port,left_in2_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(left_in1_GPIO_Port, left_in1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(left_in2_GPIO_Port, left_in2_Pin, GPIO_PIN_RESET);
   }
 
   //set right_pwm
-    if(right_pwm < 0){
+  if (right_pwm < 0)
+  {
     sConfigOC.Pulse = -1 * right_pwm;
-    HAL_GPIO_WritePin(right_in1_GPIO_Port,right_in1_Pin,GPIO_PIN_SET);
-    HAL_GPIO_WritePin(right_in2_GPIO_Port,right_in2_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(right_in1_GPIO_Port, right_in1_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(right_in2_GPIO_Port, right_in2_Pin, GPIO_PIN_RESET);
     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
     }
   }
-  else  if(right_pwm > 0){
+  else if (right_pwm > 0)
+  {
     sConfigOC.Pulse = right_pwm;
-    HAL_GPIO_WritePin(right_in1_GPIO_Port,right_in1_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(right_in2_GPIO_Port,right_in2_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(right_in1_GPIO_Port, right_in1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(right_in2_GPIO_Port, right_in2_Pin, GPIO_PIN_SET);
     if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
     {
       _Error_Handler(__FILE__, __LINE__);
     }
   }
-  else if(right_pwm == 0){
+  else if (right_pwm == 0)
+  {
     sConfigOC.Pulse = 0;
-    HAL_GPIO_WritePin(right_in1_GPIO_Port,right_in1_Pin,GPIO_PIN_SET);
-    HAL_GPIO_WritePin(right_in2_GPIO_Port,right_in2_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(right_in1_GPIO_Port, right_in1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(right_in2_GPIO_Port, right_in2_Pin, GPIO_PIN_RESET);
   }
 
   //start
-  if (HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1) != HAL_OK){
-		Error_Handler();
-	}
-  if (HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2) != HAL_OK){
-		Error_Handler();
-	}
+  if (HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
+void Tim_MotorBrake(void)
+{
+  //left
+  HAL_GPIO_WritePin(left_in1_GPIO_Port, left_in1_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(left_in2_GPIO_Port, left_in2_Pin, GPIO_PIN_SET);
+  //right
+  HAL_GPIO_WritePin(right_in1_GPIO_Port, right_in1_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(right_in2_GPIO_Port, right_in2_Pin, GPIO_PIN_SET);
+}
 
 /****************************************************************************************
  * outline  : update encoder value
  * argument : void
  * return   : void
 ********************************************************************************************/
-void Tim_UpdateEncoder(void){
+void Tim_UpdateEncoder(void)
+{
   int16_t r_buff = TIM1->CNT;
   int16_t l_buff = TIM8->CNT;
-  
+
   //float enc_left_omega = 0.0f;
   //float enc_right_omega = 0.0f;
   TIM1->CNT = 0;
   TIM8->CNT = 0;
 
-  if ( l_buff > 32767 ){
+  if (l_buff > 32767)
+  {
     l_buff = (int16_t)l_buff;
-  } else {
+  }
+  else
+  {
     l_buff = l_buff;
   }
 
-  if ( r_buff > 32767 ){
+  if (r_buff > 32767)
+  {
     r_buff = -1 * (int16_t)r_buff;
-  } else {
+  }
+  else
+  {
     r_buff = -1 * r_buff;
   }
-  
+  float v_befor = enc.velocity;
   enc.velocity = (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * TIRE_RADIUS * 1000.0f;
-  enc.distance += enc.velocity / 1000.0f;
-  enc.offset += enc.velocity / 1000.0f;
+  //enc.distance += (enc.velocity + v_befor) * 0.00050f;
+  enc.offset += enc.velocity * 0.0010f;
+}
+
+void Tim_FanPwm(int vol)
+{
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 0;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 799;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.RepetitionCounter = 0;
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = vol;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1 != HAL_OK))
+  {
+    Error_Handler();
+  }
 }
 /* USER CODE END 1 */
 

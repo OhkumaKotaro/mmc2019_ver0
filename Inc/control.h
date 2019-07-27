@@ -5,6 +5,16 @@
  extern "C" {
 #endif
 
+typedef struct
+{
+    float up_term;
+    float const_term;
+    float down_term;
+    float v_now;
+    float accel;
+    float dir;
+    float error;
+} target_t;
 
 void Control_StrCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir);
 void Control_AngCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir);

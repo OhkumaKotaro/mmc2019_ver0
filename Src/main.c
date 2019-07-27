@@ -62,9 +62,6 @@ void __io_putchar(uint8_t ch)
   HAL_UART_Transmit(&huart3, &ch, 1, 1);
 }
 /* Private variables ---------------------------------------------------------*/
-extern accel_t accel;
-extern float gyro_y;
-extern gyro_t gyro_z;
 
 /* USER CODE END PV */
 
@@ -126,8 +123,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    //Tim_FanPwm(160);
     Mode_Mouse(Mode_Select());
-    //printf("%f\t%f\r\n",gyro_y,accel.z);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -205,6 +202,7 @@ void Init_Main(void){
   HAL_Delay(200);
   Tim_BuzzerPwm(HZ_NORMAL,0);
   printf("batt:%f\n\r",Adc_GetBatt());
+  HAL_Delay(1000);
 }
 /* USER CODE END 4 */
 

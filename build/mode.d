@@ -27,7 +27,8 @@ build/mode.d: Src/mode.c Inc/mode.h Inc/spi.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Inc/tim.h \
- Inc/adc.h Inc/gpio.h Inc/motion.h Inc/control.h
+ Inc/adc.h Inc/gpio.h Inc/motion.h Inc/control.h Inc/Maze.h Inc/MazeCon.h \
+ Inc/Map.h Inc/flash.h Inc/MazeCon.h
 
 Inc/mode.h:
 
@@ -104,3 +105,13 @@ Inc/gpio.h:
 Inc/motion.h:
 
 Inc/control.h:
+
+Inc/Maze.h:
+
+Inc/MazeCon.h:
+
+Inc/Map.h:
+
+Inc/flash.h:
+
+Inc/MazeCon.h:

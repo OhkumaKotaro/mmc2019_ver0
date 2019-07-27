@@ -2,49 +2,48 @@
 #include "tim.h"
 #include "spi.h"
 #include "control.h"
-
-extern enc_t enc;
-extern gyro_t gyro_z;
+#include "flash.h"
+#include "adc.h"
+#include "gpio.h"
 
 #define dt 0.0010f
 #define TRUE 1
 #define FALSE 0
+#define SLIP_K 50000.0f
 
+extern sensor_t sen_l;
+extern sensor_t sen_fl;
+extern sensor_t sen_front;
+extern sensor_t sen_fr;
+extern sensor_t sen_r;
+extern enc_t enc;
+extern gyro_t gyro_z;
+extern volatile accel_t accel;
 
 extern volatile uint8_t motion_end_flag;
 
 //straight
-typedef struct 
-{
-    float up_term;
-    float const_term;
-    float down_term;
-    float v_now;
-    float accel;
-    float dir;
-}target_t;
 target_t straight;
-volatile float dist_idial;
-float error_sum;
-float error_old;
-
-//loger
-typedef struct{
-    float target_velo[3000];
-    float target_velo_ang[3000];
-    float velo[3000];
-    float velo_ang[3000];
-}loger_t;
+volatile float dist_idial = 0.0f;
+float error_sum = 0.0f;
+float error_old = 0.0f;
 
 //angle
 target_t angle;
 loger_t loger;
-uint16_t ms_counter;
-volatile float ang_idial;
-float error_ang_sum;
-float error_ang_old;
+volatile float ang_idial = 0.0f;
+float error_ang_sum = 0.0f;
+float error_ang_old = 0.0f;
 
 volatile uint8_t motor_flag;
+
+float slip_ang = 0.0f;
+uint8_t slip_cnt = 0;
+
+//control wall
+float wall_dif = 0;
+unsigned char add_l = 0, add_r = 0;
+volatile uint8_t control_wall_flag;
 
 /****************************************************************************************
  * outline  : PID control
@@ -62,7 +61,7 @@ float PID_value(float target, float measured, float *sum, float *old, float Kp, 
     *sum += error * dt;
     i = *sum * Ki;
 
-    d = Kd * (error - *old);
+    d = Kd * (*old - error);
     *old = error;
 
     return (p + i + d);
@@ -73,14 +72,16 @@ float PID_value(float target, float measured, float *sum, float *old, float Kp, 
  * argument : var[mm],velo_m[mm/s],velo_e[mm/s],accel[mm/s],dir
  * return   : void
 ********************************************************************************************/
-void Control_StrCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir){
-    straight.up_term = (velo_m*velo_m - straight.v_now*straight.v_now) / 2.0f / accel;
-    straight.const_term = var - (velo_m*velo_m - velo_e*velo_e) / 2.0f / accel;
+void Control_StrCalculator(float var, float velo_s, float velo_m, float velo_e, float accel, float dir)
+{
+    straight.up_term = (velo_m * velo_m - straight.v_now * straight.v_now) / 2.0f / accel;
+    straight.const_term = var - (velo_m * velo_m - velo_e * velo_e) / 2.0f / accel;
     straight.down_term = var;
     straight.v_now = velo_s;
     straight.accel = accel;
     straight.dir = dir;
-    printf("up:%f,cnt:%f,dwn:%f\r\n",straight.up_term,straight.const_term,straight.down_term);
+    dist_idial = 0;
+    //printf("up:%f,cnt:%f,dwn:%f\r\n", straight.up_term, straight.const_term, straight.down_term);
 }
 
 /****************************************************************************************
@@ -88,16 +89,20 @@ void Control_StrCalculator(float var,float velo_s,float velo_m,float velo_e,floa
  * argument : var[mm],velo_m[mm/s],velo_e[mm/s],accel[mm/s],dir
  * return   : void
 ********************************************************************************************/
-void Control_AngCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir){
-    angle.up_term = (velo_m*velo_m - angle.v_now*angle.v_now) / 2.0f / accel;
-    angle.const_term = var - (velo_m*velo_m - velo_e*velo_e) / 2.0f / accel;
+void Control_AngCalculator(float var, float velo_s, float velo_m, float velo_e, float accel, float dir)
+{
+    gyro_z.degree = 0;
+    angle.up_term = (velo_m * velo_m - angle.v_now * angle.v_now) / 2.0f / accel;
+    angle.const_term = var - (velo_m * velo_m - velo_e * velo_e) / 2.0f / accel;
     angle.down_term = var;
     angle.v_now = velo_s;
     angle.accel = accel;
     angle.dir = dir;
+    ang_idial = 0;
 }
 
-void UpdateTargets(volatile float *var,float *velo,float accel){
+void UpdateTargets(volatile float *var, float *velo, float accel)
+{
     volatile float buff;
 
     buff = *velo * 1000.0f;
@@ -109,78 +114,193 @@ void UpdateTargets(volatile float *var,float *velo,float accel){
     *var = buff / 1000.0f;
 }
 
-
 /****************************************************************************************
  * outline  : output pwm for trapezoid accele straight by feadbuck control
  * argument : void
  * return   : void
 ********************************************************************************************/
-void TargetGenerator(volatile float *var_idial,target_t *buff)
+void UpdateStrTarget()
 {
-    if (buff->dir == 0.0f)
+    if (straight.dir == 0.0f)
     {
-        buff->v_now=0.0f;
+        straight.v_now = 0.0f;
     }
     else
     {
-        if (*var_idial < buff->up_term)
+        if (dist_idial < straight.up_term)
         {
-            UpdateTargets(var_idial,&buff->v_now,buff->accel);
+            UpdateTargets(&dist_idial, &straight.v_now, straight.accel);
         }
-        else if (*var_idial < buff->const_term)
+        else if (dist_idial < straight.const_term)
         {
-            UpdateTargets(var_idial,&buff->v_now,0);
+            UpdateTargets(&dist_idial, &straight.v_now, 0);
         }
-        else if (*var_idial < buff->down_term && buff->v_now > 0.0f)
+        else if (dist_idial < straight.down_term && straight.v_now > 0.0f)
         {
-            UpdateTargets(var_idial,&buff->v_now,-(buff->accel));
+            UpdateTargets(&dist_idial, &straight.v_now, -(straight.accel));
         }
         else
         {
-            *var_idial = 0.0f;
+            motion_end_flag = TRUE;
+        }
+        if (accel.y > 10 && straight.dir == -1)
+        {
+            motion_end_flag = TRUE;
+            straight.v_now = 0;
+        }
+    }
+}
+
+void Control_Side_Wall(void)
+{
+    float kp = 0.2f;
+    if (sen_l.diff_1ms < -10 /*|| sen_r.diff_1ms > 5*/)
+    {
+        add_l = 10;
+    }
+    if (sen_r.diff_1ms < -10 /*|| sen_r.diff_1ms > 5*/)
+    {
+        add_r = 20;
+    }
+    if (sen_l.now > sen_l.threshold + add_l && sen_r.now > sen_r.threshold + add_r)
+    {
+
+        Gpio_SideLed(LED_L | LED_R);
+        wall_dif = kp * ((sen_l.now - sen_l.reference) - (sen_r.now - sen_r.reference));
+        add_l = 0;
+        add_r = 0;
+    }
+    else if (sen_l.now > sen_l.threshold + add_l)
+    {
+        Gpio_SideLed(LED_L);
+        wall_dif = 2 * kp * (sen_l.now - sen_l.reference);
+        add_l = 0;
+    }
+    else if (sen_r.now > sen_r.threshold + add_r)
+    {
+        Gpio_SideLed(LED_R);
+        wall_dif = -2 * kp * (sen_r.now - sen_r.reference);
+        add_r = 0;
+    }
+    else
+    {
+        Gpio_SideLed(0);
+        wall_dif = 0;
+    }
+
+    if (angle.dir != 0 || enc.velocity < 100)
+    {
+        wall_dif = 0;
+        Gpio_SideLed(0);
+    }
+    //wall_dif = kp * ((sen_l.now - sen_l.reference) - (sen_r.now - sen_r.reference));
+}
+
+void UpdateAngTarget(void)
+{
+    if (angle.dir == 0.0f)
+    {
+        angle.v_now = 0.0f;
+    }
+    else
+    {
+        if (ang_idial < angle.up_term)
+        {
+            UpdateTargets(&ang_idial, &angle.v_now, angle.accel);
+        }
+        else if (ang_idial < angle.const_term)
+        {
+            UpdateTargets(&ang_idial, &angle.v_now, 0);
+        }
+        else if (ang_idial < angle.down_term && angle.v_now > 0.0f)
+        {
+            UpdateTargets(&ang_idial, &angle.v_now, -(angle.accel));
+        }
+        else
+        {
+            ang_idial = 0.0f;
+            angle.error = 0;
             motion_end_flag = TRUE;
         }
     }
 }
 
-void UpdateLoger(void){
-    loger.target_velo[ms_counter] = straight.v_now;
-    loger.target_velo_ang[ms_counter] = angle.v_now;
-    loger.velo[ms_counter] = enc.velocity;
-    loger.velo_ang[ms_counter] = gyro_z.velocity;
-    ms_counter++;
-    if(ms_counter>3000){
+void UpdateLoger(void)
+{
+    loger.target_velo[loger.cnt] = (int16_t)straight.v_now;
+    loger.target_velo_ang[loger.cnt] = (int16_t)angle.v_now;
+    loger.velo[loger.cnt] = (int16_t)enc.velocity;
+    loger.velo_ang[loger.cnt] = (int16_t)gyro_z.velocity;
+    //loger.velo[loger.cnt] = (int16_t)accel.y;
+    loger.cnt++;
+    if (loger.cnt > 3000)
+    {
         motion_end_flag = TRUE;
         motor_flag = FALSE;
     }
 }
 
-void Control_PrintLoger(void){
-    printf("str\tang\r\n");
-    for(uint16_t i = 0; i < ms_counter; i++)
+void UpdateSlipAngle(void)
+{
+    if (straight.v_now != 0)
     {
-        printf("%f\t%f\r\n",loger.target_velo[i],loger.target_velo_ang[i]);
+        if (slip_cnt == 4)
+        {
+            slip_ang = (slip_ang * 200.0 - angle.v_now) / (200.0 + SLIP_K / straight.v_now);
+            slip_cnt = 0;
+        }
+        slip_cnt++;
     }
-    
+    else
+    {
+        slip_ang = 0;
+    }
 }
 
-void Control_UpdatePwm(void){
-    if(motor_flag==TRUE){
-        TargetGenerator(&dist_idial,&straight);
-        TargetGenerator(&ang_idial,&angle);
-        int16_t str_buff = (int16_t)PID_value(straight.dir*straight.v_now,enc.velocity,&error_sum,&error_old,0.0f,0,0);
-        int16_t ang_buff = (int16_t)PID_value(angle.dir*angle.v_now,gyro_z.velocity,&error_ang_sum,&error_ang_old,1.0f,0.0f,0);
-        Tim_MotorPwm(str_buff-ang_buff,str_buff+ang_buff);
+void Control_UpdatePwm(void)
+{
+    if (motor_flag == TRUE)
+    {
         //UpdateLoger();
-    }else{
-        Tim_MotorPwm(0,0);
+        if (motion_end_flag == FALSE)
+        {
+            UpdateStrTarget();
+            UpdateAngTarget();
+        }
+        if (control_wall_flag == TRUE)
+        {
+            Control_Side_Wall();
+        }
+        //UpdateSlipAngle();
+        int16_t str_buff = (int16_t)PID_value(straight.dir * straight.v_now, enc.velocity, &error_sum, &error_old, 1.7f, 11.5f, 0);                    //1.7f, 11.5f, 0                                  //1.7f,11.5f,0.1f
+        int16_t ang_buff = (int16_t)PID_value(angle.dir * angle.v_now - wall_dif, gyro_z.velocity, &error_ang_sum, &error_ang_old, 0.8f, 20.0f, 1.0f); // 1.0f, 52.0f, 1.0f
+        Tim_MotorPwm(str_buff - ang_buff, str_buff + ang_buff);
+        if (angle.dir * angle.v_now - gyro_z.velocity < -400 || angle.dir * angle.v_now - gyro_z.velocity > 400)
+        {
+            motor_flag = FALSE;
+        }
+        if (accel.y < -100.0f)
+        {
+            motor_flag = FALSE;
+        }
+    }
+    else
+    {
+        Tim_MotorPwm(0, 0);
     }
 }
 
-void Control_ResetVelo(void){
+void Control_ResetVelo(void)
+{
     straight.v_now = 0.0f;
     dist_idial = 0.0f;
+    error_sum = 0.0f;
+    error_old = 0.0f;
     angle.v_now = 0.0f;
     ang_idial = 0.0f;
-    ms_counter = 0;
+    error_ang_sum = 0.0f;
+    error_ang_old = 0.0f;
+    loger.cnt = 0;
+    enc.offset = 0;
+    enc.distance = 0;
 }

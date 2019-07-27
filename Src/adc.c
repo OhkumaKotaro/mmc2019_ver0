@@ -52,7 +52,7 @@
 #define FINISH_CONVERT 3
 #define IRSENSOR_OFF 4
 
-#define ADC_CONVERT_DATA_SIZE ((uint32_t)  4)
+#define ADC_CONVERT_DATA_SIZE ((uint32_t)4)
 
 #define TRUE 1
 #define FALSE 0
@@ -292,19 +292,20 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-void Adc_SetSensorValue(void){
-  sen_l.reference = 119;
-  sen_l.threshold = 90;
+void Adc_SetSensorValue(void)
+{
+  sen_l.reference = 108;
+  sen_l.threshold = 95;
 
   sen_fl.reference = 191;
 
   sen_front.reference = 195;
-  sen_front.threshold = 120;
+  sen_front.threshold = 109;
 
   sen_fr.reference = 201;
 
-  sen_r.reference = 146;
-  sen_r.threshold = 120;
+  sen_r.reference = 160;
+  sen_r.threshold = 133;
 }
 
 void update_sensor_data(void)
@@ -349,8 +350,8 @@ void Adc_IrSensorStart(void)
 void Adc_IrSensorFinish(void)
 {
   adc_counter = IRSENSOR_OFF;
-  HAL_GPIO_WritePin(ir_front_GPIO_Port,ir_front_Pin,GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(ir_side_GPIO_Port,ir_side_Pin,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(ir_front_GPIO_Port, ir_front_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(ir_side_GPIO_Port, ir_side_Pin, GPIO_PIN_RESET);
 }
 
 void Adc_CheckConvert(void)
@@ -383,14 +384,14 @@ void Adc_GetSensor(void)
     ADCOffData[3] = ADCBuff[3];
 
     HAL_GPIO_WritePin(ir_front_GPIO_Port, ir_front_Pin, GPIO_PIN_SET);
-    
+
     for (i = 0; i < 200; i++)
     {
     }
-    
+
     adc_counter = FRONT_VALUE;
 
-    HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff,ADC_CONVERT_DATA_SIZE);
+    HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff, ADC_CONVERT_DATA_SIZE);
     break;
 
   case FRONT_VALUE:
@@ -408,14 +409,13 @@ void Adc_GetSensor(void)
 
     HAL_GPIO_WritePin(ir_side_GPIO_Port, ir_side_Pin, GPIO_PIN_SET);
 
-    
     for (i = 0; i < 200; i++)
     {
     }
-    
+
     adc_counter = SIDE_VALUE;
 
-    HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff,ADC_CONVERT_DATA_SIZE);
+    HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff, ADC_CONVERT_DATA_SIZE);
     break;
 
   case SIDE_VALUE:
@@ -430,11 +430,11 @@ void Adc_GetSensor(void)
 
     //sen_r.diff = sen_r.now - (ADCOntData[1] - ADCOffData[1]);
     sen_r.now = ADCOntData[3] - ADCOffData[3];
-    
+
     for (i = 0; i < 200; i++)
     {
     }
-    
+
     adc_counter = FINISH_CONVERT;
     break;
 
@@ -456,17 +456,28 @@ float Adc_GetBatt(void)
     HAL_ADC_Stop(&hadc1);
   }
   batt = batt / 10.0f / 4095.0f * 3.2f * 3.3f;
-  /*
-  //finish
-  while(1){
-    LED_Control((unsigned char)batt);
-    if(Push()==1){
-      Output_Buzzer(HZ_C_H);
-      HAL_Delay(500);
-      break;
+  if (batt > 8.0f)
+  {
+    Gpio_FullColor(BLUE);
+  }
+  else if (batt > 7.5)
+  {
+    Gpio_FullColor(YELLOW);
+  }
+  else if (batt > 7.0)
+  {
+    Gpio_FullColor(RED);
+  }
+  else
+  {
+    while (1)
+    {
+      Gpio_FullColor(RED);
+      HAL_Delay(200);
+      Gpio_FullColor(DARK);
+      HAL_Delay(200);
     }
   }
-  */
   return batt;
 }
 /* USER CODE END 1 */
