@@ -33,13 +33,15 @@ unsigned char gx = 1, gy = 0;
 void SensorCheck(void);
 void SetRunMode(void);
 void CheckStraight(uint8_t block);
-void CheckTurn(void);
+void CheckTurn(uint8_t num);
 void PrintOutPut(void);
 void AdjustStraight(void);
 void AdjustTurn(void);
 void SearchRun(void);
 void Mode_FastRun(void);
 void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir);
+void Turn45_Test(int8_t dir);
+void TurnBig90_Test(int8_t dir);
 
 /****************************************************************************************
  * outline  : wright mode 
@@ -50,29 +52,54 @@ void Mode_Mouse(int8_t mode)
 {
     switch (mode)
     {
+    //WHITE
     case 0:
-        /*
+        SearchRun();
+        break;
+    case 1:
+        //Mode_FastRun();
+        SetRunMode();
+        control_wall_flag = FALSE;
+        Motion_Start();
+        Motion_RightTurn();
+        Motion_LeftTurn();
+        
+        Motion_RightTurn();
+        Motion_LeftTurn();
+        
+        Motion_RightTurn();
+        Motion_LeftTurn();
+
+        Motion_RightTurn();
+
+        Motion_End();
+        motor_flag = FALSE;
+        break;
+    case 2:
+        SetRunMode();
+        control_wall_flag = TRUE;
+        Motion_enkai();
+        break;
+    case 3:
+        SensorCheck();
+        break;
+    //CYAN
+    case 4:
+        PrintOutPut();
+        break;
+    case 5:
+        Maze_Printf();
+        break;
+    case 6: //straight
         control_wall_flag = TRUE;
         CheckStraight(6);
         break;
-        */
-        SearchRun();
-        //AdjustStraight();
-        //CheckStraight(1);
-        break;
-    case 1:
-        Mode_FastRun();
-        //AdjustTurn();
-        /*
+    case 7: //turn
         control_wall_flag = FALSE;
-        CheckTurn();
-        */
+        CheckTurn(4);
         break;
-    case 2:
-        /*
-        SetRunMode();
-        Motion_enkai();
-        */
+    //YELLOW
+    case 8: //left turn
         control_wall_flag = FALSE;
         SetRunMode();
         Motion_Start();
@@ -85,7 +112,7 @@ void Mode_Mouse(int8_t mode)
         HAL_Delay(200);
         Tim_BuzzerPwm(HZ_NORMAL, 0);
         break;
-    case 3:
+    case 9: //right turn
         control_wall_flag = FALSE;
         SetRunMode();
         Motion_Start();
@@ -98,26 +125,32 @@ void Mode_Mouse(int8_t mode)
         HAL_Delay(200);
         Tim_BuzzerPwm(HZ_NORMAL, 0);
         break;
-
-    //adjust
-    case 4:
-        //SensorCheck();
-        control_wall_flag = TRUE;
-        CheckStraight(6);
-        break;
-    case 5:
+    case 10: //circuit left
         control_wall_flag = FALSE;
         SetRunMode();
         Circuit(1, 1, 3, 1);
         break;
-    case 6:
+    case 11: //circuit right
         control_wall_flag = FALSE;
         SetRunMode();
         Circuit(1, 1, 3, -1);
         break;
-    case 7:
-        //PrintOutPut();
-        Maze_Printf();
+    //GREEN
+    case 12: //left quarter turn
+        control_wall_flag = FALSE;
+        Turn45_Test(1);
+        break;
+    case 13: //right quarter turn
+        control_wall_flag = FALSE;
+        Turn45_Test(-1);
+        break;
+    case 14:
+        control_wall_flag = FALSE;
+        TurnBig90_Test(1);
+        break;
+    case 15:
+        control_wall_flag = FALSE;
+        TurnBig90_Test(-1);
         break;
     default:
         break;
@@ -129,6 +162,7 @@ char Mode_Select(void)
     int8_t mode = 0;
     uint8_t state = 0;
     Control_ResetVelo();
+    accel.z = 0;
 
     while (1)
     {
@@ -157,10 +191,29 @@ char Mode_Select(void)
         }
         if (enc.offset > 20)
         {
-            state = 4 - state;
+            if (state == 12)
+            {
+                state = 0;
+            }
+            else
+            {
+                state += 4;
+            }
             enc.offset = 0;
         }
-        if (accel.z > 25.0f)
+        else if (enc.offset < -20)
+        {
+            if (state == 0)
+            {
+                state = 12;
+            }
+            else
+            {
+                state -= 4;
+            }
+            enc.offset = 0;
+        }
+        if (accel.z > 30.0f)
         {
             Tim_BuzzerPwm(HZ_C_H, 300);
             HAL_Delay(100);
@@ -168,14 +221,7 @@ char Mode_Select(void)
             HAL_Delay(500);
             break;
         }
-        if (state == 0)
-        {
-            Gpio_FullColor(CYAN);
-        }
-        else
-        {
-            Gpio_FullColor(YELLOW);
-        }
+        Gpio_FullColor(state%7);
         Gpio_SideLed(mode);
         printf("%d\r", mode + state);
     }
@@ -241,6 +287,7 @@ void SetRunMode(void)
     Tim_BuzzerPwm(HZ_C_H, 300);
     HAL_Delay(100);
     Tim_BuzzerPwm(HZ_NORMAL, 0);
+    Control_ResetVelo();
     motor_flag = TRUE;
 }
 
@@ -324,10 +371,12 @@ void SearchRun(void)
                 Map_addWall(&wall_data_fast, &mypos, n_wall, e_wall, w_wall, s_wall);
                 flag_goal = 1;
                 Motion_End();
+                HAL_Delay(800);
                 Flash_Write(start_address, (uint8_t *)&wall_data_fast, sizeof(wallData_t));
                 Tim_BuzzerPwm(HZ_A, 300);
                 HAL_Delay(200);
                 Tim_BuzzerPwm(HZ_NORMAL, 0);
+                HAL_Delay(800);
                 if (sen_front.is_wall == FALSE)
                 {
                     nextdir = FRONT;
@@ -347,6 +396,7 @@ void SearchRun(void)
 
             Motion_End();
             motor_flag = FALSE;
+            HAL_Delay(800);
             Flash_Write(start_address, (uint8_t *)&wall_data_fast, sizeof(wallData_t));
             Tim_BuzzerPwm(HZ_A, 300);
             HAL_Delay(200);
@@ -374,24 +424,24 @@ void Mode_FastRun(void)
         switch (motion[head] >> 4)
         {
         case START:
-            Motion_FastStart(motion[head] & 0b1111);
-            //printf("\r\nSTART:%d\r\n",motion[head]&0b1111);
+            //Motion_FastStart(motion[head] & 0b1111, VELO_S);
+            printf("\r\nSTART:%d\r\n",motion[head]&0b1111);
             break;
         case LEFT:
-            Motion_LeftTurn();
-            //printf("LEFT:%d\n\r",motion[head]&0b1111);
+            //Motion_LeftTurn();
+            printf("LEFT:%d\n\r",motion[head]&0b1111);
             break;
         case FRONT:
-            Motion_FastStraight(motion[head] & 0b1111);
-            //printf("FRONT:%d\n\r",motion[head]&0b1111);
+            //Motion_FastStraight(motion[head] & 0b1111);
+            printf("FRONT:%d\n\r",motion[head]&0b1111);
             break;
         case RIGHT:
-            Motion_RightTurn();
-            //printf("RIGHT\n\r");
+            //Motion_RightTurn();
+            printf("RIGHT\n\r");
             break;
         case GOAL:
-            Motion_FastGoal(motion[head] & 0b1111);
-            //printf("GOAL:%d\n\r",motion[head]&0b1111);
+            //Motion_FastGoal(motion[head] & 0b1111);
+            printf("GOAL:%d\n\r",motion[head]&0b1111);
             break;
         default:
             break;
@@ -422,11 +472,14 @@ void CheckStraight(uint8_t block)
     Tim_BuzzerPwm(HZ_NORMAL, 0);
 }
 
-void CheckTurn(void)
+void CheckTurn(uint8_t num)
 {
     SetRunMode();
     gyro_z.degree = 0;
-    Motion_TestTurn();
+    for (uint8_t i = 0; i < num; i++)
+    {
+        Motion_TestTurn();
+    }
     motor_flag = FALSE;
     loger.velo_ang[loger.cnt] = (int16_t)gyro_z.degree;
     Flash_Write(start_address, (uint8_t *)&loger, sizeof(loger_t));
@@ -479,9 +532,9 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
     Motion_Start();
     for (uint8_t i = 0; i < num; i++)
     {
-        if (row > 0)
+        if (row > 1)
         {
-            Motion_FastStraight(row - 1);
+            Motion_FastStraight(row - 1,VELO_S,VELO_S);
         }
 
         if (dir == 1)
@@ -493,9 +546,9 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
             Motion_RightTurn();
         }
 
-        if (colum > 0)
+        if (colum > 1)
         {
-            Motion_FastStraight(colum - 1);
+            Motion_FastStraight(colum - 1,VELO_S,VELO_S);
         }
 
         if (dir == 1)
@@ -507,9 +560,9 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
             Motion_RightTurn();
         }
 
-        if (row > 0)
+        if (row > 1)
         {
-            Motion_FastStraight(row - 1);
+            Motion_FastStraight(row - 1,VELO_S,VELO_S);
         }
 
         if (dir == 1)
@@ -521,9 +574,9 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
             Motion_RightTurn();
         }
 
-        if (colum > 0)
+        if (colum > 1)
         {
-            Motion_FastStraight(colum - 1);
+            Motion_FastStraight(colum - 1,VELO_S,VELO_S);
         }
         if (dir == 1)
         {
@@ -536,4 +589,42 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
     }
     Motion_End();
     motor_flag = FALSE;
+}
+
+void Turn45_Test(int8_t dir)
+{
+    SetRunMode();
+    Motion_FastStart(0, VELO_F);
+    if (dir == 1)
+    {
+        Motion_Left45Turn(VELO_F,VELO_F);
+    }
+    else
+    {
+        Motion_Right45Turn(VELO_F,VELO_F);
+    }
+    Motion_DiagonalStop();
+    motor_flag = FALSE;
+    Tim_BuzzerPwm(HZ_C_H, 300);
+    HAL_Delay(200);
+    Tim_BuzzerPwm(HZ_NORMAL, 0);
+}
+
+void TurnBig90_Test(int8_t dir)
+{
+    SetRunMode();
+    Motion_FastStart(0, VELO_F);
+    if (dir == 1)
+    {
+        Motion_Left90BigTurn(VELO_F,VELO_F);
+    }
+    else
+    {
+        Motion_Right90BigTurn(VELO_F,VELO_F);
+    }
+    Motion_FastGoal(0,VELO_F);
+    motor_flag = FALSE;
+    Tim_BuzzerPwm(HZ_C_H, 300);
+    HAL_Delay(200);
+    Tim_BuzzerPwm(HZ_NORMAL, 0);
 }

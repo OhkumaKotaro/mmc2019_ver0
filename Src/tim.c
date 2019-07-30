@@ -590,10 +590,8 @@ void Tim_UpdateEncoder(void)
   {
     r_buff = -1 * r_buff;
   }
-  float v_befor = enc.velocity;
   enc.velocity = (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * TIRE_RADIUS * 1000.0f;
-  //enc.distance += (enc.velocity + v_befor) * 0.00050f;
-  enc.offset += enc.velocity * 0.0010f;
+  enc.offset += (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * TIRE_RADIUS;
 }
 
 void Tim_FanPwm(int vol)

@@ -12,10 +12,10 @@
 typedef struct
 {
     uint16_t cnt;
-    int16_t target_velo[3000];
-    int16_t target_velo_ang[3000];
-    int16_t velo[3000];
-    int16_t velo_ang[3000];
+    int16_t target_velo[5000];
+    int16_t target_velo_ang[5000];
+    int16_t velo[5000];
+    int16_t velo_ang[5000];
 } loger_t;
 
 // flash use address ( sector11 )

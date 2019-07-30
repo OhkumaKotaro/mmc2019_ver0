@@ -70,12 +70,11 @@ void MX_ADC2_Init(void);
 typedef struct
 {
   int16_t now;
-  int16_t befor_1ms;
-  int16_t reference; // 真ん中のとき�??��センサー値
+  int16_t befor[10];
+  int16_t reference; // 真ん中のとき�??��センサー値
   int16_t threshold; // 閾値
-  int16_t diff;      // 差?��?
-  int16_t diff_1ms;  // 1msec?��?
-  uint8_t is_wall;   // 壁があるかど?��?か判断
+  int16_t diff;      // 差?��?
+  uint8_t is_wall;   // 壁があるかど?��?か判断
 } sensor_t;
 
 void Adc_SetSensorValue(void);
