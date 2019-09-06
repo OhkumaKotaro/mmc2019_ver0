@@ -33,15 +33,22 @@ unsigned char gx = 1, gy = 0;
 void SensorCheck(void);
 void SetRunMode(void);
 void CheckStraight(uint8_t block);
+void CheckFastStraight(uint8_t block);
+void CheckDiagonal(uint8_t block);
 void CheckTurn(uint8_t num);
 void PrintOutPut(void);
+void PrintWallData(void);
+void PrintMotion(uint16_t *motion, uint32_t *velocity, uint8_t tail);
 void AdjustStraight(void);
 void AdjustTurn(void);
 void SearchRun(void);
-void Mode_FastRun(void);
+void Mode_FastRun(uint8_t diagonal_flag, uint8_t w_str, uint8_t w_turn);
 void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir);
-void Turn45_Test(int8_t dir);
+void Turn45_Test(uint8_t in_dir, uint8_t out_dir, uint8_t step);
+void Turn135_Test(uint8_t in_dir, uint8_t out_dir, uint8_t step);
 void TurnBig90_Test(int8_t dir);
+void TurnBig180_Test(int8_t dir);
+void TurnV90_Test(int8_t dir);
 
 /****************************************************************************************
  * outline  : wright mode 
@@ -57,28 +64,15 @@ void Mode_Mouse(int8_t mode)
         SearchRun();
         break;
     case 1:
-        //Mode_FastRun();
-        SetRunMode();
-        control_wall_flag = FALSE;
-        Motion_Start();
-        Motion_RightTurn();
-        Motion_LeftTurn();
-        
-        Motion_RightTurn();
-        Motion_LeftTurn();
-        
-        Motion_RightTurn();
-        Motion_LeftTurn();
-
-        Motion_RightTurn();
-
-        Motion_End();
-        motor_flag = FALSE;
+        Mode_FastRun(FALSE, 1, 3);
         break;
     case 2:
+        /*
         SetRunMode();
-        control_wall_flag = TRUE;
+        control_wall_flag = FALSE;
         Motion_enkai();
+        */
+        Mode_FastRun(TRUE, 7, 5);
         break;
     case 3:
         SensorCheck();
@@ -88,11 +82,18 @@ void Mode_Mouse(int8_t mode)
         PrintOutPut();
         break;
     case 5:
-        Maze_Printf();
+        PrintWallData();
         break;
     case 6: //straight
-        control_wall_flag = TRUE;
+        CheckDiagonal(5);
+        /*
+        control_wall_flag = 2;
+        CheckFastStraight(5);
+        */
+        /*
+        control_wall_flag = 1;
         CheckStraight(6);
+        */
         break;
     case 7: //turn
         control_wall_flag = FALSE;
@@ -138,19 +139,42 @@ void Mode_Mouse(int8_t mode)
     //GREEN
     case 12: //left quarter turn
         control_wall_flag = FALSE;
-        Turn45_Test(1);
+        Turn45_Test(FRONT, LEFT, 0);
+        //Turn135_Test(FRONT, LEFT, 0);
         break;
     case 13: //right quarter turn
         control_wall_flag = FALSE;
-        Turn45_Test(-1);
+        Turn45_Test(FRONT, RIGHT, 0);
+        //Turn135_Test(FRONT, RIGHT, 0);
         break;
     case 14:
         control_wall_flag = FALSE;
-        TurnBig90_Test(1);
+        Turn45_Test(LEFT, LEFT, 1);
+        //Turn135_Test(LEFT, LEFT, 1);
         break;
     case 15:
         control_wall_flag = FALSE;
-        TurnBig90_Test(-1);
+        Turn45_Test(RIGHT, RIGHT, 1);
+        //Turn135_Test(RIGHT, RIGHT, 1);
+        break;
+    //MAGENTA
+    case 16:
+        control_wall_flag = FALSE;
+        TurnBig90_Test(LEFT);
+        break;
+    case 17:
+        control_wall_flag = FALSE;
+        TurnBig90_Test(RIGHT);
+        break;
+    case 18:
+        control_wall_flag = FALSE;
+        //TurnBig180_Test(LEFT);
+        TurnV90_Test(LEFT);
+        break;
+    case 19:
+        control_wall_flag = FALSE;
+        //TurnBig180_Test(RIGHT);
+        TurnV90_Test(RIGHT);
         break;
     default:
         break;
@@ -191,7 +215,7 @@ char Mode_Select(void)
         }
         if (enc.offset > 20)
         {
-            if (state == 12)
+            if (state == 16)
             {
                 state = 0;
             }
@@ -205,7 +229,7 @@ char Mode_Select(void)
         {
             if (state == 0)
             {
-                state = 12;
+                state = 16;
             }
             else
             {
@@ -221,7 +245,7 @@ char Mode_Select(void)
             HAL_Delay(500);
             break;
         }
-        Gpio_FullColor(state%7);
+        Gpio_FullColor(state % 7);
         Gpio_SideLed(mode);
         printf("%d\r", mode + state);
     }
@@ -342,7 +366,7 @@ void SearchRun(void)
     Map_InitFast(&wall_data_fast);
 
     //歩数マップの作製
-    unsigned char nextdir = FRONT;
+    uint16_t nextdir = FRONT;
     //最初の区画は進んでいるものとする
     unsigned char flag_goal = 0;
     //enable control side wall
@@ -356,11 +380,11 @@ void SearchRun(void)
         Get_WallData(&n_wall, &e_wall, &w_wall, &s_wall, mypos.x, mypos.y, mypos.dir);
 
         Map_addWall(&wall_data, &mypos, n_wall, e_wall, w_wall, s_wall);
-        Map_addWall(&wall_data_fast, &mypos, n_wall, e_wall, w_wall, s_wall);
+        Map_DelWall(&wall_data_fast, &mypos, n_wall, e_wall, w_wall, s_wall);
 
         Maze_UpdateStepMap(&flag_goal, gx, gy, &wall_data);
         nextdir = Maze_GetNextMotion(&mypos, &wall_data);
-        Maze_UpdatePosition(&nextdir, &mypos);
+        Maze_UpdatePosition(nextdir, &mypos);
         Motion_Switch(nextdir);
         if (mypos.x == gx && mypos.y == gy)
         {
@@ -368,36 +392,39 @@ void SearchRun(void)
             {
                 Get_WallData(&n_wall, &e_wall, &w_wall, &s_wall, mypos.x, mypos.y, mypos.dir);
                 Map_addWall(&wall_data, &mypos, n_wall, e_wall, w_wall, s_wall);
-                Map_addWall(&wall_data_fast, &mypos, n_wall, e_wall, w_wall, s_wall);
-                flag_goal = 1;
+                Map_DelWall(&wall_data_fast, &mypos, n_wall, e_wall, w_wall, s_wall);
                 Motion_End();
-                HAL_Delay(800);
+                motor_flag = FALSE;
+                flag_goal = 1;
+                HAL_Delay(1000);
                 Flash_Write(start_address, (uint8_t *)&wall_data_fast, sizeof(wallData_t));
+                HAL_Delay(2000);
                 Tim_BuzzerPwm(HZ_A, 300);
                 HAL_Delay(200);
                 Tim_BuzzerPwm(HZ_NORMAL, 0);
-                HAL_Delay(800);
                 if (sen_front.is_wall == FALSE)
                 {
                     nextdir = FRONT;
-                    Maze_UpdatePosition(&nextdir, &mypos);
+                    Maze_UpdatePosition(nextdir, &mypos);
+                    motor_flag = TRUE;
                     Motion_Restart(FALSE);
                 }
                 else
                 {
                     nextdir = PIVO_REAR;
-                    Maze_UpdatePosition(&nextdir, &mypos);
+                    Maze_UpdatePosition(nextdir, &mypos);
+                    motor_flag = TRUE;
                     Motion_Restart(TRUE);
                 }
             }
         }
         if (flag_goal == 2)
         {
-
             Motion_End();
             motor_flag = FALSE;
-            HAL_Delay(800);
+            HAL_Delay(1000);
             Flash_Write(start_address, (uint8_t *)&wall_data_fast, sizeof(wallData_t));
+            HAL_Delay(2000);
             Tim_BuzzerPwm(HZ_A, 300);
             HAL_Delay(200);
             Tim_BuzzerPwm(HZ_NORMAL, 0);
@@ -406,48 +433,74 @@ void SearchRun(void)
     }
 }
 
-void Mode_FastRun(void)
+void Mode_FastRun(uint8_t diagonal_flag, uint8_t w_str, uint8_t w_turn)
 {
     wallData_t wallData;
-    uint8_t motion[255];
+    pos_t pos;
+    uint16_t motion[255];
+    uint32_t velocity[255];
     uint8_t tail = 0;
     uint8_t head = 0;
-    uint8_t goal_flag = 0;
     Flash_Load(start_address, (uint8_t *)&wallData, sizeof(wallData_t));
-    Maze_UpdateStepMap(&goal_flag, gx, gy, &wallData);
-    Plan_Root(motion, &wallData, &tail);
-    Plan_Compress(motion, &head, &tail);
-    control_wall_flag = TRUE;
+    Maze_UpdateStepMapEx(&wallData, 7, 5, 4, 7);
+    pos.dir = NORTH;
+    pos.x = 0;
+    pos.y = 1;
+    motion[tail] = START;
+    tail++;
+    motion[tail] = ((1 << 4) | FRONT);
+    tail++;
+    head += 2;
+    while (pos.x != gx || pos.y != gy)
+    {
+        uint16_t buff = Maze_GetNextMotionEx(&pos, &wallData);
+        motion[tail] = buff;
+        tail++;
+        Maze_UpdatePosition(buff & 0xf, &pos);
+    }
+    motion[tail] = GOAL;
+    tail++;
+    head = 0;
+    Maze_Compress(diagonal_flag, motion, velocity, &tail);
+
+    control_wall_flag = 2;
     SetRunMode();
     while (head != tail)
     {
-        switch (motion[head] >> 4)
+        switch (motion[head] & 0xf)
         {
         case START:
-            //Motion_FastStart(motion[head] & 0b1111, VELO_S);
-            printf("\r\nSTART:%d\r\n",motion[head]&0b1111);
+            Motion_FastStart(motion[head] >> 4, (float)(velocity[head] & 0xffff));
             break;
         case LEFT:
-            //Motion_LeftTurn();
-            printf("LEFT:%d\n\r",motion[head]&0b1111);
+            Motion_FastLeftTurn(motion[head] >> 4, (float)(velocity[head] & 0xffff));
             break;
         case FRONT:
-            //Motion_FastStraight(motion[head] & 0b1111);
-            printf("FRONT:%d\n\r",motion[head]&0b1111);
+            Motion_FastStraight(motion[head] >> 4, (float)(velocity[head] >> 16), (float)(velocity[head] & 0xffff));
+            break;
+        case DIAGONAL_L:
+            Motion_DiagonalLeft(motion[head] >> 4);
+            break;
+        case DIAGONAL_R:
+            Motion_DiagonalRight(motion[head] >> 4);
             break;
         case RIGHT:
-            //Motion_RightTurn();
-            printf("RIGHT\n\r");
+            Motion_FastRightTurn(motion[head] >> 4, (float)(velocity[head] & 0xffff));
             break;
         case GOAL:
-            //Motion_FastGoal(motion[head] & 0b1111);
-            printf("GOAL:%d\n\r",motion[head]&0b1111);
+            Motion_FastGoal(motion[head] >> 4, (float)(velocity[head] >> 16));
+            break;
+        case ADJUST:
+            Motion_Adjust(motion[head] >> 4, (float)(velocity[head] >> 16));
             break;
         default:
             break;
         }
         head++;
     }
+    //PrintMotion(motion, velocity, tail);
+    Tim_MotorBrake();
+    HAL_Delay(500);
     motor_flag = FALSE;
     Tim_BuzzerPwm(HZ_C_H, 300);
     HAL_Delay(200);
@@ -457,6 +510,7 @@ void Mode_FastRun(void)
 void CheckStraight(uint8_t block)
 {
     SetRunMode();
+    enc.distance = 0;
     Motion_Start();
     for (uint8_t i = 0; i < block; i++)
     {
@@ -464,7 +518,40 @@ void CheckStraight(uint8_t block)
     }
     Motion_End();
     motor_flag = FALSE;
-    loger.velo[loger.cnt] = enc.distance;
+    HAL_Delay(500);
+    Flash_Write(start_address, (uint8_t *)&loger, sizeof(loger_t));
+    Tim_BuzzerPwm(HZ_C_H, 300);
+    HAL_Delay(200);
+    Tim_BuzzerPwm(HZ_NORMAL, 0);
+}
+
+void CheckFastStraight(uint8_t block)
+{
+    SetRunMode();
+    enc.distance = 0;
+    Motion_FastStart(0, 800.0f);
+    for (uint8_t i = 0; i < block; i++)
+    {
+        Motion_FastStraight(2, 800.0f, 800.0f);
+    }
+    Motion_Adjust(800.0f, 1);
+    Motion_FastGoal(0, 800.0f);
+    motor_flag = FALSE;
+    HAL_Delay(500);
+    Flash_Write(start_address, (uint8_t *)&loger, sizeof(loger_t));
+    Tim_BuzzerPwm(HZ_C_H, 300);
+    HAL_Delay(200);
+    Tim_BuzzerPwm(HZ_NORMAL, 0);
+}
+
+void CheckDiagonal(uint8_t block)
+{
+    SetRunMode();
+    enc.distance = 0;
+    Motion_DiagonalStart();
+    Motion_DiagonalLeft(block);
+    Motion_DiagonalStop();
+    motor_flag = FALSE;
     HAL_Delay(500);
     Flash_Write(start_address, (uint8_t *)&loger, sizeof(loger_t));
     Tim_BuzzerPwm(HZ_C_H, 300);
@@ -496,6 +583,143 @@ void PrintOutPut(void)
         //printf("%d\r\n",loger.velo[i]);
         //printf("%d\r\n", loger.velo_ang[i]);
         printf("%d\t%d\t%d\t%d\r\n", loger.target_velo[i], loger.velo[i], loger.target_velo_ang[i], loger.velo_ang[i]);
+    }
+}
+
+void PrintWallData(void)
+{
+    wallData_t walldata;
+    Flash_Load(start_address, (uint8_t *)&walldata, sizeof(wallData_t));
+    printf("\r\n");
+    for (unsigned char i = 0; i < MAZE_SIZE; i++)
+    {
+        printf("+");
+        printf("---");
+    }
+    printf("+\r\n");
+    for (unsigned char j = MAZE_SIZE; j > 0; j--)
+    {
+        for (unsigned char i = 0; i < MAZE_SIZE; i++)
+        {
+            if (walldata.vertical[i] & 0b1 << (j - 1))
+            {
+                printf("|");
+            }
+            else
+            {
+                printf(" ");
+            }
+            printf("   ");
+        }
+        printf("|");
+        printf("\r\n");
+        for (unsigned i = 0; i < MAZE_SIZE; i++)
+        {
+            printf("+");
+            if (walldata.horizontal[j - 1] & 0b1 << i)
+            {
+                printf("---");
+            }
+            else
+            {
+                printf("   ");
+            }
+        }
+        printf("+\r\n");
+    }
+}
+
+void PrintMotion(uint16_t *motion, uint32_t *velocity, uint8_t tail)
+{
+    uint8_t head = 0;
+    while (head < tail)
+    {
+        switch (motion[head] & 0xf)
+        {
+        case START:
+            printf("\r\nSTART:%d\tv_start:%ld\tv_end:%ld\r\n", motion[head] >> 4, velocity[head] >> 16, velocity[head] & 0xffff);
+            break;
+        case LEFT:
+            switch (motion[head] >> 4)
+            {
+            case SEARCH:
+                printf("LEFT:SEARCH\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_90:
+                printf("LEFT:T_90\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_180:
+                printf("LEFT:T_180\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_45IN:
+                printf("LEFT:T_45IN\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_45OUT:
+                printf("LEFT:T_45OUT\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_135IN:
+                printf("LEFT:T_135IN\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_135OUT:
+                printf("LEFT:T_135OUT\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_V90:
+                printf("LEFT:T_V90\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            default:
+                printf("\r\n");
+                break;
+            }
+            break;
+        case RIGHT:
+            switch (motion[head] >> 4)
+            {
+            case SEARCH:
+                printf("RIGHT:SEARCH\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_90:
+                printf("RIGHT:T_90\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_180:
+                printf("RIGHT:T_180\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_45IN:
+                printf("RIGHT:T_45IN\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_45OUT:
+                printf("RIGHT:T_45OUT\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_135IN:
+                printf("RIGHT:T_135IN\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_135OUT:
+                printf("RIGHT:T_135OUT\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            case T_V90:
+                printf("RIGHT:T_V90\tv_start:%ld\tv_end:%ld\n\r", velocity[head] >> 16, velocity[head] & 0xffff);
+                break;
+            default:
+                printf("\r\n");
+                break;
+            }
+            break;
+        case FRONT:
+            printf("FRONT:%d\tv_start:%ld\tv_end:%ld\n\r", motion[head] >> 4, velocity[head] >> 16, velocity[head] & 0xffff);
+            break;
+        case DIAGONAL:
+            printf("DIAGONAL:%d\tv_start:%ld\tv_end:%ld\n\r", motion[head] >> 4, velocity[head] >> 16, velocity[head] & 0xffff);
+            break;
+        case GOAL:
+            printf("GOAL:%d\tv_start:%ld\tv_end:%ld\n\r", motion[head] >> 4, velocity[head] >> 16, velocity[head] & 0xffff);
+            break;
+        case ADJUST:
+            printf("ADJUST:%d\tv_start:%ld\tv_end:%ld\n\r", motion[head] >> 4, velocity[head] >> 16, velocity[head] & 0xffff);
+            break;
+        default:
+            printf("\r\n");
+            break;
+        }
+        head++;
     }
 }
 
@@ -534,7 +758,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
     {
         if (row > 1)
         {
-            Motion_FastStraight(row - 1,VELO_S,VELO_S);
+            Motion_FastStraight(row - 1, VELO_S, VELO_S);
         }
 
         if (dir == 1)
@@ -548,7 +772,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (colum > 1)
         {
-            Motion_FastStraight(colum - 1,VELO_S,VELO_S);
+            Motion_FastStraight(colum - 1, VELO_S, VELO_S);
         }
 
         if (dir == 1)
@@ -562,7 +786,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (row > 1)
         {
-            Motion_FastStraight(row - 1,VELO_S,VELO_S);
+            Motion_FastStraight(row - 1, VELO_S, VELO_S);
         }
 
         if (dir == 1)
@@ -576,7 +800,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (colum > 1)
         {
-            Motion_FastStraight(colum - 1,VELO_S,VELO_S);
+            Motion_FastStraight(colum - 1, VELO_S, VELO_S);
         }
         if (dir == 1)
         {
@@ -591,20 +815,107 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
     motor_flag = FALSE;
 }
 
-void Turn45_Test(int8_t dir)
+void Turn45_Test(uint8_t in_dir, uint8_t out_dir, uint8_t step)
 {
     SetRunMode();
-    Motion_FastStart(0, VELO_F);
-    if (dir == 1)
+
+    switch (in_dir)
     {
-        Motion_Left45Turn(VELO_F,VELO_F);
+    case FRONT:
+        Motion_DiagonalStart();
+        break;
+    case LEFT:
+        Motion_FastStart(2, VELO_F);
+        Motion_InLeft45Turn();
+        break;
+    case RIGHT:
+        Motion_FastStart(2, VELO_F);
+        Motion_InRight45Turn();
+        break;
+    default:
+        break;
     }
-    else
+
+    if (step > 0)
     {
-        Motion_Right45Turn(VELO_F,VELO_F);
+        Motion_Diagonal(step);
     }
-    Motion_DiagonalStop();
+
+    switch (out_dir)
+    {
+    case FRONT:
+        Motion_DiagonalStop();
+        break;
+    case LEFT:
+        Motion_OutLeft45Turn(VELO_F);
+        Motion_FastGoal(1, VELO_F);
+        break;
+    case RIGHT:
+        Motion_OutRight45Turn(VELO_F);
+        Motion_FastGoal(1, VELO_F);
+        break;
+    default:
+        break;
+    }
+
     motor_flag = FALSE;
+    HAL_Delay(500);
+    Flash_Write(start_address, (uint8_t *)&loger, sizeof(loger_t));
+    HAL_Delay(300);
+    Tim_BuzzerPwm(HZ_C_H, 300);
+    HAL_Delay(200);
+    Tim_BuzzerPwm(HZ_NORMAL, 0);
+}
+
+void Turn135_Test(uint8_t in_dir, uint8_t out_dir, uint8_t step)
+{
+    SetRunMode();
+
+    switch (in_dir)
+    {
+    case FRONT:
+        Motion_DiagonalStart();
+        break;
+    case LEFT:
+        Motion_FastStart(1, VELO_F);
+        Motion_Adjust(VELO_F, 1);
+        Motion_FastLeftTurn(T_135IN, 800.0f);
+        break;
+    case RIGHT:
+        Motion_FastStart(1, VELO_F);
+        Motion_Adjust(VELO_F, 1);
+        Motion_FastRightTurn(T_135IN, 800.0f);
+        break;
+    default:
+        break;
+    }
+
+    if (step > 0)
+    {
+        Motion_Diagonal(step);
+    }
+
+    switch (out_dir)
+    {
+    case FRONT:
+        Motion_DiagonalStop();
+        break;
+    case LEFT:
+        Motion_FastLeftTurn(T_135OUT, 800.0f);
+        Motion_FastGoal(1, VELO_F);
+        break;
+    case RIGHT:
+        Motion_FastRightTurn(T_135OUT, 800.0f);
+        Motion_FastGoal(1, VELO_F);
+        break;
+    default:
+        break;
+    }
+
+    motor_flag = FALSE;
+    HAL_Delay(500);
+    Flash_Write(start_address, (uint8_t *)&loger, sizeof(loger_t));
+    HAL_Delay(300);
     Tim_BuzzerPwm(HZ_C_H, 300);
     HAL_Delay(200);
     Tim_BuzzerPwm(HZ_NORMAL, 0);
@@ -613,16 +924,65 @@ void Turn45_Test(int8_t dir)
 void TurnBig90_Test(int8_t dir)
 {
     SetRunMode();
-    Motion_FastStart(0, VELO_F);
-    if (dir == 1)
+    Motion_FastStart(1, VELO_F);
+    Motion_Adjust(VELO_F, 1);
+    if (dir == LEFT)
     {
-        Motion_Left90BigTurn(VELO_F,VELO_F);
+        Motion_Left90Turn(VELO_F);
+    }
+    else if (dir == RIGHT)
+    {
+        Motion_Right90Turn(VELO_F);
+    }
+    Motion_FastGoal(1, VELO_F);
+    motor_flag = FALSE;
+    Tim_BuzzerPwm(HZ_C_H, 300);
+    HAL_Delay(200);
+    Tim_BuzzerPwm(HZ_NORMAL, 0);
+}
+
+void TurnBig180_Test(int8_t dir)
+{
+    SetRunMode();
+    Motion_FastStart(1, VELO_F);
+    Motion_Adjust(VELO_F, 1);
+    if (dir == LEFT)
+    {
+        Motion_FastLeftTurn(T_180, VELO_F);
+    }
+    else if (dir == RIGHT)
+    {
+        Motion_FastRightTurn(T_180, VELO_F);
+    }
+    Motion_FastGoal(1, VELO_F);
+    motor_flag = FALSE;
+    Tim_BuzzerPwm(HZ_C_H, 300);
+    HAL_Delay(200);
+    Tim_BuzzerPwm(HZ_NORMAL, 0);
+}
+
+void TurnV90_Test(int8_t dir)
+{
+    SetRunMode();
+    Motion_FastStart(1, VELO_F);
+    Motion_Adjust(VELO_F, 1);
+    if (dir == LEFT)
+    {
+        Motion_InLeft45Turn();
+        Motion_Diagonal(1);
+        Motion_FastLeftTurn(T_V90, 800.0f);
+        Motion_Diagonal(1);
+        Motion_OutLeft45Turn(VELO_F);
     }
     else
     {
-        Motion_Right90BigTurn(VELO_F,VELO_F);
+        Motion_InRight45Turn();
+        Motion_Diagonal(1);
+        Motion_FastRightTurn(T_V90, 800.0f);
+        Motion_Diagonal(1);
+        Motion_OutRight45Turn(VELO_F);
     }
-    Motion_FastGoal(0,VELO_F);
+    Motion_FastGoal(1, VELO_F);
     motor_flag = FALSE;
     Tim_BuzzerPwm(HZ_C_H, 300);
     HAL_Delay(200);

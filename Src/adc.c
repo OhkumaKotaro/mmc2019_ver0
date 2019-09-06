@@ -69,7 +69,7 @@ uint16_t ADCBuff[ADC_CONVERT_DATA_SIZE];
 uint16_t ADCOffData[ADC_CONVERT_DATA_SIZE];
 uint16_t ADCOntData[ADC_CONVERT_DATA_SIZE];
 int16_t adc_counter;
-uint8_t cnt_100ms = 0;
+uint8_t cnt_100ms;
 /* USER CODE END 0 */
 
 ADC_HandleTypeDef hadc1;
@@ -294,15 +294,15 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef *adcHandle)
 /* USER CODE BEGIN 1 */
 void Adc_SetSensorValue(void)
 {
-  sen_l.reference = 108;
-  sen_l.threshold = 95;
+  sen_l.reference = 108;//111
+  sen_l.threshold = 87;//off80
 
-  sen_front.reference = 220;
-  sen_front_reference_f = 117;
-  sen_front.threshold = 109;
+  sen_front.reference = 230;//220
+  sen_front_reference_f = 117;//117
+  sen_front.threshold = 102;//109
 
-  sen_r.reference = 160;
-  sen_r.threshold = 133;
+  sen_r.reference = 153;//162
+  sen_r.threshold = 120;//off118//130
 }
 
 void update_sensor_data(void)

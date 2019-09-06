@@ -2,72 +2,76 @@
 #include "MazeCon.h"
 #include <stdint.h>
 
-void Map_addWall(wallData_t *wall, pos_t *pos, unsigned char n_wall, unsigned char e_wall, unsigned char w_wall, unsigned char s_wall) {
+void Map_addWall(wallData_t *wall, pos_t *pos, unsigned char n_wall, unsigned char e_wall, unsigned char w_wall, unsigned char s_wall)
+{
 	unsigned char x = pos->x;
 	unsigned char y = pos->y;
 
-	if (n_wall) {
+	if (n_wall)
+	{
 		//Add north wall
-		uint16_t data = 1;
-		data <<= x;
-		wall->horizontal[y+1] |= data;
-		wall->horizontal_known[y+1] |= data;
+		wall->horizontal[y + 1] |= (1<<x);
 	}
-	else {
-		//Remobe north wall
-		uint16_t data = 1;
-		data <<= x;
-		wall->horizontal[y+1] &= ~data;
-		wall->horizontal_known[y+1] |= data;
-	}
+	wall->horizontal_known[y + 1] |= (1<<x);
 
-	if (e_wall) {
+	if (e_wall)
+	{
 		//Add east wall
-		uint16_t data = 1;
-		data <<= y;
-		wall->vertical[x+1] |= data;
-		wall->vertical_known[x+1] |= data;
+		wall->vertical[x + 1] |= (1<<y);
 	}
-	else {
-		//Remove east wall
-		uint16_t data = 1;
-		data <<= y;
-		wall->vertical[x+1] &= ~data;
-		wall->vertical_known[x+1] |= data;
-	}
+	wall->vertical_known[x + 1] |= (1<<y);
 
-	if (s_wall) {
+	if (s_wall)
+	{
 		//Add south wall
-		uint16_t data = 1;
-		data <<= x;
-		wall->horizontal[y] |= data;
-		wall->horizontal_known[y] |= data;
+		wall->horizontal[y] |= (1<<x);
 	}
-	else {
-		//Remobe south wall
-		uint16_t data = 1;
-		data <<= x;
-		wall->horizontal[y] &= ~data;
-		wall->horizontal_known[y] |= data;
-	}
+	wall->horizontal_known[y] |= (1<<x);
 
-	if (w_wall) {
+	if (w_wall)
+	{
 		//Add west wall
-		uint16_t data = 1;
-		data <<= y;
-		wall->vertical[x] |= data;
-		wall->vertical_known[x] |= data;
+		wall->vertical[x] |= (1<<y);
 	}
-	else {
-		//Remobe weat wall
-		uint16_t data = 1;
-		data <<= y;
-		wall->vertical[x] &= ~data;
-		wall->vertical_known[x] |= data;
-	}
+	wall->vertical_known[x] |= (1<<y);
 }
 
-void Map_Init(wallData_t *wall) {
+void Map_DelWall(wallData_t *wall, pos_t *pos, unsigned char n_wall, unsigned char e_wall, unsigned char w_wall, unsigned char s_wall)
+{
+	unsigned char x = pos->x;
+	unsigned char y = pos->y;
+
+	if (n_wall == 0)
+	{
+		//Remobe north wall
+		wall->horizontal[y + 1] &= (~(1<<x));
+	}
+	wall->horizontal_known[y + 1] |= (1<<x);
+
+	if (e_wall == 0)
+	{
+		//Remove east wall
+		wall->vertical[x + 1] &= (~(1<<y));
+	}
+	wall->vertical_known[x + 1] |= (1<<y);
+
+	if (s_wall == 0)
+	{
+		//Remobe south wall
+		wall->horizontal[y] &= (~(1<<x));
+	}
+	wall->horizontal_known[y] |= (1<<x);
+
+	if (w_wall == 0)
+	{
+		//Remobe weat wall
+		wall->vertical[x] &= (~(1<<y));
+	}
+	wall->vertical_known[x] |= 1<<y;
+}
+
+void Map_Init(wallData_t *wall)
+{
 	for (unsigned char i = 0; i <= MAZE_SIZE; i++)
 	{
 		wall->horizontal[i] = 0;
@@ -75,22 +79,23 @@ void Map_Init(wallData_t *wall) {
 		wall->horizontal_known[i] = 0;
 		wall->vertical_known[i] = 0;
 	}
-	//ŠO•Ç‚ðƒZƒbƒg
+	//ï¿½Oï¿½Ç‚ï¿½ï¿½Zï¿½bï¿½g
 	wall->horizontal[0] = 0xffff;
 	wall->vertical[0] = 0xffff;
 	wall->horizontal[MAZE_SIZE] = 0xffff;
 	wall->vertical[MAZE_SIZE] = 0xffff;
-	//start‰¡‚Ì•Ç‚ðƒZƒbƒg‚·‚é
+	//startï¿½ï¿½ï¿½Ì•Ç‚ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
 	wall->vertical[1] = 0x0001;
 	wall->vertical_known[1] = 0x0001;
-	//ŠO•Ç‚ð’T¸Ï‚Ý‚É‚·‚é
+	//ï¿½Oï¿½Ç‚ï¿½Tï¿½ï¿½ï¿½Ï‚Ý‚É‚ï¿½ï¿½ï¿½
 	wall->horizontal_known[0] = 0xffff;
 	wall->vertical_known[0] = 0xffff;
 	wall->horizontal_known[MAZE_SIZE] = 0xffff;
 	wall->vertical_known[MAZE_SIZE] = 0xffff;
 }
 
-void Map_InitFast(wallData_t *wall) {
+void Map_InitFast(wallData_t *wall)
+{
 	for (unsigned char i = 0; i <= MAZE_SIZE; i++)
 	{
 		wall->horizontal[i] = 0xffff;
@@ -98,14 +103,14 @@ void Map_InitFast(wallData_t *wall) {
 		wall->horizontal_known[i] = 0;
 		wall->vertical_known[i] = 0;
 	}
-	//ŠO•Ç‚ðƒZƒbƒg
+	//ï¿½Oï¿½Ç‚ï¿½ï¿½Zï¿½bï¿½g
 	wall->horizontal[0] = 0xffff;
 	wall->vertical[0] = 0xffff;
 	wall->horizontal[MAZE_SIZE] = 0xffff;
 	wall->vertical[MAZE_SIZE] = 0xffff;
-	//start‰¡‚Ì•Ç‚ðƒZƒbƒg‚·‚é
+	//startï¿½ï¿½ï¿½Ì•Ç‚ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
 	wall->vertical_known[1] = 0x0001;
-	//ŠO•Ç‚ð’T¸Ï‚Ý‚É‚·‚é
+	//ï¿½Oï¿½Ç‚ï¿½Tï¿½ï¿½ï¿½Ï‚Ý‚É‚ï¿½ï¿½ï¿½
 	wall->horizontal_known[0] = 0xffff;
 	wall->vertical_known[0] = 0xffff;
 	wall->horizontal_known[MAZE_SIZE] = 0xffff;

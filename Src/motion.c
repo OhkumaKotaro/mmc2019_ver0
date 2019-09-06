@@ -16,11 +16,15 @@
 #define OFFSET_IN 31.0f
 #define OFFSET_OUT 47.0f
 
+#define OFFSET_SEN 135
+
 extern enc_t enc;
 extern volatile uint8_t motor_flag;
 extern target_t straight, angle;
 extern volatile accel_t accel;
 extern sensor_t sen_front;
+extern sensor_t sen_l;
+extern sensor_t sen_r;
 extern int16_t sen_front_reference_f;
 
 extern float error_sum;
@@ -29,74 +33,14 @@ extern float error_old;
 extern float error_ang_sum;
 extern float error_ang_old;
 
+extern volatile uint8_t control_wall_flag;
+
 extern volatile uint8_t front_wall_flag;
 
 volatile uint8_t motion_end_flag;
-float gain_velo = 150;
+float gain_velo = 100;
 float diagonal_step = 0;
-
-uint8_t Reset_Position(uint8_t next_motion)
-{
-    uint8_t flag = 1;
-    if (sen_front.is_wall)
-    {
-        uint8_t diff = sen_front_reference_f - sen_front.now;
-        if (diff > 10 || diff < -5)
-        {
-            flag = 0;
-            Control_StrCalculator(90.0f - enc.offset, VELO_S, VELO_S, 0, ACCEL_S, 1);
-            Control_AngCalculator(0, 0, 0, 0, 1, 0);
-            motion_end_flag = FALSE;
-            while (motion_end_flag == FALSE)
-            {
-            }
-
-            straight.v_now = 0;
-            angle.v_now = 0;
-            error_ang_sum = 0.0f;
-            error_ang_old = 0.0f;
-            HAL_Delay(500);
-
-            front_wall_flag = TRUE;
-            while (front_wall_flag == TRUE)
-            {
-            }
-
-            straight.v_now = 0;
-            angle.v_now = 0;
-            error_ang_sum = 0.0f;
-            error_ang_old = 0.0f;
-            HAL_Delay(500);
-            if (next_motion == LEFT)
-            {
-                Control_StrCalculator(0, 0, 0, 0, 1, 0);
-                Control_AngCalculator(90.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, 1);
-            }
-            else if (next_motion == RIGHT)
-            {
-                Control_StrCalculator(0, 0, 0, 0, 1, 0);
-                Control_AngCalculator(90.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, -1);
-            }
-            motion_end_flag = FALSE;
-            while (motion_end_flag == FALSE)
-            {
-            }
-            straight.v_now = 0;
-            angle.v_now = 0;
-            HAL_Delay(800);
-
-            Control_StrCalculator(90.0f, 0.0f, VELO_S, VELO_S, ACCEL_S, 1);
-            Control_AngCalculator(0, 0, 0, 0, 1, 0);
-            motion_end_flag = FALSE;
-            while (motion_end_flag == FALSE)
-            {
-            }
-
-            enc.offset = 0.0f;
-        }
-    }
-    return flag;
-}
+uint16_t prefront_flag = 0;
 
 void Motion_enkai(void)
 {
@@ -106,105 +50,6 @@ void Motion_enkai(void)
     while (1)
     {
     }
-}
-void Motion_Start(void)
-{
-    diagonal_step = 180.0f * sqrt(2);
-    Control_ResetVelo();
-    Control_StrCalculator(130.0f, 0.0f, VELO_S, VELO_S, ACCEL_S, 1);
-    Control_AngCalculator(0, 0, 0, 0, 1, 0);
-    motion_end_flag = FALSE;
-    while (motion_end_flag == FALSE)
-    {
-    }
-    enc.offset = 0.0f;
-}
-
-void Motion_Restart(uint8_t wall_is)
-{
-    Control_ResetVelo();
-    if (wall_is == FALSE)
-    {
-        Control_StrCalculator(90.0f, 0.0f, VELO_S, VELO_S, ACCEL_S, 1);
-        Control_AngCalculator(0, 0, 0, 0, 1, 0);
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-        enc.offset = 0;
-    }
-    else
-    {
-        front_wall_flag = TRUE;
-        while (front_wall_flag == TRUE)
-        {
-        }
-        straight.v_now = 0;
-        angle.v_now = 0;
-        error_ang_sum = 0.0f;
-        error_ang_old = 0.0f;
-        HAL_Delay(500);
-
-        Control_StrCalculator(0, 0, 0, 0, 1, 0);
-        Control_AngCalculator(187.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, 1);
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-        straight.v_now = 0;
-        angle.v_now = 0;
-        error_ang_sum = 0.0f;
-        error_ang_old = 0.0f;
-        HAL_Delay(500);
-
-        Control_StrCalculator(50.0f, 0, 200, 0, 1000, -1);
-        Control_AngCalculator(0, 0, 0, 0, 1, 0);
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-        straight.v_now = 0;
-        angle.v_now = 0;
-        error_ang_sum = 0.0f;
-        error_ang_old = 0.0f;
-        HAL_Delay(500);
-
-        Control_StrCalculator(130.0f, 0, VELO_S, VELO_S, ACCEL_S, 1);
-        Control_AngCalculator(0, 0, 0, 0, 1, 0);
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-
-        enc.offset = 0;
-    }
-}
-
-void Motion_End(void)
-{
-    Control_StrCalculator(90.0f - enc.offset, VELO_S, VELO_S, 0.0f, ACCEL_S, 1);
-    Control_AngCalculator(0, 0, 0, 0, 1, 0);
-    motion_end_flag = FALSE;
-    while (motion_end_flag == FALSE)
-    {
-    }
-    error_ang_sum = 0.0f;
-    error_ang_old = 0.0f;
-    straight.v_now = 0;
-    angle.v_now = 0;
-    enc.offset = 0;
-}
-
-void Motion_Straight(void)
-{
-    //Control_ResetVelo();
-    Control_StrCalculator(180.0f - enc.offset, VELO_S, VELO_S, VELO_S, ACCEL_S, 1);
-    Control_AngCalculator(0, 0, 0, 0, 1, 0);
-    motion_end_flag = FALSE;
-    while (motion_end_flag == FALSE)
-    {
-    }
-    enc.offset = 0;
 }
 
 void Motion_TestTurn(void)
@@ -224,6 +69,111 @@ void Motion_TestTurn(void)
     HAL_Delay(800);
 }
 
+void Motion_Start(void)
+{
+    Control_ResetVelo();
+    Control_StrCalculator(130.0f, 0.0f, VELO_S, VELO_S, ACCEL_S, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+    prefront_flag = TRUE;
+}
+
+void Motion_Restart(uint8_t wall_is)
+{
+    Control_ResetVelo();
+    if (wall_is == FALSE)
+    {
+        Control_StrCalculator(90.0f, 0.0f, VELO_S, VELO_S, ACCEL_S, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+        enc.offset = 0;
+        prefront_flag = TRUE;
+    }
+    else
+    {
+        front_wall_flag = TRUE;
+        while (front_wall_flag == TRUE)
+        {
+        }
+        straight.v_now = 0;
+        angle.v_now = 0;
+        error_ang_sum = 0.0f;
+        error_ang_old = 0.0f;
+        HAL_Delay(500);
+
+        Control_StrCalculator(0, 0, 0, 0, 1, 0);
+        Control_AngCalculator(185.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, 1);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+        straight.v_now = 0;
+        angle.v_now = 0;
+        error_ang_sum = 0.0f;
+        error_ang_old = 0.0f;
+        HAL_Delay(500);
+
+        Control_StrCalculator(55.0f, 0, 200.0f, 0, 1000.0f, -1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+        straight.v_now = 0;
+        angle.v_now = 0;
+        error_ang_sum = 0.0f;
+        error_ang_old = 0.0f;
+        HAL_Delay(500);
+
+        Control_StrCalculator(130.0f, 0, VELO_S, VELO_S, ACCEL_S, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+        enc.offset = 0;
+        prefront_flag = TRUE;
+    }
+}
+
+void Motion_End(void)
+{
+    Control_StrCalculator(90.0f - enc.offset, VELO_S, VELO_S, 0.0f, ACCEL_S, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0;
+    error_ang_sum = 0.0f;
+    error_ang_old = 0.0f;
+    straight.v_now = 0;
+    angle.v_now = 0;
+}
+
+void Motion_Straight(void)
+{
+    if (prefront_flag)
+    {
+        Control_EdgeSet(0);
+    }
+    Control_StrCalculator(180.0f - enc.offset, VELO_S, VELO_S, VELO_S, ACCEL_S, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0;
+    prefront_flag = TRUE;
+}
+
 void Motion_SpinTurn(void)
 {
     Control_StrCalculator(90.0f - enc.offset, VELO_S, VELO_S, 0, ACCEL_S, 1);
@@ -238,7 +188,7 @@ void Motion_SpinTurn(void)
     error_ang_old = 0.0f;
     HAL_Delay(500);
     Control_StrCalculator(0, 0, 0, 0, 1, 0);
-    Control_AngCalculator(187.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, 1);
+    Control_AngCalculator(185.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, 1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
@@ -255,6 +205,7 @@ void Motion_SpinTurn(void)
     {
     }
     enc.offset = 0;
+    prefront_flag = TRUE;
 }
 
 void Motion_WallSpinTurn(void)
@@ -284,7 +235,7 @@ void Motion_WallSpinTurn(void)
     HAL_Delay(500);
 
     Control_StrCalculator(0, 0, 0, 0, 1, 0);
-    Control_AngCalculator(187.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, 1);
+    Control_AngCalculator(185.0f, 0.0f, VELO_ANG_S, 0.0f, ACCEL_ANG_S, 1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
@@ -295,7 +246,7 @@ void Motion_WallSpinTurn(void)
     error_ang_old = 0.0f;
     HAL_Delay(800);
 
-    Control_StrCalculator(50.0f, 0, 100, 0, 1000, -1);
+    Control_StrCalculator(55.0f, 0, 100, 0, 1000, -1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -313,113 +264,78 @@ void Motion_WallSpinTurn(void)
     while (motion_end_flag == FALSE)
     {
     }
-
     enc.offset = 0.0f;
+    prefront_flag = TRUE;
 }
 
 void Motion_LeftTurn(void)
 {
-    if (Reset_Position(LEFT))
+    //offset in
+    if (sen_front.is_wall == TRUE)
     {
-        //offset in
+        while (sen_front.now < OFFSET_SEN)
+            ;
+    }
+    else
+    {
         Control_StrCalculator(35.0f - enc.offset, VELO_S, VELO_S, VELO_S, 1, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)
         {
         }
-        //turn
-        Control_StrCalculator(180.0f, VELO_S, VELO_S, VELO_S, 1, 1);
-        Control_AngCalculator(90.88f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, 1); //90.88f
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-        //offset out
-        Control_StrCalculator(40.0f, VELO_S, VELO_S, VELO_S, 1, 1);
-        Control_AngCalculator(0, 0, 0, 0, 1, 0);
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-        enc.offset = 0.0f;
     }
+    //turn
+    Control_StrCalculator(180.0f, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_AngCalculator(90.88f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, 1); //90.88f
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    //offset out
+    Control_StrCalculator(45.0f, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+    prefront_flag = FALSE;
 }
 
 void Motion_RightTurn(void)
 {
-    if (Reset_Position(RIGHT))
+    //offset in
+    if (sen_front.is_wall == TRUE)
     {
-        //offset in
-        Control_StrCalculator(33.0f - enc.offset, VELO_S, VELO_S, VELO_S, 1, 1);
+        while (sen_front.now < OFFSET_SEN + 3)
+            ;
+    }
+    else
+    {
+        Control_StrCalculator(38.0f - enc.offset, VELO_S, VELO_S, VELO_S, 1, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)
         {
         }
-        //turn
-        Control_StrCalculator(180.0f, VELO_S, VELO_S, VELO_S, 1, 1);
-        Control_AngCalculator(90.8f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, -1); //90.80f
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-        //offset out
-        Control_StrCalculator(48.0f, VELO_S, VELO_S, VELO_S, 1, 1);
-        Control_AngCalculator(0, 0, 0, 0, 1, 0);
-        motion_end_flag = FALSE;
-        while (motion_end_flag == FALSE)
-        {
-        }
-        enc.offset = 0.0f;
     }
-}
-
-void Motion_FastStart(uint8_t step, float velo_end)
-{
-    diagonal_step = 180.0f * sqrt(2);
-    Control_ResetVelo();
-    float velo = VELO_F + gain_velo * step;
-    if (velo > 2500)
+    //turn
+    Control_StrCalculator(180.0f, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_AngCalculator(90.8f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, -1); //90.80f
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
     {
-        velo = 2500;
     }
-    Control_StrCalculator(130 + 180 * step, 0, velo, velo_end, ACCEL_F, 1);
+    //offset out
+    Control_StrCalculator(40.0f, VELO_S, VELO_S, VELO_S, 1, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
-}
-
-void Motion_FastStraight(uint8_t step,float v_start,float v_end)
-{
-    float velo = VELO_F + gain_velo * step;
-    Control_StrCalculator(180 * step, VELO_S, velo, VELO_S, ACCEL_F, 1);
-    Control_AngCalculator(0, 0, 0, 0, 1, 0);
-    motion_end_flag = FALSE;
-    while (motion_end_flag == FALSE)
-    {
-    }
-}
-
-void Motion_FastGoal(uint8_t step,float v_start)
-{
-    float velo = VELO_F + gain_velo * step;
-    if (velo > 2500)
-    {
-        velo = 2500;
-    }
-    Control_StrCalculator(90 + 180 * step, VELO_S, velo, 0, ACCEL_F, 1);
-    Control_AngCalculator(0, 0, 0, 0, 1, 0);
-    motion_end_flag = FALSE;
-    while (motion_end_flag == FALSE)
-    {
-    }
-    straight.v_now = 0;
-    angle.v_now = 0;
-    enc.offset = 0;
-    HAL_Delay(800);
+    enc.offset = 0.0f;
+    prefront_flag = FALSE;
 }
 
 void Motion_Switch(uint8_t motion)
@@ -446,20 +362,152 @@ void Motion_Switch(uint8_t motion)
         break;
     }
 }
-void Motion_Diagonal(uint8_t step)
+
+void Motion_FastStart(uint8_t step, float velo_end)
 {
-    float velo = VELO_F + gain_velo * step;
-    Control_StrCalculator(diagonal_step * step, VELO_S, velo, VELO_S, ACCEL_F, 1);
+    diagonal_step = 90.0f * sqrt(2);
+    Control_ResetVelo();
+    /*float velo = VELO_F + gain_velo * (float)step;
+    if (velo > 2500)
+    {
+        velo = 2500;
+    }
+    */
+    Control_StrCalculator(40.0f + 90.0f * (float)step, 0.0f, VELO_F, velo_end, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
+    enc.offset = 0.0f;
+}
+
+void Motion_FastStraight(uint8_t step, float v_start, float v_end)
+{
+    //float velo = VELO_F + gain_velo * (float)(step - 1);
+    Control_StrCalculator(90.0f * (float)step - enc.offset, v_start, VELO_F, v_end, ACCEL_F, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+}
+
+void Motion_Adjust(uint16_t step, float velo_s)
+{
+    if (step == 1)
+    {
+        Control_EdgeSet(100);
+        Control_StrCalculator(190.0f - enc.offset, velo_s, VELO_F, VELO_F, 1, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    }
+    else
+    {
+        Control_EdgeSet(0);
+        Control_StrCalculator(180.0f - enc.offset, VELO_S, VELO_S, VELO_S, 1, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    }
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+}
+
+void Motion_FastGoal(uint8_t step, float v_start)
+{
+    float velo = VELO_F + gain_velo * step;
+    if (velo > 2500)
+    {
+        velo = 2500;
+    }
+    Control_StrCalculator(90.0f + 90.0f * (float)step - enc.offset, v_start, VELO_F, 0, ACCEL_F, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    straight.v_now = 0;
+    angle.v_now = 0;
+    HAL_Delay(800);
+}
+
+void Motion_Diagonal(uint8_t step)
+{
+    Control_StrCalculator(diagonal_step * (float)step - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+}
+
+void Motion_DiagonalLeft(uint8_t step)
+{
+    control_wall_flag = 3;
+    if (step > 1)
+    {
+        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+    }
+    while (sen_l.diff > -40)
+        ;
+    Control_StrCalculator(15.25f, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+    control_wall_flag = 0;
+}
+
+void Motion_DiagonalRight(uint8_t step)
+{
+    control_wall_flag = 3;
+    if (step > 1)
+    {
+        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+    }
+    while (sen_r.diff > -30)
+        ;
+    Control_StrCalculator(16.5f, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+    control_wall_flag = 0;
+}
+
+void Motion_DiagonalStart(void)
+{
+    Control_ResetVelo();
+    diagonal_step = 90.0f * sqrt(2);
+    Control_StrCalculator(diagonal_step * 2.0f, 0, VELO_F, VELO_F, ACCEL_F, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0;
 }
 
 void Motion_DiagonalStop(void)
 {
-    Control_StrCalculator(diagonal_step, VELO_F, VELO_F, 0, ACCEL_F, 1);
+    Control_StrCalculator(diagonal_step * 2.0f - enc.offset, VELO_F, VELO_F, 0, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -472,10 +520,10 @@ void Motion_DiagonalStop(void)
     HAL_Delay(500);
 }
 
-void Motion_Left45Turn(float v_start,float v_end)
+void Motion_InLeft45Turn(void)
 {
     //offset in
-    Control_StrCalculator(102.0f, v_start, VELO_F, VELO_F, 1, 1);
+    Control_StrCalculator(43.0f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -483,26 +531,25 @@ void Motion_Left45Turn(float v_start,float v_end)
     }
     //turn
     Control_StrCalculator(800.0f, VELO_F, VELO_F, VELO_F, 1, 1);
-    Control_AngCalculator(45.0f, 0, VELO_ANG_D, 0, ACCEL_ANG_D, 1);
+    Control_AngCalculator(45.0f, 0, 600.0f, 0, 20000.0f, 1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //offset out
-    Control_StrCalculator(65.0f, VELO_F, VELO_F, v_end, 1, 1);
+    Control_StrCalculator(96.0f, VELO_F, VELO_F, VELO_F, 1, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
-    error_ang_sum = 0.0f;
-    error_ang_old = 0.0f;
+    enc.offset = 0.0f;
 }
 
-void Motion_Right45Turn(float v_start,float v_end)
+void Motion_InRight45Turn(void)
 {
     //offset in
-    Control_StrCalculator(102.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_StrCalculator(43.0f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -510,83 +557,77 @@ void Motion_Right45Turn(float v_start,float v_end)
     }
     //turn
     Control_StrCalculator(800.0f, VELO_F, VELO_F, VELO_F, 1, 1);
-    Control_AngCalculator(45.0f, 0, VELO_ANG_D, 0, ACCEL_ANG_D, -1);
+    Control_AngCalculator(45.5f, 0, 600.0f, 0, 20000.0f, -1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //offset out
-    Control_StrCalculator(65.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_StrCalculator(92.0f, VELO_F, VELO_F, VELO_F, 1, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
-    error_ang_sum = 0.0f;
-    error_ang_old = 0.0f;
+    enc.offset = 0.0f;
 }
 
-void Motion_Left90Turn(void)
+void Motion_OutLeft45Turn(float v_end)
 {
-    //control_wall_flag = FALSE;
     //offset in
-    Control_StrCalculator(OFFSET_IN, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_StrCalculator(56.0f - enc.offset, VELO_F, VELO_F, VELO_F, 1, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //turn
-    Control_StrCalculator(400.0f, VELO_S, VELO_S, VELO_S, 1, 1);
-    Control_AngCalculator(90.88f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, 1);
+    Control_StrCalculator(800.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_AngCalculator(45.5f, 0, 600.0f, 0, 20000.0f, 1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //offset out
-    Control_StrCalculator(OFFSET_OUT, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_StrCalculator(75.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
-    //error_ang_sum = 0.0f;
-    //error_ang_old = 0.0f;
+    enc.offset = 0.0f;
 }
 
-void Motion_Right90Turn(void)
+void Motion_OutRight45Turn(float v_end)
 {
-    //control_wall_flag = FALSE;
     //offset in
-    Control_StrCalculator(OFFSET_IN + 2.0f, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_StrCalculator(81.0f - enc.offset, VELO_F, VELO_F, VELO_F, 1, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //turn
-    Control_StrCalculator(400.0f, VELO_S, VELO_S, VELO_S, 1, 1);
-    Control_AngCalculator(90.80f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, -1);
+    Control_StrCalculator(800.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_AngCalculator(45.5f, 0, 600.0f, 0, 20000.0f, -1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //offset out
-    Control_StrCalculator(OFFSET_OUT - 4.0f, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_StrCalculator(47.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
-    //error_ang_sum = 0.0f;
-    //error_ang_old = 0.0f;
+    enc.offset = 0.0f;
 }
 
-void Motion_Left90BigTurn(float v_start,float v_end)
+void Motion_Left90Turn(float v_end)
 {
-    //control_wall_flag = FALSE;
     //offset in
-    Control_StrCalculator(103.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_StrCalculator(8.0f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -594,27 +635,25 @@ void Motion_Left90BigTurn(float v_start,float v_end)
     }
     //turn
     Control_StrCalculator(600.0f, VELO_F, VELO_F, VELO_F, 1, 1);
-    Control_AngCalculator(90.88f, 0, VELO_ANG_B, 0, ACCEL_ANG_B, 1);
+    Control_AngCalculator(90.5f, 0, VELO_ANG_B, 0, ACCEL_ANG_B, 1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //offset out
-    Control_StrCalculator(156.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_StrCalculator(29.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
-    //error_ang_sum = 0.0f;
-    //error_ang_old = 0.0f;
+    enc.offset = 0.0f;
 }
 
-void Motion_Right90BigTurn(float v_start,float v_end)
+void Motion_Right90Turn(float v_end)
 {
-    //control_wall_flag = FALSE;
     //offset in
-    Control_StrCalculator(100.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_StrCalculator(13.0f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -622,18 +661,113 @@ void Motion_Right90BigTurn(float v_start,float v_end)
     }
     //turn
     Control_StrCalculator(600.0f, VELO_F, VELO_F, VELO_F, 1, 1);
-    Control_AngCalculator(90.80f, 0, VELO_ANG_B, 0, ACCEL_ANG_B, -1);
+    Control_AngCalculator(90.5f, 0, VELO_ANG_B, 0, ACCEL_ANG_B, -1);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //offset out
-    Control_StrCalculator(165.0f, VELO_F, VELO_F, VELO_F, 1, 1);
+    Control_StrCalculator(20.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
-    //error_ang_sum = 0.0f;
-    //error_ang_old = 0.0f;
+    enc.offset = 0.0f;
+}
+
+void Turn(float offset_in, float offset_out, float velo, float v_end, float deg, float velo_ang, float accel_ang, uint8_t dir)
+{
+    //offset in
+    Control_StrCalculator(offset_in - enc.offset, velo, velo, velo, 1, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    //turn
+    Control_StrCalculator(600.0f, velo, velo, velo, 1, 1);
+    Control_AngCalculator(deg, 0, velo_ang, 0, accel_ang, dir);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    //offset out
+    Control_StrCalculator(offset_out, velo, velo, v_end, 16000.0f, 1);
+    Control_AngCalculator(0, 0, 0, 0, 1, 0);
+    motion_end_flag = FALSE;
+    while (motion_end_flag == FALSE)
+    {
+    }
+    enc.offset = 0.0f;
+}
+
+void Motion_FastLeftTurn(uint8_t type, float v_end)
+{
+    switch (type)
+    {
+    case SEARCH:
+        Motion_LeftTurn();
+        break;
+    case T_90:
+        Motion_Left90Turn(v_end);
+        break;
+    case T_180:
+        Turn(36.0f, 50.0f, 800.0f, v_end, 181.0f, 520.0f, 5000.0f, 1);
+        break;
+    case T_45IN:
+        //control_wall_flag = 0;
+        Motion_InLeft45Turn();
+        break;
+    case T_45OUT:
+        Motion_OutLeft45Turn(v_end);
+        //control_wall_flag = 2;
+        break;
+    case T_135IN:
+        //control_wall_flag = 0;
+        Turn(51.0f, 60.0f, 800.0f, 800.0f, 136.0f, 600.0f, 8000.0f, 1);
+        break;
+    case T_135OUT:
+        Turn(25.0f, 67.0f, 800.0f, v_end, 136.0f, 600.0f, 8000.0f, 1);
+        //control_wall_flag = 2;
+        break;
+    case T_V90:
+        Turn(60.0f, 75.0f, 800.0f, 800.0f, 91.0f, 800.0f, 20000.0f, 1);
+        break;
+    }
+}
+
+void Motion_FastRightTurn(uint8_t type, float v_end)
+{
+    switch (type)
+    {
+    case SEARCH:
+        Motion_RightTurn();
+        break;
+    case T_90:
+        Motion_Right90Turn(v_end);
+        break;
+    case T_180:
+        Turn(30.0f, 38.0f, 800.0f, v_end, 181.0f, 550.0f, 5000.0f, -1);
+        break;
+    case T_45IN:
+        //control_wall_flag = 0;
+        Motion_InRight45Turn();
+        break;
+    case T_45OUT:
+        Motion_OutRight45Turn(v_end);
+        //control_wall_flag = 2;
+        break;
+    case T_135IN:
+        //control_wall_flag = 0;
+        Turn(41.0f, 40.0f, 800.0f, 800.0f, 136.0f, 600.0f, 8000.0f, -1);
+        break;
+    case T_135OUT:
+        Turn(25.0f, 57.0f, 800.0f, v_end, 136.0f, 600.0f, 8000.0f, -1);
+        break;
+    case T_V90:
+        Turn(35.0f, 60.0f, 800.0f, 800.0f, 91.0f, 800.0f, 20000.0f, -1);
+        //control_wall_flag = 2;
+        break;
+    }
 }

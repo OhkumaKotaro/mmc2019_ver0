@@ -1,0 +1,564 @@
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"Map.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Map_addWall,"ax",%progbits
+  18              		.align	1
+  19              		.global	Map_addWall
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	Map_addWall:
+  26              	.LFB0:
+  27              		.file 1 "Src/Map.c"
+   1:Src/Map.c     **** #include "Map.h"
+   2:Src/Map.c     **** #include "MazeCon.h"
+   3:Src/Map.c     **** #include <stdint.h>
+   4:Src/Map.c     **** 
+   5:Src/Map.c     **** void Map_addWall(wallData_t *wall, pos_t *pos, unsigned char n_wall, unsigned char e_wall, unsigned
+   6:Src/Map.c     **** {
+  28              		.loc 1 6 0
+  29              		.cfi_startproc
+  30              		@ args = 8, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34 0000 F0B4     		push	{r4, r5, r6, r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 4, -16
+  38              		.cfi_offset 5, -12
+  39              		.cfi_offset 6, -8
+  40              		.cfi_offset 7, -4
+  41 0002 9DF81060 		ldrb	r6, [sp, #16]	@ zero_extendqisi2
+  42 0006 9DF814C0 		ldrb	ip, [sp, #20]	@ zero_extendqisi2
+   7:Src/Map.c     **** 	unsigned char x = pos->x;
+  43              		.loc 1 7 0
+  44 000a 0C78     		ldrb	r4, [r1]	@ zero_extendqisi2
+  45              	.LVL1:
+   8:Src/Map.c     **** 	unsigned char y = pos->y;
+  46              		.loc 1 8 0
+  47 000c 4978     		ldrb	r1, [r1, #1]	@ zero_extendqisi2
+  48              	.LVL2:
+   9:Src/Map.c     **** 
+  10:Src/Map.c     **** 	if (n_wall)
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 2
+
+
+  49              		.loc 1 10 0
+  50 000e 42B1     		cbz	r2, .L2
+  11:Src/Map.c     **** 	{
+  12:Src/Map.c     **** 		//Add north wall
+  13:Src/Map.c     **** 		wall->horizontal[y + 1] |= (1<<x);
+  51              		.loc 1 13 0
+  52 0010 0122     		movs	r2, #1
+  53              	.LVL3:
+  54 0012 A240     		lsls	r2, r2, r4
+  55 0014 01F11105 		add	r5, r1, #17
+  56 0018 00EB4505 		add	r5, r0, r5, lsl #1
+  57 001c 6F88     		ldrh	r7, [r5, #2]
+  58 001e 3A43     		orrs	r2, r2, r7
+  59 0020 6A80     		strh	r2, [r5, #2]	@ movhi
+  60              	.L2:
+  14:Src/Map.c     **** 	}
+  15:Src/Map.c     **** 	wall->horizontal_known[y + 1] |= (1<<x);
+  61              		.loc 1 15 0
+  62 0022 0122     		movs	r2, #1
+  63 0024 A240     		lsls	r2, r2, r4
+  64 0026 12B2     		sxth	r2, r2
+  65 0028 01F13105 		add	r5, r1, #49
+  66 002c 00EB4505 		add	r5, r0, r5, lsl #1
+  67 0030 EF88     		ldrh	r7, [r5, #6]
+  68 0032 1743     		orrs	r7, r7, r2
+  69 0034 EF80     		strh	r7, [r5, #6]	@ movhi
+  16:Src/Map.c     **** 
+  17:Src/Map.c     **** 	if (e_wall)
+  70              		.loc 1 17 0
+  71 0036 3BB1     		cbz	r3, .L3
+  18:Src/Map.c     **** 	{
+  19:Src/Map.c     **** 		//Add east wall
+  20:Src/Map.c     **** 		wall->vertical[x + 1] |= (1<<y);
+  72              		.loc 1 20 0
+  73 0038 651C     		adds	r5, r4, #1
+  74 003a 0123     		movs	r3, #1
+  75              	.LVL4:
+  76 003c 8B40     		lsls	r3, r3, r1
+  77 003e 30F81570 		ldrh	r7, [r0, r5, lsl #1]
+  78 0042 3B43     		orrs	r3, r3, r7
+  79 0044 20F81530 		strh	r3, [r0, r5, lsl #1]	@ movhi
+  80              	.L3:
+  21:Src/Map.c     **** 	}
+  22:Src/Map.c     **** 	wall->vertical_known[x + 1] |= (1<<y);
+  81              		.loc 1 22 0
+  82 0048 0123     		movs	r3, #1
+  83 004a 8B40     		lsls	r3, r3, r1
+  84 004c 1BB2     		sxth	r3, r3
+  85 004e 04F12105 		add	r5, r4, #33
+  86 0052 00EB4505 		add	r5, r0, r5, lsl #1
+  87 0056 AF88     		ldrh	r7, [r5, #4]
+  88 0058 1F43     		orrs	r7, r7, r3
+  89 005a AF80     		strh	r7, [r5, #4]	@ movhi
+  23:Src/Map.c     **** 
+  24:Src/Map.c     **** 	if (s_wall)
+  90              		.loc 1 24 0
+  91 005c BCF1000F 		cmp	ip, #0
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 3
+
+
+  92 0060 06D0     		beq	.L4
+  25:Src/Map.c     **** 	{
+  26:Src/Map.c     **** 		//Add south wall
+  27:Src/Map.c     **** 		wall->horizontal[y] |= (1<<x);
+  93              		.loc 1 27 0
+  94 0062 01F11005 		add	r5, r1, #16
+  95 0066 00EB4505 		add	r5, r0, r5, lsl #1
+  96 006a 6F88     		ldrh	r7, [r5, #2]
+  97 006c 1743     		orrs	r7, r7, r2
+  98 006e 6F80     		strh	r7, [r5, #2]	@ movhi
+  99              	.L4:
+  28:Src/Map.c     **** 	}
+  29:Src/Map.c     **** 	wall->horizontal_known[y] |= (1<<x);
+ 100              		.loc 1 29 0
+ 101 0070 3031     		adds	r1, r1, #48
+ 102              	.LVL5:
+ 103 0072 00EB4101 		add	r1, r0, r1, lsl #1
+ 104              	.LVL6:
+ 105 0076 CD88     		ldrh	r5, [r1, #6]
+ 106 0078 2A43     		orrs	r2, r2, r5
+ 107 007a CA80     		strh	r2, [r1, #6]	@ movhi
+  30:Src/Map.c     **** 
+  31:Src/Map.c     **** 	if (w_wall)
+ 108              		.loc 1 31 0
+ 109 007c 26B1     		cbz	r6, .L5
+  32:Src/Map.c     **** 	{
+  33:Src/Map.c     **** 		//Add west wall
+  34:Src/Map.c     **** 		wall->vertical[x] |= (1<<y);
+ 110              		.loc 1 34 0
+ 111 007e 30F81420 		ldrh	r2, [r0, r4, lsl #1]
+ 112 0082 1A43     		orrs	r2, r2, r3
+ 113 0084 20F81420 		strh	r2, [r0, r4, lsl #1]	@ movhi
+ 114              	.L5:
+  35:Src/Map.c     **** 	}
+  36:Src/Map.c     **** 	wall->vertical_known[x] |= (1<<y);
+ 115              		.loc 1 36 0
+ 116 0088 04F12002 		add	r2, r4, #32
+ 117 008c 00EB4200 		add	r0, r0, r2, lsl #1
+ 118              	.LVL7:
+ 119 0090 8288     		ldrh	r2, [r0, #4]
+ 120 0092 1343     		orrs	r3, r3, r2
+ 121 0094 8380     		strh	r3, [r0, #4]	@ movhi
+  37:Src/Map.c     **** }
+ 122              		.loc 1 37 0
+ 123 0096 F0BC     		pop	{r4, r5, r6, r7}
+ 124              	.LCFI1:
+ 125              		.cfi_restore 7
+ 126              		.cfi_restore 6
+ 127              		.cfi_restore 5
+ 128              		.cfi_restore 4
+ 129              		.cfi_def_cfa_offset 0
+ 130              	.LVL8:
+ 131 0098 7047     		bx	lr
+ 132              		.cfi_endproc
+ 133              	.LFE0:
+ 135              		.section	.text.Map_DelWall,"ax",%progbits
+ 136              		.align	1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 4
+
+
+ 137              		.global	Map_DelWall
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 141              		.fpu fpv4-sp-d16
+ 143              	Map_DelWall:
+ 144              	.LFB1:
+  38:Src/Map.c     **** 
+  39:Src/Map.c     **** void Map_DelWall(wallData_t *wall, pos_t *pos, unsigned char n_wall, unsigned char e_wall, unsigned
+  40:Src/Map.c     **** {
+ 145              		.loc 1 40 0
+ 146              		.cfi_startproc
+ 147              		@ args = 8, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		@ link register save eliminated.
+ 150              	.LVL9:
+ 151 0000 F0B4     		push	{r4, r5, r6, r7}
+ 152              	.LCFI2:
+ 153              		.cfi_def_cfa_offset 16
+ 154              		.cfi_offset 4, -16
+ 155              		.cfi_offset 5, -12
+ 156              		.cfi_offset 6, -8
+ 157              		.cfi_offset 7, -4
+ 158 0002 9DF81060 		ldrb	r6, [sp, #16]	@ zero_extendqisi2
+ 159 0006 9DF814C0 		ldrb	ip, [sp, #20]	@ zero_extendqisi2
+  41:Src/Map.c     **** 	unsigned char x = pos->x;
+ 160              		.loc 1 41 0
+ 161 000a 0C78     		ldrb	r4, [r1]	@ zero_extendqisi2
+ 162              	.LVL10:
+  42:Src/Map.c     **** 	unsigned char y = pos->y;
+ 163              		.loc 1 42 0
+ 164 000c 4978     		ldrb	r1, [r1, #1]	@ zero_extendqisi2
+ 165              	.LVL11:
+  43:Src/Map.c     **** 
+  44:Src/Map.c     **** 	if (n_wall == 0)
+ 166              		.loc 1 44 0
+ 167 000e 52B9     		cbnz	r2, .L8
+  45:Src/Map.c     **** 	{
+  46:Src/Map.c     **** 		//Remobe north wall
+  47:Src/Map.c     **** 		wall->horizontal[y + 1] &= (~(1<<x));
+ 168              		.loc 1 47 0
+ 169 0010 0125     		movs	r5, #1
+ 170 0012 05FA04F7 		lsl	r7, r5, r4
+ 171 0016 01F11102 		add	r2, r1, #17
+ 172              	.LVL12:
+ 173 001a 00EB4202 		add	r2, r0, r2, lsl #1
+ 174 001e 5588     		ldrh	r5, [r2, #2]
+ 175 0020 25EA0705 		bic	r5, r5, r7
+ 176 0024 5580     		strh	r5, [r2, #2]	@ movhi
+ 177              	.L8:
+  48:Src/Map.c     **** 	}
+  49:Src/Map.c     **** 	wall->horizontal_known[y + 1] |= (1<<x);
+ 178              		.loc 1 49 0
+ 179 0026 0122     		movs	r2, #1
+ 180 0028 A240     		lsls	r2, r2, r4
+ 181 002a 12B2     		sxth	r2, r2
+ 182 002c 01F13105 		add	r5, r1, #49
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 5
+
+
+ 183 0030 00EB4505 		add	r5, r0, r5, lsl #1
+ 184 0034 EF88     		ldrh	r7, [r5, #6]
+ 185 0036 1743     		orrs	r7, r7, r2
+ 186 0038 EF80     		strh	r7, [r5, #6]	@ movhi
+  50:Src/Map.c     **** 
+  51:Src/Map.c     **** 	if (e_wall == 0)
+ 187              		.loc 1 51 0
+ 188 003a 4BB9     		cbnz	r3, .L9
+  52:Src/Map.c     **** 	{
+  53:Src/Map.c     **** 		//Remove east wall
+  54:Src/Map.c     **** 		wall->vertical[x + 1] &= (~(1<<y));
+ 189              		.loc 1 54 0
+ 190 003c 631C     		adds	r3, r4, #1
+ 191              	.LVL13:
+ 192 003e 0125     		movs	r5, #1
+ 193 0040 05FA01F7 		lsl	r7, r5, r1
+ 194 0044 30F81350 		ldrh	r5, [r0, r3, lsl #1]
+ 195 0048 25EA0705 		bic	r5, r5, r7
+ 196 004c 20F81350 		strh	r5, [r0, r3, lsl #1]	@ movhi
+ 197              	.L9:
+  55:Src/Map.c     **** 	}
+  56:Src/Map.c     **** 	wall->vertical_known[x + 1] |= (1<<y);
+ 198              		.loc 1 56 0
+ 199 0050 0123     		movs	r3, #1
+ 200 0052 8B40     		lsls	r3, r3, r1
+ 201 0054 1BB2     		sxth	r3, r3
+ 202 0056 04F12105 		add	r5, r4, #33
+ 203 005a 00EB4505 		add	r5, r0, r5, lsl #1
+ 204 005e AF88     		ldrh	r7, [r5, #4]
+ 205 0060 1F43     		orrs	r7, r7, r3
+ 206 0062 AF80     		strh	r7, [r5, #4]	@ movhi
+  57:Src/Map.c     **** 
+  58:Src/Map.c     **** 	if (s_wall == 0)
+ 207              		.loc 1 58 0
+ 208 0064 BCF1000F 		cmp	ip, #0
+ 209 0068 07D1     		bne	.L10
+  59:Src/Map.c     **** 	{
+  60:Src/Map.c     **** 		//Remobe south wall
+  61:Src/Map.c     **** 		wall->horizontal[y] &= (~(1<<x));
+ 210              		.loc 1 61 0
+ 211 006a 01F11005 		add	r5, r1, #16
+ 212 006e 00EB4505 		add	r5, r0, r5, lsl #1
+ 213 0072 6F88     		ldrh	r7, [r5, #2]
+ 214 0074 27EA0207 		bic	r7, r7, r2
+ 215 0078 6F80     		strh	r7, [r5, #2]	@ movhi
+ 216              	.L10:
+  62:Src/Map.c     **** 	}
+  63:Src/Map.c     **** 	wall->horizontal_known[y] |= (1<<x);
+ 217              		.loc 1 63 0
+ 218 007a 3031     		adds	r1, r1, #48
+ 219              	.LVL14:
+ 220 007c 00EB4101 		add	r1, r0, r1, lsl #1
+ 221              	.LVL15:
+ 222 0080 CD88     		ldrh	r5, [r1, #6]
+ 223 0082 2A43     		orrs	r2, r2, r5
+ 224 0084 CA80     		strh	r2, [r1, #6]	@ movhi
+  64:Src/Map.c     **** 
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 6
+
+
+  65:Src/Map.c     **** 	if (w_wall == 0)
+ 225              		.loc 1 65 0
+ 226 0086 2EB9     		cbnz	r6, .L11
+  66:Src/Map.c     **** 	{
+  67:Src/Map.c     **** 		//Remobe weat wall
+  68:Src/Map.c     **** 		wall->vertical[x] &= (~(1<<y));
+ 227              		.loc 1 68 0
+ 228 0088 30F81420 		ldrh	r2, [r0, r4, lsl #1]
+ 229 008c 22EA0302 		bic	r2, r2, r3
+ 230 0090 20F81420 		strh	r2, [r0, r4, lsl #1]	@ movhi
+ 231              	.L11:
+  69:Src/Map.c     **** 	}
+  70:Src/Map.c     **** 	wall->vertical_known[x] |= 1<<y;
+ 232              		.loc 1 70 0
+ 233 0094 04F12002 		add	r2, r4, #32
+ 234 0098 00EB4200 		add	r0, r0, r2, lsl #1
+ 235              	.LVL16:
+ 236 009c 8288     		ldrh	r2, [r0, #4]
+ 237 009e 1343     		orrs	r3, r3, r2
+ 238 00a0 8380     		strh	r3, [r0, #4]	@ movhi
+  71:Src/Map.c     **** }
+ 239              		.loc 1 71 0
+ 240 00a2 F0BC     		pop	{r4, r5, r6, r7}
+ 241              	.LCFI3:
+ 242              		.cfi_restore 7
+ 243              		.cfi_restore 6
+ 244              		.cfi_restore 5
+ 245              		.cfi_restore 4
+ 246              		.cfi_def_cfa_offset 0
+ 247              	.LVL17:
+ 248 00a4 7047     		bx	lr
+ 249              		.cfi_endproc
+ 250              	.LFE1:
+ 252              		.section	.text.Map_Init,"ax",%progbits
+ 253              		.align	1
+ 254              		.global	Map_Init
+ 255              		.syntax unified
+ 256              		.thumb
+ 257              		.thumb_func
+ 258              		.fpu fpv4-sp-d16
+ 260              	Map_Init:
+ 261              	.LFB2:
+  72:Src/Map.c     **** 
+  73:Src/Map.c     **** void Map_Init(wallData_t *wall)
+  74:Src/Map.c     **** {
+ 262              		.loc 1 74 0
+ 263              		.cfi_startproc
+ 264              		@ args = 0, pretend = 0, frame = 0
+ 265              		@ frame_needed = 0, uses_anonymous_args = 0
+ 266              		@ link register save eliminated.
+ 267              	.LVL18:
+ 268              	.LBB2:
+  75:Src/Map.c     **** 	for (unsigned char i = 0; i <= MAZE_SIZE; i++)
+ 269              		.loc 1 75 0
+ 270 0000 0023     		movs	r3, #0
+ 271 0002 13E0     		b	.L14
+ 272              	.LVL19:
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 7
+
+
+ 273              	.L15:
+  76:Src/Map.c     **** 	{
+  77:Src/Map.c     **** 		wall->horizontal[i] = 0;
+ 274              		.loc 1 77 0 discriminator 3
+ 275 0004 03F11001 		add	r1, r3, #16
+ 276 0008 00EB4101 		add	r1, r0, r1, lsl #1
+ 277 000c 0022     		movs	r2, #0
+ 278 000e 4A80     		strh	r2, [r1, #2]	@ movhi
+  78:Src/Map.c     **** 		wall->vertical[i] = 0;
+ 279              		.loc 1 78 0 discriminator 3
+ 280 0010 20F81320 		strh	r2, [r0, r3, lsl #1]	@ movhi
+  79:Src/Map.c     **** 		wall->horizontal_known[i] = 0;
+ 281              		.loc 1 79 0 discriminator 3
+ 282 0014 03F13001 		add	r1, r3, #48
+ 283 0018 00EB4101 		add	r1, r0, r1, lsl #1
+ 284 001c CA80     		strh	r2, [r1, #6]	@ movhi
+  80:Src/Map.c     **** 		wall->vertical_known[i] = 0;
+ 285              		.loc 1 80 0 discriminator 3
+ 286 001e 03F12001 		add	r1, r3, #32
+ 287 0022 00EB4101 		add	r1, r0, r1, lsl #1
+ 288 0026 8A80     		strh	r2, [r1, #4]	@ movhi
+  75:Src/Map.c     **** 	{
+ 289              		.loc 1 75 0 discriminator 3
+ 290 0028 0133     		adds	r3, r3, #1
+ 291              	.LVL20:
+ 292 002a DBB2     		uxtb	r3, r3
+ 293              	.LVL21:
+ 294              	.L14:
+  75:Src/Map.c     **** 	{
+ 295              		.loc 1 75 0 is_stmt 0 discriminator 1
+ 296 002c 102B     		cmp	r3, #16
+ 297 002e E9D9     		bls	.L15
+ 298              	.LBE2:
+  81:Src/Map.c     **** 	}
+  82:Src/Map.c     **** 	//�O�ǂ��Z�b�g
+  83:Src/Map.c     **** 	wall->horizontal[0] = 0xffff;
+ 299              		.loc 1 83 0 is_stmt 1
+ 300 0030 4FF6FF73 		movw	r3, #65535
+ 301              	.LVL22:
+ 302 0034 4384     		strh	r3, [r0, #34]	@ movhi
+  84:Src/Map.c     **** 	wall->vertical[0] = 0xffff;
+ 303              		.loc 1 84 0
+ 304 0036 0380     		strh	r3, [r0]	@ movhi
+  85:Src/Map.c     **** 	wall->horizontal[MAZE_SIZE] = 0xffff;
+ 305              		.loc 1 85 0
+ 306 0038 A0F84230 		strh	r3, [r0, #66]	@ movhi
+  86:Src/Map.c     **** 	wall->vertical[MAZE_SIZE] = 0xffff;
+ 307              		.loc 1 86 0
+ 308 003c 0384     		strh	r3, [r0, #32]	@ movhi
+  87:Src/Map.c     **** 	//start���̕ǂ��Z�b�g����
+  88:Src/Map.c     **** 	wall->vertical[1] = 0x0001;
+ 309              		.loc 1 88 0
+ 310 003e 0122     		movs	r2, #1
+ 311 0040 4280     		strh	r2, [r0, #2]	@ movhi
+  89:Src/Map.c     **** 	wall->vertical_known[1] = 0x0001;
+ 312              		.loc 1 89 0
+ 313 0042 A0F84620 		strh	r2, [r0, #70]	@ movhi
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 8
+
+
+  90:Src/Map.c     **** 	//�O�ǂ�T���ς݂ɂ���
+  91:Src/Map.c     **** 	wall->horizontal_known[0] = 0xffff;
+ 314              		.loc 1 91 0
+ 315 0046 A0F86630 		strh	r3, [r0, #102]	@ movhi
+  92:Src/Map.c     **** 	wall->vertical_known[0] = 0xffff;
+ 316              		.loc 1 92 0
+ 317 004a A0F84430 		strh	r3, [r0, #68]	@ movhi
+  93:Src/Map.c     **** 	wall->horizontal_known[MAZE_SIZE] = 0xffff;
+ 318              		.loc 1 93 0
+ 319 004e A0F88630 		strh	r3, [r0, #134]	@ movhi
+  94:Src/Map.c     **** 	wall->vertical_known[MAZE_SIZE] = 0xffff;
+ 320              		.loc 1 94 0
+ 321 0052 A0F86430 		strh	r3, [r0, #100]	@ movhi
+  95:Src/Map.c     **** }
+ 322              		.loc 1 95 0
+ 323 0056 7047     		bx	lr
+ 324              		.cfi_endproc
+ 325              	.LFE2:
+ 327              		.section	.text.Map_InitFast,"ax",%progbits
+ 328              		.align	1
+ 329              		.global	Map_InitFast
+ 330              		.syntax unified
+ 331              		.thumb
+ 332              		.thumb_func
+ 333              		.fpu fpv4-sp-d16
+ 335              	Map_InitFast:
+ 336              	.LFB3:
+  96:Src/Map.c     **** 
+  97:Src/Map.c     **** void Map_InitFast(wallData_t *wall)
+  98:Src/Map.c     **** {
+ 337              		.loc 1 98 0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 0
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+ 341              		@ link register save eliminated.
+ 342              	.LVL23:
+ 343              	.LBB3:
+  99:Src/Map.c     **** 	for (unsigned char i = 0; i <= MAZE_SIZE; i++)
+ 344              		.loc 1 99 0
+ 345 0000 0023     		movs	r3, #0
+ 346 0002 15E0     		b	.L17
+ 347              	.LVL24:
+ 348              	.L18:
+ 100:Src/Map.c     **** 	{
+ 101:Src/Map.c     **** 		wall->horizontal[i] = 0xffff;
+ 349              		.loc 1 101 0 discriminator 3
+ 350 0004 03F11002 		add	r2, r3, #16
+ 351 0008 00EB4202 		add	r2, r0, r2, lsl #1
+ 352 000c 4FF6FF71 		movw	r1, #65535
+ 353 0010 5180     		strh	r1, [r2, #2]	@ movhi
+ 102:Src/Map.c     **** 		wall->vertical[i] = 0xffff;
+ 354              		.loc 1 102 0 discriminator 3
+ 355 0012 20F81310 		strh	r1, [r0, r3, lsl #1]	@ movhi
+ 103:Src/Map.c     **** 		wall->horizontal_known[i] = 0;
+ 356              		.loc 1 103 0 discriminator 3
+ 357 0016 03F13002 		add	r2, r3, #48
+ 358 001a 00EB4202 		add	r2, r0, r2, lsl #1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 9
+
+
+ 359 001e 0021     		movs	r1, #0
+ 360 0020 D180     		strh	r1, [r2, #6]	@ movhi
+ 104:Src/Map.c     **** 		wall->vertical_known[i] = 0;
+ 361              		.loc 1 104 0 discriminator 3
+ 362 0022 03F12002 		add	r2, r3, #32
+ 363 0026 00EB4202 		add	r2, r0, r2, lsl #1
+ 364 002a 9180     		strh	r1, [r2, #4]	@ movhi
+  99:Src/Map.c     **** 	{
+ 365              		.loc 1 99 0 discriminator 3
+ 366 002c 0133     		adds	r3, r3, #1
+ 367              	.LVL25:
+ 368 002e DBB2     		uxtb	r3, r3
+ 369              	.LVL26:
+ 370              	.L17:
+  99:Src/Map.c     **** 	{
+ 371              		.loc 1 99 0 is_stmt 0 discriminator 1
+ 372 0030 102B     		cmp	r3, #16
+ 373 0032 E7D9     		bls	.L18
+ 374              	.LBE3:
+ 105:Src/Map.c     **** 	}
+ 106:Src/Map.c     **** 	//�O�ǂ��Z�b�g
+ 107:Src/Map.c     **** 	wall->horizontal[0] = 0xffff;
+ 375              		.loc 1 107 0 is_stmt 1
+ 376 0034 4FF6FF73 		movw	r3, #65535
+ 377              	.LVL27:
+ 378 0038 4384     		strh	r3, [r0, #34]	@ movhi
+ 108:Src/Map.c     **** 	wall->vertical[0] = 0xffff;
+ 379              		.loc 1 108 0
+ 380 003a 0380     		strh	r3, [r0]	@ movhi
+ 109:Src/Map.c     **** 	wall->horizontal[MAZE_SIZE] = 0xffff;
+ 381              		.loc 1 109 0
+ 382 003c A0F84230 		strh	r3, [r0, #66]	@ movhi
+ 110:Src/Map.c     **** 	wall->vertical[MAZE_SIZE] = 0xffff;
+ 383              		.loc 1 110 0
+ 384 0040 0384     		strh	r3, [r0, #32]	@ movhi
+ 111:Src/Map.c     **** 	//start���̕ǂ��Z�b�g����
+ 112:Src/Map.c     **** 	wall->vertical_known[1] = 0x0001;
+ 385              		.loc 1 112 0
+ 386 0042 0122     		movs	r2, #1
+ 387 0044 A0F84620 		strh	r2, [r0, #70]	@ movhi
+ 113:Src/Map.c     **** 	//�O�ǂ�T���ς݂ɂ���
+ 114:Src/Map.c     **** 	wall->horizontal_known[0] = 0xffff;
+ 388              		.loc 1 114 0
+ 389 0048 A0F86630 		strh	r3, [r0, #102]	@ movhi
+ 115:Src/Map.c     **** 	wall->vertical_known[0] = 0xffff;
+ 390              		.loc 1 115 0
+ 391 004c A0F84430 		strh	r3, [r0, #68]	@ movhi
+ 116:Src/Map.c     **** 	wall->horizontal_known[MAZE_SIZE] = 0xffff;
+ 392              		.loc 1 116 0
+ 393 0050 A0F88630 		strh	r3, [r0, #134]	@ movhi
+ 117:Src/Map.c     **** 	wall->vertical_known[MAZE_SIZE] = 0xffff;
+ 394              		.loc 1 117 0
+ 395 0054 A0F86430 		strh	r3, [r0, #100]	@ movhi
+ 118:Src/Map.c     **** }...
+ 396              		.loc 1 118 0
+ 397 0058 7047     		bx	lr
+ 398              		.cfi_endproc
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 10
+
+
+ 399              	.LFE3:
+ 401              		.text
+ 402              	.Letext0:
+ 403              		.file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 404              		.file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
+ 405              		.file 4 "Inc/MazeCon.h"
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Map.c
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:18     .text.Map_addWall:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:25     .text.Map_addWall:00000000 Map_addWall
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:136    .text.Map_DelWall:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:143    .text.Map_DelWall:00000000 Map_DelWall
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:253    .text.Map_Init:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:260    .text.Map_Init:00000000 Map_Init
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:328    .text.Map_InitFast:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccaKHIQK.s:335    .text.Map_InitFast:00000000 Map_InitFast
+
+NO UNDEFINED SYMBOLS

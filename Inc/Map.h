@@ -7,6 +7,7 @@ extern "C"
 	#include "MazeCon.h"
 
 	void Map_addWall(wallData_t *wall, pos_t *pos, unsigned char n_wall, unsigned char e_wall, unsigned char s_wall, unsigned char w_wall);
+	void Map_DelWall(wallData_t *wall, pos_t *pos, unsigned char n_wall, unsigned char e_wall, unsigned char w_wall, unsigned char s_wall);
 	void Map_Init(wallData_t *wall);
 	void Map_InitFast(wallData_t *wall);
 	

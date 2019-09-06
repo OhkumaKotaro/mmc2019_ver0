@@ -69,10 +69,6 @@ extern TIM_HandleTypeDef htim8;
 #define HZ_C_H 76
 #define HZ_NORMAL 10
 
-//encoder
-#define ENC_CUL_ROT 1024.0f//512 * 2
-#define TIRE_RADIUS 12.4f  //[mm] 24.58mm
-#define GEAR_RATE 3.5f
 
 typedef struct{
   volatile float distance;
@@ -96,7 +92,7 @@ void Tim_BuzzerPwm(int hz,int vol);
 void Tim_MotorPwm(int16_t left_pwm,int16_t right_pwm);
 void Tim_MotorBrake(void);
 void Tim_UpdateEncoder(void);
-void Tim_FanPwm(int vol);
+void Tim_FanPwm(uint16_t vol);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

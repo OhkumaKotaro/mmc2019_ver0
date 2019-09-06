@@ -23,6 +23,8 @@ extern volatile accel_t accel;
 
 extern volatile uint8_t motion_end_flag;
 
+extern uint8_t cnt_100ms;
+
 //straight
 target_t straight;
 volatile float dist_idial = 0.0f;
@@ -45,8 +47,14 @@ uint8_t slip_cnt = 0;
 float wall_dif = 0;
 unsigned char add_l = 0, add_r = 0;
 volatile uint8_t control_wall_flag;
-float front_wall_diff = 0;
+float front_wall_diff = 0.0f;
 volatile uint8_t front_wall_flag;
+//wall edge
+uint8_t walledge_step = 0;
+uint8_t walledge_offset = 0;
+uint8_t walledge_flag = 0;
+int32_t walledge_cnt = 0;
+float walledge_diff = 0.0f;
 
 /****************************************************************************************
  * outline  : PID control
@@ -131,7 +139,7 @@ void UpdateStrTarget()
 {
     if (straight.dir == 0.0f)
     {
-        //straight.v_now = 0.0f;
+        straight.v_now = 0.0f;
     }
     else
     {
@@ -150,57 +158,190 @@ void UpdateStrTarget()
         else
         {
             motion_end_flag = TRUE;
+            walledge_flag = TRUE;
         }
     }
 }
 
-void Control_Side_Wall(void)
+void Control_EdgeSet(uint8_t offset)
 {
-    float kp = 0.20f;
-    if (sen_l.now > sen_l.threshold + add_l && sen_r.now > sen_r.threshold + add_r)
-    {
+    walledge_flag = FALSE;
+    walledge_offset = offset;
+}
 
-        Gpio_SideLed(LED_L | LED_R);
-        wall_dif = kp * ((sen_l.now - sen_l.reference) - (sen_r.now - sen_r.reference));
-        add_l = 0;
-        add_r = 0;
-    }
-    else if (sen_l.now > sen_l.threshold + add_l)
+void WallEdgeFix(uint8_t dist)
+{
+    if (walledge_flag == FALSE)
     {
-        Gpio_SideLed(LED_L);
-        wall_dif = 2 * kp * (sen_l.now - sen_l.reference);
-        add_l = 0;
+        dist_idial = (float)(dist + walledge_offset);
+        walledge_flag = TRUE;
     }
-    else if (sen_r.now > sen_r.threshold + add_r)
+}
+
+void SideWallFix(void)
+{
+    float kp = 0.80f;
+    int16_t diff_l = sen_l.diff;
+    int16_t diff_r = sen_r.diff;
+
+    if (diff_l < -10 && diff_r < -10)
     {
-        Gpio_SideLed(LED_R);
-        wall_dif = -2 * kp * (sen_r.now - sen_r.reference);
-        add_r = 0;
+        add_l = 20;
+        add_r = 35;
+    }
+    else if (diff_l < -10)
+    {
+        add_l = 20;
+    }
+    else if (diff_r < -10)
+    {
+        add_r = 35;
+    }
+
+    if (diff_l < -20 || diff_r < -20)
+    {
+        WallEdgeFix(73);
+    }
+
+    if (sen_front.now < 120)
+    {
+        if (angle.dir != 0 || straight.v_now < 380)
+        {
+            wall_dif = 0;
+            add_r = 0;
+            add_l = 0;
+        }
+        else if (sen_l.now > sen_l.threshold + add_l && sen_r.now > sen_r.threshold + add_r)
+        {
+            wall_dif = kp * ((sen_l.now - sen_l.reference) - (sen_r.now - sen_r.reference));
+            add_l = 0;
+            add_r = 0;
+        }
+        else if (sen_l.now > sen_l.threshold + add_l)
+        {
+            wall_dif = 2.5f * kp * (sen_l.now - sen_l.reference);
+            add_l = 0;
+        }
+        else if (sen_r.now > sen_r.threshold + add_r)
+        {
+            wall_dif = -2.0f * kp * (sen_r.now - sen_r.reference);
+            add_r = 0;
+        }
+        else
+        {
+            wall_dif = 0;
+        }
     }
     else
     {
         wall_dif = 0;
-        Gpio_SideLed(0);
+    }
+}
+
+void SideWallFiX_Fast(void)
+{
+    float kp = 0.50f;
+    int16_t diff_l = sen_l.diff;
+    int16_t diff_r = sen_r.diff;
+
+    if (diff_l < -10 && diff_r < -10)
+    {
+        add_l = 20;
+        add_r = 35;
+        /*
+        if (walledge_diff == 0.0f)
+        {
+            walledge_diff = 0.50f * (float)walledge_cnt;
+        }
+        */
+    }
+    else if (diff_l < -10)
+    {
+        add_l = 20;
+        //walledge_cnt++;
+    }
+    else if (diff_r < -10)
+    {
+        add_r = 35;
+        //walledge_cnt--;
+    }
+    else
+    {
+        //walledge_cnt = 0;
+        //walledge_diff = 0.0f;
     }
 
-    if (sen_l.diff < -10)
+    if (diff_l < -20 || diff_r < -20)
     {
-        add_l = 10;
-        wall_dif = 0;
-        Gpio_SideLed(0);
-    }
-    if (sen_r.diff < -10)
-    {
-        add_r = 10;
-        wall_dif = 0;
-        Gpio_SideLed(0);
+        WallEdgeFix(73);
     }
 
-    if (angle.dir != 0 || enc.velocity < 300)
+    if (sen_front.now < 120)
+    {
+        if (angle.dir != 0 || straight.v_now < 380)
+        {
+            wall_dif = 0;
+            add_r = 0;
+            add_l = 0;
+        }
+        else if (sen_l.now > sen_l.threshold + add_l && sen_r.now > sen_r.threshold + add_r)
+        {
+            wall_dif = kp * ((sen_l.now - sen_l.reference) - (sen_r.now - sen_r.reference));
+            add_l = 0;
+            add_r = 0;
+        }
+        else if (sen_l.now > sen_l.threshold + add_l)
+        {
+            wall_dif = 2.5f * kp * (sen_l.now - sen_l.reference);
+            add_l = 0;
+        }
+        else if (sen_r.now > sen_r.threshold + add_r)
+        {
+            wall_dif = -2.0f * kp * (sen_r.now - sen_r.reference);
+            add_r = 0;
+        }
+        else
+        {
+            wall_dif = 0;
+        }
+    }
+    else
     {
         wall_dif = 0;
-        Gpio_SideLed(0);
     }
+    //wall_dif -= walledge_diff;
+}
+
+void DiagonalSideWall(void)
+{
+    int16_t ref_l = 155;
+    int16_t ref_r = 246;
+    int16_t ref_fl = 96;
+    int16_t ref_fr = 74;
+
+    float diff = 0;
+    float Kp = 0.8;
+
+    if (angle.dir == 0)
+    {
+        if (sen_l.now > ref_l)
+        {
+            diff = Kp * (sen_l.now - ref_l);
+        }
+        else if (sen_r.now > ref_r)
+        {
+            diff = -Kp * (sen_r.now - ref_r);
+        }
+        else if (sen_fl.now > ref_fl)
+        {
+            diff = Kp * (sen_fl.now - ref_fl);
+        }
+        else if (sen_fr.now > ref_fr)
+        {
+            diff = -Kp * (sen_fr.now - ref_fr);
+        }
+    }
+    wall_dif = diff;
 }
 
 void Control_FrontWall(void)
@@ -219,9 +360,9 @@ void Control_FrontWall(void)
 
 void UpdateAngTarget(void)
 {
-    if (angle.dir == 0.0f)
+    if (angle.dir == 0)
     {
-        //angle.v_now = 0.0f;
+        angle.v_now = 0.0f;
     }
     else
     {
@@ -240,7 +381,7 @@ void UpdateAngTarget(void)
         else
         {
             ang_idial = 0.0f;
-            angle.error = 0;
+            angle.v_now = 0;
             motion_end_flag = TRUE;
         }
     }
@@ -255,8 +396,16 @@ void UpdateLoger(void)
     loger.velo_ang[loger.cnt] = (int16_t)gyro_z.velocity;
     */
     //loger.velo[loger.cnt] = (int16_t)accel.y;
+    /*
     loger.target_velo[loger.cnt] = sen_l.now;
     loger.target_velo_ang[loger.cnt] = sen_r.now;
+    loger.velo[loger.cnt] = sen_l.diff;
+    loger.velo_ang[loger.cnt] = sen_r.diff;
+    */
+
+    //wall cutoff
+    loger.target_velo[loger.cnt] = (int16_t)enc.distance;
+    loger.target_velo_ang[loger.cnt] = (int16_t)dist_idial;
     loger.velo[loger.cnt] = sen_l.diff;
     loger.velo_ang[loger.cnt] = sen_r.diff;
     loger.cnt++;
@@ -294,26 +443,40 @@ void Control_UpdatePwm(void)
             UpdateStrTarget();
             UpdateAngTarget();
         }
-        if (control_wall_flag == TRUE)
+        if (control_wall_flag == 1)
         {
-            Control_Side_Wall();
+            SideWallFix();
+        }
+        else if (control_wall_flag == 2)
+        {
+            SideWallFiX_Fast();
+        }
+        else if (control_wall_flag == 3)
+        {
+            DiagonalSideWall();
+        }
+        else
+        {
+            wall_dif = 0;
         }
         Control_FrontWall();
-        int16_t str_buff = (int16_t)PID_value(straight.dir * straight.v_now + front_wall_diff, enc.velocity, &error_sum, &error_old, 1.7f, 11.5f, 0);  //1.7f, 11.5f, 0
+        int16_t str_buff = (int16_t)PID_value(straight.dir * straight.v_now + front_wall_diff, enc.velocity, &error_sum, &error_old, 2.0f, 9.0f, 0);   //1.7f, 11.5f, 0
         int16_t ang_buff = (int16_t)PID_value(angle.dir * angle.v_now - wall_dif, gyro_z.velocity, &error_ang_sum, &error_ang_old, 0.8f, 20.0f, 1.0f); // 1.0f, 52.0f, 1.0f
-        /*
-        if(straight.dir == -1){
-            ang_buff = 0;
-        }
-        */
+
         Tim_MotorPwm(str_buff - ang_buff, str_buff + ang_buff);
         if ((angle.dir * angle.v_now - gyro_z.velocity < -400) || (angle.dir * angle.v_now - gyro_z.velocity) > 400)
         {
-            motor_flag = FALSE;
+            if (straight.dir != -1)
+            {
+                motor_flag = FALSE;
+            }
         }
         if (accel.y < -60.0f)
         {
-            motor_flag = FALSE;
+            if (straight.dir != -1)
+            {
+                motor_flag = FALSE;
+            }
         }
     }
     else if (motor_flag == FALSE)
@@ -337,4 +500,5 @@ void Control_ResetVelo(void)
     enc.distance = 0;
     front_wall_flag = FALSE;
     front_wall_diff = 0;
+    walledge_flag = TRUE;
 }
