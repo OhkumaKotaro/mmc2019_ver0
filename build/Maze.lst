@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
   20:Src/Maze.c    **** 	// ���̓���Ō����A���W���X�V����	
   21:Src/Maze.c    **** 	if (dir == FRONT) {
   37              		.loc 1 21 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 2
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 2
 
 
   38 0004 B8B9     		cbnz	r0, .L2
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
   18:Src/Maze.c    **** 	}
   79              		.loc 1 18 0
   80 0034 0320     		movs	r0, #3
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 3
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 3
 
 
   81              	.LVL1:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
   81:Src/Maze.c    **** 		}
   82:Src/Maze.c    **** 	}
   83:Src/Maze.c    **** 	else if (dir == REAR) {
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 4
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 4
 
 
   89              		.loc 1 83 0
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  117              	.L14:
   46:Src/Maze.c    **** 			pos->dir = NORTH;
  118              		.loc 1 46 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 5
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 5
 
 
  119 005e 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  163 0094 0B70     		strb	r3, [r1]
   65:Src/Maze.c    **** 			break;
  164              		.loc 1 65 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 6
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 6
 
 
  165 0096 0323     		movs	r3, #3
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  208 00cc 0E       		.byte	(.L24-.L22)/2
  209 00cd 08       		.byte	(.L25-.L22)/2
  210              		.p2align 1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 7
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 7
 
 
  211              	.L21:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  255              		.align	1
  256              		.global	Maze_GetWallData
  257              		.syntax unified
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 8
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 8
 
 
  258              		.thumb
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  121:Src/Maze.c    **** 	else if (dir == EAST) {
  122:Src/Maze.c    **** 		check_wall <<= y;
  123:Src/Maze.c    **** 		check_wall &= wall->vertical[x + 1];
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 9
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 9
 
 
  124:Src/Maze.c    **** 		if (check_wall != 0) {
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  323 0034 0122     		movs	r2, #1
  324              	.LVL15:
  325 0036 02FA01F1 		lsl	r1, r2, r1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 10
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 10
 
 
  326              	.LVL16:
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  371              	.LVL29:
  137:Src/Maze.c    **** 		if (check_wall != 0) {
  372              		.loc 1 137 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 11
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 11
 
 
  373 0066 33F81000 		ldrh	r0, [r3, r0, lsl #1]
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  424              	Search_UnknownWall:
  425              	.LFB5:
  150:Src/Maze.c    **** 
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 12
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 12
 
 
  151:Src/Maze.c    **** void Search_UnknownWall(wallData_t *wall, unsigned char *tail, unsigned char pos[MAX_STEP]) {
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  174:Src/Maze.c    **** 			if (i > 0)
  175:Src/Maze.c    **** 			{
  176:Src/Maze.c    **** 				if ((wall->vertical_known[i] & (0b1 << j)) == 0) {
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 13
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 13
 
 
  177:Src/Maze.c    **** 					tmp_step = 0;
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  498              	.LVL49:
  162:Src/Maze.c    **** 			{
  499              		.loc 1 162 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 14
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 14
 
 
  500 004a 4BB1     		cbz	r3, .L57
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  546              	.L55:
  154:Src/Maze.c    **** 		for (unsigned char j = 0; j < MAZE_SIZE; j++) {
  547              		.loc 1 154 0 is_stmt 0 discriminator 1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 15
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 15
 
 
  548 0092 0F2A     		cmp	r2, #15
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  596              	.LVL56:
  193:Src/Maze.c    **** 	unsigned char head = 0;
  194:Src/Maze.c    **** 	unsigned char tail = 0;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 16
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 16
 
 
  597              		.loc 1 194 0
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  637              	.LBE7:
  204:Src/Maze.c    **** 		}
  205:Src/Maze.c    **** 	}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 17
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 17
 
 
  206:Src/Maze.c    **** 
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  663              		.loc 1 199 0
  664 0052 0021     		movs	r1, #0
  665              	.LVL65:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 18
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 18
 
 
  666              	.L85:
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  706              	.LVL72:
  707              	.L81:
  248:Src/Maze.c    **** 			{
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 19
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 19
 
 
  249:Src/Maze.c    **** 				step[x][y + 1] = step[x][y] + 1;
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  740 00c4 06D1     		bne	.L83
  741              		.loc 1 270 0 is_stmt 0 discriminator 1
  742 00c6 541E     		subs	r4, r2, #1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 20
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 20
 
 
  743              	.LVL77:
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  782              		.loc 1 285 0
  783 0102 9DF8FF30 		ldrb	r3, [sp, #255]	@ zero_extendqisi2
  784 0106 1443     		orrs	r4, r4, r2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 21
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 21
 
 
  785 0108 0DF80340 		strb	r4, [sp, r3]
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  224:Src/Maze.c    **** 			tail++;
  831              		.loc 1 224 0
  832 0150 40B2     		sxtb	r0, r0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 22
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 22
 
 
  833              	.LVL93:
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  879              		.loc 1 262 0
  880 01a0 0130     		adds	r0, r0, #1
  881 01a2 8DF8FF00 		strb	r0, [sp, #255]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 23
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 23
 
 
  882 01a6 84E7     		b	.L82
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  924 01da 3B70     		strb	r3, [r7]
  925              		.loc 1 294 0
  926 01dc FAE7     		b	.L74
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 24
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 24
 
 
  927              	.L99:
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  972 0012 0400     		.2byte	(.L102-.L103)/2
  973 0014 FA00     		.2byte	(.L104-.L103)/2
  974 0016 A900     		.2byte	(.L105-.L103)/2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 25
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 25
 
 
  975 0018 5600     		.2byte	(.L106-.L103)/2
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  320:Src/Maze.c    **** 		{
  321:Src/Maze.c    **** 			if (x > 0)
  1012              		.loc 1 321 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 26
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 26
 
 
  1013 0054 3AB1     		cbz	r2, .L108
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  341:Src/Maze.c    **** 		if (tmp_step == MAX_STEP || step[x][y - 1] < tmp_step)
  1048              		.loc 1 341 0
  1049 0088 FF2D     		cmp	r5, #255
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 27
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 27
 
 
  1050 008a 06D0     		beq	.L110
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  372:Src/Maze.c    **** 					tmp_dir = LEFT;
  373:Src/Maze.c    **** 				}
  374:Src/Maze.c    **** 			}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 28
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 28
 
 
  375:Src/Maze.c    **** 		}
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  429:Src/Maze.c    **** 					tmp_dir = RIGHT;
  430:Src/Maze.c    **** 				}
  431:Src/Maze.c    **** 			}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 29
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 29
 
 
  432:Src/Maze.c    **** 		}
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  486:Src/Maze.c    **** 			{
  487:Src/Maze.c    **** 				tmp_dir = PIVO_REAR;
  488:Src/Maze.c    **** 			}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 30
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 30
 
 
  489:Src/Maze.c    **** 		}
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1114 00de 2046     		mov	r0, r4
  297:Src/Maze.c    **** 	unsigned char tmp_dir = REAR;	 // ����
  1115              		.loc 1 297 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 31
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 31
 
 
  1116 00e0 FF25     		movs	r5, #255
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1161 012a 17F0010F 		tst	r7, #1
  1162 012e 01D1     		bne	.L113
  382:Src/Maze.c    **** 					tmp_dir = RIGHT;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 32
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 32
 
 
  1163              		.loc 1 382 0
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1208 016c 2D5C     		ldrb	r5, [r5, r0]	@ zero_extendqisi2
  1209 016e FF2D     		cmp	r5, #255
  1210 0170 0DD0     		beq	.L136
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 33
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 33
 
 
  402:Src/Maze.c    **** 			{
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1254 01b2 561E     		subs	r6, r2, #1
  1255 01b4 424F     		ldr	r7, .L149
  1256 01b6 07EB0616 		add	r6, r7, r6, lsl #4
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 34
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 34
 
 
  1257 01ba F65C     		ldrb	r6, [r6, r3]	@ zero_extendqisi2
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1302              		.loc 1 298 0
  1303 01fc 0320     		movs	r0, #3
  297:Src/Maze.c    **** 	unsigned char tmp_dir = REAR;	 // ����
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 35
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 35
 
 
  1304              		.loc 1 297 0
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1348 0240 01EB4707 		add	r7, r1, r7, lsl #1
  1349 0244 7F88     		ldrh	r7, [r7, #2]
  1350 0246 1741     		asrs	r7, r7, r2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 36
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 36
 
 
  1351 0248 17F0010F 		tst	r7, #1
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1395              		.loc 1 481 0 is_stmt 1
  1396 028e 31F81220 		ldrh	r2, [r1, r2, lsl #1]
  1397              	.LVL146:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 37
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 37
 
 
  1398 0292 42FA03F3 		asr	r3, r2, r3
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1443              	.LVL157:
  1444 02bc F8E6     		b	.L101
  1445              	.L150:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 38
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 38
 
 
  1446 02be 00BF     		.align	2
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1495              		@ frame_needed = 0, uses_anonymous_args = 0
  1496              	.LVL160:
  1497 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 39
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 39
 
 
  1498              	.LCFI12:
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1535 0024 2544     		add	r5, r5, r4
  1536 0026 4FF6FF76 		movw	r6, #65535
  1537 002a 4C4B     		ldr	r3, .L187
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 40
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 40
 
 
  1538 002c 23F81560 		strh	r6, [r3, r5, lsl #1]	@ movhi
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1579              	.L158:
  1580 0056 0024     		movs	r4, #0
  1581 0058 2346     		mov	r3, r4
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 41
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 41
 
 
  1582 005a 87E0     		b	.L162
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1624              		.loc 1 539 0
  1625 00b4 0EF10103 		add	r3, lr, #1
  1626 00b8 80AC     		add	r4, sp, #512
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 42
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 42
 
 
  1627 00ba 6355     		strb	r3, [r4, r5]
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1669 010c 03F807C0 		strb	ip, [r3, r7]
  552:Src/Maze.c    **** 			y_v[tail_v] = gy;
  1670              		.loc 1 552 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 43
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 43
 
 
  1671 0110 0DF807E0 		strb	lr, [sp, r7]
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  584:Src/Maze.c    **** 						}
  585:Src/Maze.c    **** 					}
  586:Src/Maze.c    **** 				}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 44
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 44
 
 
  587:Src/Maze.c    **** 				//holizontal->vertical
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1704 0144 0136     		adds	r6, r6, #1
  1705              	.LVL184:
  629:Src/Maze.c    **** 							uint8_t y_buff = y_h[head_h] - 1;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 45
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 45
 
 
  1706              		.loc 1 629 0
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  661:Src/Maze.c    **** 							x_v[tail_v] = x_buff;
  662:Src/Maze.c    **** 							y_v[tail_v] = y_buff;
  663:Src/Maze.c    **** 							tail_v++;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 46
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 46
 
 
  664:Src/Maze.c    **** 						}
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1729              		.loc 1 717 0
  1730 0168 0134     		adds	r4, r4, #1
  1731              	.LVL189:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 47
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 47
 
 
  1732 016a E4B2     		uxtb	r4, r4
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1779              		.loc 1 566 0
  1780 01de 0CEB0C1A 		add	r10, ip, ip, lsl #4
  1781 01e2 0AEB0806 		add	r6, r10, r8
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 48
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 48
 
 
  1782 01e6 3BF81660 		ldrh	r6, [fp, r6, lsl #1]
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1829              	.LBB18:
  578:Src/Maze.c    **** 							uint8_t x_buff = x_h[head_h];
  1830              		.loc 1 578 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 49
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 49
 
 
  1831 0252 09EB091A 		add	r10, r9, r9, lsl #4
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  591:Src/Maze.c    **** 							uint8_t x_buff = x_h[head_h];
  1878              		.loc 1 591 0
  1879 02be 06EB0619 		add	r9, r6, r6, lsl #4
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 50
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 50
 
 
  1880 02c2 C144     		add	r9, r9, r8
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1927 0336 3EF81AE0 		ldrh	lr, [lr, r10, lsl #1]
  1928 033a 9644     		add	lr, lr, r2
  1929 033c 1FFA8EFE 		uxth	lr, lr
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 51
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 51
 
 
  1930 0340 C844     		add	r8, r8, r9
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  1976 03a6 1FFA88F8 		uxth	r8, r8
  1977 03aa 0EEB0E1E 		add	lr, lr, lr, lsl #4
  1978 03ae E644     		add	lr, lr, ip
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 52
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 52
 
 
  1979 03b0 DFF86493 		ldr	r9, .L189+4
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2024              	.L163:
  640:Src/Maze.c    **** 			if (stepEx_v[x_v[head_v]][y_v[head_v]] != MAX_STEP_EX) {
  2025              		.loc 1 640 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 53
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 53
 
 
  2026 040c BC42     		cmp	r4, r7
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2074              	.LVL210:
  649:Src/Maze.c    **** 							y_v[tail_v] = y_buff;
  2075              		.loc 1 649 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 54
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 54
 
 
  2076 048c 0DF5807C 		add	ip, sp, #256
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  661:Src/Maze.c    **** 							y_v[tail_v] = y_buff;
  2123              		.loc 1 661 0
  2124 04f8 0DF5807C 		add	ip, sp, #256
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 55
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 55
 
 
  2125 04fc 0CF80760 		strb	r6, [ip, r7]
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2171              		.loc 1 675 0
  2172 056c 0DF5007C 		add	ip, sp, #512
  2173 0570 0CF80560 		strb	r6, [ip, r5]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 56
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 56
 
 
  676:Src/Maze.c    **** 						}
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2221              		.loc 1 686 0
  2222 05e8 0DF54078 		add	r8, sp, #768
  2223 05ec 08F805E0 		strb	lr, [r8, r5]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 57
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 57
 
 
  687:Src/Maze.c    **** 							tail_h++;
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  698:Src/Maze.c    **** 							y_h[tail_h] = y_buff;
  2271              		.loc 1 698 0
  2272 0662 0DF54078 		add	r8, sp, #768
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 58
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 58
 
 
  2273 0666 08F805C0 		strb	ip, [r8, r5]
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2320 06e0 CE44     		add	lr, lr, r9
  2321 06e2 DFF83090 		ldr	r9, .L189
  2322 06e6 29F81E80 		strh	r8, [r9, lr, lsl #1]	@ movhi
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 59
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 59
 
 
  708:Src/Maze.c    **** 							uint8_t y_buff = y_v[head_v] + 1;
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2369              		.fpu fpv4-sp-d16
  2371              	Maze_GetNextMotionEx:
  2372              	.LFB10:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 60
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 60
 
 
  721:Src/Maze.c    **** 
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2413 0026 03EB0310 		add	r0, r3, r3, lsl #4
  2414 002a 2844     		add	r0, r0, r5
  2415 002c A94C     		ldr	r4, .L221
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 61
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 61
 
 
  2416 002e 34F81040 		ldrh	r4, [r4, r0, lsl #1]
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2458 0082 10D2     		bcs	.L199
  746:Src/Maze.c    **** 		{
  747:Src/Maze.c    **** 			if (x > 0)
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 62
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 62
 
 
  2459              		.loc 1 747 0
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2500              	.L192:
  761:Src/Maze.c    **** 				{
  762:Src/Maze.c    **** 					tmp_step = stepEx_v[x + 1][y];
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 63
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 63
 
 
  763:Src/Maze.c    **** 					tmp_dir = RIGHT;
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  817:Src/Maze.c    **** 			if (x < MAZE_SIZE - 1)
  818:Src/Maze.c    **** 			{
  819:Src/Maze.c    **** 				if (((wall->vertical[x + 1] >> y) & 0b1) == FALSE)
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 64
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 64
 
 
  820:Src/Maze.c    **** 				{
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  874:Src/Maze.c    **** 		break;
  875:Src/Maze.c    **** 	}
  876:Src/Maze.c    **** 	return tmp_dir;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 65
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 65
 
 
  877:Src/Maze.c    **** }
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2550 010a A542     		cmp	r5, r4
  2551 010c 12D2     		bcs	.L210
  771:Src/Maze.c    **** 			{
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 66
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 66
 
 
  2552              		.loc 1 771 0
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2598              		.loc 1 786 0
  2599 0166 03EB0310 		add	r0, r3, r3, lsl #4
  2600              	.LVL254:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 67
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 67
 
 
  2601 016a 0644     		add	r6, r6, r0
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2648 01be 0320     		movs	r0, #3
  2649 01c0 B9E7     		b	.L200
  2650              	.L212:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 68
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 68
 
 
  2651 01c2 0320     		movs	r0, #3
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2698 021c BDF80650 		ldrh	r5, [sp, #6]
  2699 0220 ADB2     		uxth	r5, r5
  2700 0222 AE42     		cmp	r6, r5
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 69
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 69
 
 
  2701 0224 11D2     		bcs	.L203
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2747 027e 164B     		ldr	r3, .L221+4
  2748 0280 33F81230 		ldrh	r3, [r3, r2, lsl #1]
  2749 0284 9BB2     		uxth	r3, r3
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 70
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 70
 
 
  2750 0286 ADF80630 		strh	r3, [sp, #6]	@ movhi
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2797 02d8 00000000 		.word	stepEx_v
  2798              	.LVL274:
  2799              	.L216:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 71
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 71
 
 
  725:Src/Maze.c    **** 									 // ���݂̌����ɉ����ďꍇ�������A �������
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  863:Src/Maze.c    **** 			{
  2847              		.loc 1 863 0
  2848 033a 0E2A     		cmp	r2, #14
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 72
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 72
 
 
  2849 033c 3FF6C8AE 		bhi	.L192
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  879:Src/Maze.c    **** uint16_t Maze_GetStepEx_h(uint8_t x, uint8_t y) {
  2900              		.loc 1 879 0
  2901              		.cfi_startproc
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 73
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 73
 
 
  2902              		@ args = 0, pretend = 0, frame = 0
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2952              	.LFE12:
  2954              		.section	.text.Compress_T90,"ax",%progbits
  2955              		.align	1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 74
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 74
 
 
  2956              		.global	Compress_T90
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  2994 0024 9DF80722 		ldrb	r2, [sp, #519]	@ zero_extendqisi2
  2995 0028 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
  2996 002c DBB2     		uxtb	r3, r3
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 75
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 75
 
 
  2997 002e 30F81240 		ldrh	r4, [r0, r2, lsl #1]
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  930:Src/Maze.c    **** 				if (buff_motion[buff_tail] ==(( 2 << 4) | FRONT)) {
  931:Src/Maze.c    **** 					buff_motion[buff_tail] = 1<<4|ADJUST;
  932:Src/Maze.c    **** 					buff_tail++;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 76
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 76
 
 
  933:Src/Maze.c    **** 				}
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3063 00ca 03F10043 		add	r3, r3, #-2147483648
  3064 00ce 023B     		subs	r3, r3, #2
  3065 00d0 30F81330 		ldrh	r3, [r0, r3, lsl #1]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 77
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 77
 
 
  3066 00d4 13F00F0F 		tst	r3, #15
@@ -4618,7 +4618,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  909:Src/Maze.c    **** 				}
  3113              		.loc 1 909 0
  3114 0146 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 78
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 78
 
 
  3115 014a 0133     		adds	r3, r3, #1
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3162 01be 9DF80722 		ldrb	r2, [sp, #519]	@ zero_extendqisi2
  3163 01c2 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
  3164 01c6 DBB2     		uxtb	r3, r3
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 79
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 79
 
 
  3165 01c8 30F81220 		ldrh	r2, [r0, r2, lsl #1]
@@ -4738,7 +4738,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3212 023a 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
  3213 023e DBB2     		uxtb	r3, r3
  3214 0240 42F03002 		orr	r2, r2, #48
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 80
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 80
 
 
  3215 0244 01AC     		add	r4, sp, #4
@@ -4798,7 +4798,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3259              	.LVL294:
  3260              	.L242:
  943:Src/Maze.c    **** 		motion[i] = buff_motion[i];
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 81
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 81
 
 
  3261              		.loc 1 943 0 is_stmt 0 discriminator 1
@@ -4858,7 +4858,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  951:Src/Maze.c    **** 	uint8_t tail = *origin_tail;
  3311              		.loc 1 951 0
  3312 0006 0F78     		ldrb	r7, [r1]	@ zero_extendqisi2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 82
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 82
 
 
  3313              	.LVL298:
@@ -4918,7 +4918,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  978:Src/Maze.c    **** 					buff_motion[buff_tail] = 1 << 4 | FRONT;
  979:Src/Maze.c    **** 					buff_tail++;
  980:Src/Maze.c    **** 				}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 83
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 83
 
 
  981:Src/Maze.c    **** 				else if (((*(motion + head)&0xf) == ADJUST) && ((*(motion + head - 3) & 0xf) == FRONT)) {
@@ -4978,7 +4978,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3364 003e 30F81320 		ldrh	r2, [r0, r3, lsl #1]
  3365 0042 2DF81520 		strh	r2, [sp, r5, lsl #1]	@ movhi
  958:Src/Maze.c    **** 		if (*(motion + head) == LEFT || *(motion + head) == RIGHT)
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 84
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 84
 
 
  3366              		.loc 1 958 0
@@ -5038,7 +5038,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3411 0090 11D0     		beq	.L270
  3412              	.LVL314:
  3413              	.L255:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 85
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 85
 
 
  976:Src/Maze.c    **** 					buff_tail++;
@@ -5098,7 +5098,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3457 00d6 3DF81460 		ldrh	r6, [sp, r4, lsl #1]
  3458 00da 202E     		cmp	r6, #32
  3459 00dc 13D0     		beq	.L271
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 86
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 86
 
 
  3460              	.LVL321:
@@ -5158,7 +5158,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3505              	.LVL331:
  3506              	.L258:
  999:Src/Maze.c    **** 					buff_tail++;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 87
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 87
 
 
  3507              		.loc 1 999 0
@@ -5218,7 +5218,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3552 0160 1A23     		movs	r3, #26
  3553 0162 2DF81230 		strh	r3, [sp, r2, lsl #1]	@ movhi
  3554              	.LVL338:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 88
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 88
 
 
  997:Src/Maze.c    **** 					}
@@ -5278,7 +5278,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3601              		.loc 1 1019 0
  3602 0012 8DF80532 		strb	r3, [sp, #517]
 1020:Src/Maze.c    **** 	volatile uint16_t buff_motion[MAX_STEP];
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 89
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 89
 
 
 1021:Src/Maze.c    **** 
@@ -5338,7 +5338,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3637 005c 34E2     		b	.L283
  3638              	.L305:
 1035:Src/Maze.c    **** 					buff_motion[buff_tail] = 1<<4|ADJUST;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 90
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 90
 
 
  3639              		.loc 1 1035 0
@@ -5398,7 +5398,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3681              		.loc 1 1050 0
  3682 00c0 0122     		movs	r2, #1
  3683 00c2 01E2     		b	.L283
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 91
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 91
 
 
  3684              	.LVL343:
@@ -5458,7 +5458,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3724 0116 DBB2     		uxtb	r3, r3
  3725 0118 42F05002 		orr	r2, r2, #80
  3726 011c 01AC     		add	r4, sp, #4
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 92
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 92
 
 
  3727 011e 24F81320 		strh	r2, [r4, r3, lsl #1]	@ movhi
@@ -5518,7 +5518,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
 1099:Src/Maze.c    **** 							buff_motion[buff_tail] = ((step-1)  << 4) | DIAGONAL;
 1100:Src/Maze.c    **** 							buff_tail++;
 1101:Src/Maze.c    **** 						}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 93
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 93
 
 
 1102:Src/Maze.c    **** 						buff_motion[buff_tail] = T_135OUT << 4 | *(motion + head - 1);
@@ -5578,7 +5578,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3748 014c DBB2     		uxtb	r3, r3
  3749 014e 8DF80732 		strb	r3, [sp, #519]
  3750              	.L275:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 94
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 94
 
 
 1022:Src/Maze.c    **** 	{
@@ -5638,7 +5638,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3797 01c0 0133     		adds	r3, r3, #1
  3798 01c2 DBB2     		uxtb	r3, r3
  3799 01c4 8DF80532 		strb	r3, [sp, #517]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 95
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 95
 
 
 1032:Src/Maze.c    **** 				buff_tail -= 3;
@@ -5698,7 +5698,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3846 0232 013B     		subs	r3, r3, #1
  3847 0234 30F81320 		ldrh	r2, [r0, r3, lsl #1]
  3848 0238 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 96
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 96
 
 
  3849 023c DBB2     		uxtb	r3, r3
@@ -5758,7 +5758,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3895 02a2 8DF80532 		strb	r3, [sp, #517]
  3896              	.L289:
 1087:Src/Maze.c    **** 					buff_tail++;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 97
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 97
 
 
  3897              		.loc 1 1087 0
@@ -5818,7 +5818,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3943 0312 9DF80732 		ldrb	r3, [sp, #519]	@ zero_extendqisi2
  3944 0316 30F81330 		ldrh	r3, [r0, r3, lsl #1]
  3945 031a 062B     		cmp	r3, #6
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 98
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 98
 
 
  3946 031c 00F09D80 		beq	.L311
@@ -5878,7 +5878,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  3992 037a 1B01     		lsls	r3, r3, #4
  3993 037c 9DF80522 		ldrb	r2, [sp, #517]	@ zero_extendqisi2
  3994              	.LVL355:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 99
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 99
 
 
  3995 0380 D2B2     		uxtb	r2, r2
@@ -5938,7 +5938,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4041 03e6 9DF80522 		ldrb	r2, [sp, #517]	@ zero_extendqisi2
  4042              	.LVL357:
  4043 03ea D2B2     		uxtb	r2, r2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 100
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 100
 
 
  4044 03ec 43F00703 		orr	r3, r3, #7
@@ -5998,7 +5998,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4090 045a 012A     		cmp	r2, #1
  4091 045c 10D9     		bls	.L296
 1125:Src/Maze.c    **** 							buff_tail++;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 101
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 101
 
 
  4092              		.loc 1 1125 0
@@ -6058,7 +6058,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4139              	.LVL361:
  4140 04c6 D2B2     		uxtb	r2, r2
  4141              	.LVL362:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 102
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 102
 
 
  4142              	.L283:
@@ -6118,7 +6118,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
 1154:Src/Maze.c    **** 	for (uint8_t i = 0; i < buff_tail; i++) {
  4188              		.loc 1 1154 0 is_stmt 1
  4189 0538 0023     		movs	r3, #0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 103
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 103
 
 
  4190 053a 06E0     		b	.L301
@@ -6178,7 +6178,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
 1162:Src/Maze.c    **** {
  4237              		.loc 1 1162 0
  4238              		.cfi_startproc
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 104
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 104
 
 
  4239              		@ args = 0, pretend = 0, frame = 520
@@ -6238,7 +6238,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
 1175:Src/Maze.c    **** 	while (head < tail)
  4281              		.loc 1 1175 0
  4282 0032 0AE1     		b	.L318
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 105
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 105
 
 
  4283              	.L350:
@@ -6298,7 +6298,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4322 0080 DBB2     		uxtb	r3, r3
  4323 0082 8DF80532 		strb	r3, [sp, #517]
 1189:Src/Maze.c    **** 			if (*(motion + head) == LEFT || *(motion + head) == RIGHT) {
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 106
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 106
 
 
  4324              		.loc 1 1189 0
@@ -6358,7 +6358,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4371 00ee ACE0     		b	.L318
  4372              	.LVL379:
  4373              	.L326:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 107
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 107
 
 
 1197:Src/Maze.c    **** 				}
@@ -6418,7 +6418,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4408 013c 8DF80532 		strb	r3, [sp, #517]
 1216:Src/Maze.c    **** 				if (*(motion + head) == LEFT || *(motion + head) == RIGHT) {
  4409              		.loc 1 1216 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 108
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 108
 
 
  4410 0140 9DF80732 		ldrb	r3, [sp, #519]	@ zero_extendqisi2
@@ -6478,7 +6478,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4457              	.L347:
 1177:Src/Maze.c    **** 		switch (*(motion + head)&0xf)
  4458              		.loc 1 1177 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 109
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 109
 
 
  4459 01a2 0022     		movs	r2, #0
@@ -6538,7 +6538,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4506 01fe 8DF80532 		strb	r3, [sp, #517]
 1228:Src/Maze.c    **** 						buff_motion[buff_tail] = 2 << 4 | ADJUST;
  4507              		.loc 1 1228 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 110
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 110
 
 
  4508 0202 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
@@ -6598,7 +6598,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4551 025a 9DF80732 		ldrb	r3, [sp, #519]	@ zero_extendqisi2
  4552 025e 34F81330 		ldrh	r3, [r4, r3, lsl #1]
  4553 0262 13F00F03 		ands	r3, r3, #15
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 111
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 111
 
 
  4554 0266 9CD0     		beq	.L347
@@ -6658,7 +6658,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
 1246:Src/Maze.c    **** 	head = 0;
  4596              		.loc 1 1246 0
  4597 02a2 0023     		movs	r3, #0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 112
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 112
 
 
  4598 02a4 8DF80732 		strb	r3, [sp, #519]
@@ -6718,7 +6718,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4627              		.loc 1 1271 0 is_stmt 1
  4628 02e2 9DF80732 		ldrb	r3, [sp, #519]	@ zero_extendqisi2
  4629 02e6 0133     		adds	r3, r3, #1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 113
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 113
 
 
  4630 02e8 34F81330 		ldrh	r3, [r4, r3, lsl #1]
@@ -6778,7 +6778,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4673 0348 9DF80732 		ldrb	r3, [sp, #519]	@ zero_extendqisi2
  4674 034c 34F81330 		ldrh	r3, [r4, r3, lsl #1]
  4675 0350 03F00F03 		and	r3, r3, #15
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 114
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 114
 
 
  4676 0354 0A2B     		cmp	r3, #10
@@ -6838,7 +6838,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
 1272:Src/Maze.c    **** 			buff_tail++;
  4723              		.loc 1 1272 0
  4724 03c6 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 115
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 115
 
 
  4725 03ca 4FF04872 		mov	r2, #52428800
@@ -6898,7 +6898,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4763 0410 9DF80722 		ldrb	r2, [sp, #519]	@ zero_extendqisi2
  4764 0414 D2B2     		uxtb	r2, r2
  4765 0416 9DF80532 		ldrb	r3, [sp, #517]	@ zero_extendqisi2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 116
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 116
 
 
  4766 041a DBB2     		uxtb	r3, r3
@@ -6958,7 +6958,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4813              	.L358:
  4814 0474 20032003 		.word	52429600
  4815 0478 90019001 		.word	26214800
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 117
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 117
 
 
  4816              		.cfi_endproc
@@ -6980,70 +6980,70 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 1
  4835              		.file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
  4836              		.file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\lib\\gcc\\arm-none-eabi
  4837              		.file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include\
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 118
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 118
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 Maze.c
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:18     .text.Maze_UpdatePosition:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:25     .text.Maze_UpdatePosition:00000000 Maze_UpdatePosition
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:45     .text.Maze_UpdatePosition:00000010 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:49     .text.Maze_UpdatePosition:00000014 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:102    .text.Maze_UpdatePosition:0000004e $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:106    .text.Maze_UpdatePosition:00000052 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:154    .text.Maze_UpdatePosition:0000008c $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:158    .text.Maze_UpdatePosition:00000090 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:206    .text.Maze_UpdatePosition:000000ca $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:210    .text.Maze_UpdatePosition:000000ce $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:255    .text.Maze_GetWallData:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:262    .text.Maze_GetWallData:00000000 Maze_GetWallData
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:417    .text.Search_UnknownWall:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:424    .text.Search_UnknownWall:00000000 Search_UnknownWall
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:564    .text.Search_UnknownWall:000000a0 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:18     .text.Maze_UpdatePosition:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:25     .text.Maze_UpdatePosition:00000000 Maze_UpdatePosition
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:45     .text.Maze_UpdatePosition:00000010 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:49     .text.Maze_UpdatePosition:00000014 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:102    .text.Maze_UpdatePosition:0000004e $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:106    .text.Maze_UpdatePosition:00000052 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:154    .text.Maze_UpdatePosition:0000008c $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:158    .text.Maze_UpdatePosition:00000090 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:206    .text.Maze_UpdatePosition:000000ca $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:210    .text.Maze_UpdatePosition:000000ce $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:255    .text.Maze_GetWallData:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:262    .text.Maze_GetWallData:00000000 Maze_GetWallData
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:417    .text.Search_UnknownWall:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:424    .text.Search_UnknownWall:00000000 Search_UnknownWall
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:564    .text.Search_UnknownWall:000000a0 $d
                             *COM*:00000100 step
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:569    .text.Maze_UpdateStepMap:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:576    .text.Maze_UpdateStepMap:00000000 Maze_UpdateStepMap
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:930    .text.Maze_UpdateStepMap:000001e0 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:936    .text.Maze_GetNextMotion:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:943    .text.Maze_GetNextMotion:00000000 Maze_GetNextMotion
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:972    .text.Maze_GetNextMotion:00000012 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:976    .text.Maze_GetNextMotion:0000001a $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1448   .text.Maze_GetNextMotion:000002c0 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1453   .text.Maze_GetStep:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1460   .text.Maze_GetStep:00000000 Maze_GetStep
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1478   .text.Maze_GetStep:0000000c $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1483   .text.Maze_UpdateStepMapEx:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1490   .text.Maze_UpdateStepMapEx:00000000 Maze_UpdateStepMapEx
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1723   .text.Maze_UpdateStepMapEx:0000015c $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:569    .text.Maze_UpdateStepMap:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:576    .text.Maze_UpdateStepMap:00000000 Maze_UpdateStepMap
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:930    .text.Maze_UpdateStepMap:000001e0 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:936    .text.Maze_GetNextMotion:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:943    .text.Maze_GetNextMotion:00000000 Maze_GetNextMotion
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:972    .text.Maze_GetNextMotion:00000012 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:976    .text.Maze_GetNextMotion:0000001a $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1448   .text.Maze_GetNextMotion:000002c0 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1453   .text.Maze_GetStep:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1460   .text.Maze_GetStep:00000000 Maze_GetStep
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1478   .text.Maze_GetStep:0000000c $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1483   .text.Maze_UpdateStepMapEx:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1490   .text.Maze_UpdateStepMapEx:00000000 Maze_UpdateStepMapEx
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1723   .text.Maze_UpdateStepMapEx:0000015c $d
                             *COM*:00000242 stepEx_h
                             *COM*:00000242 stepEx_v
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:1730   .text.Maze_UpdateStepMapEx:00000168 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2358   .text.Maze_UpdateStepMapEx:00000714 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2364   .text.Maze_GetNextMotionEx:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2371   .text.Maze_GetNextMotionEx:00000000 Maze_GetNextMotionEx
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2405   .text.Maze_GetNextMotionEx:0000001c $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2409   .text.Maze_GetNextMotionEx:00000024 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2796   .text.Maze_GetNextMotionEx:000002d4 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2801   .text.Maze_GetNextMotionEx:000002dc $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2886   .text.Maze_GetNextMotionEx:00000374 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2891   .text.Maze_GetStepEx_h:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2898   .text.Maze_GetStepEx_h:00000000 Maze_GetStepEx_h
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2918   .text.Maze_GetStepEx_h:00000010 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2923   .text.Maze_GetStepEx_v:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2930   .text.Maze_GetStepEx_v:00000000 Maze_GetStepEx_v
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2950   .text.Maze_GetStepEx_v:00000010 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2955   .text.Compress_T90:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:2962   .text.Compress_T90:00000000 Compress_T90
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:3285   .text.Compress_T180:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:3292   .text.Compress_T180:00000000 Compress_T180
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:3572   .text.Compress_Diagonal:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:3579   .text.Compress_Diagonal:00000000 Compress_Diagonal
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:4228   .text.Maze_Compress:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:4235   .text.Maze_Compress:00000000 Maze_Compress
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s 			page 119
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:1730   .text.Maze_UpdateStepMapEx:00000168 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2358   .text.Maze_UpdateStepMapEx:00000714 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2364   .text.Maze_GetNextMotionEx:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2371   .text.Maze_GetNextMotionEx:00000000 Maze_GetNextMotionEx
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2405   .text.Maze_GetNextMotionEx:0000001c $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2409   .text.Maze_GetNextMotionEx:00000024 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2796   .text.Maze_GetNextMotionEx:000002d4 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2801   .text.Maze_GetNextMotionEx:000002dc $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2886   .text.Maze_GetNextMotionEx:00000374 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2891   .text.Maze_GetStepEx_h:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2898   .text.Maze_GetStepEx_h:00000000 Maze_GetStepEx_h
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2918   .text.Maze_GetStepEx_h:00000010 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2923   .text.Maze_GetStepEx_v:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2930   .text.Maze_GetStepEx_v:00000000 Maze_GetStepEx_v
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2950   .text.Maze_GetStepEx_v:00000010 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2955   .text.Compress_T90:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:2962   .text.Compress_T90:00000000 Compress_T90
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:3285   .text.Compress_T180:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:3292   .text.Compress_T180:00000000 Compress_T180
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:3572   .text.Compress_Diagonal:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:3579   .text.Compress_Diagonal:00000000 Compress_Diagonal
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:4228   .text.Maze_Compress:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:4235   .text.Maze_Compress:00000000 Maze_Compress
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s 			page 119
 
 
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:4814   .text.Maze_Compress:00000474 $d
-C:\Users\kotaro\AppData\Local\Temp\ccbNR9cd.s:4827   .data.goal_size:00000000 goal_size
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:4814   .text.Maze_Compress:00000474 $d
+C:\Users\kotaro\AppData\Local\Temp\ccOySvqi.s:4827   .data.goal_size:00000000 goal_size
 
 NO UNDEFINED SYMBOLS

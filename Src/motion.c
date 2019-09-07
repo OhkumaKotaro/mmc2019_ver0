@@ -38,9 +38,15 @@ extern volatile uint8_t control_wall_flag;
 extern volatile uint8_t front_wall_flag;
 
 volatile uint8_t motion_end_flag;
-float gain_velo = 100;
+float gain_velo = 0;
 float diagonal_step = 0;
 uint16_t prefront_flag = 0;
+
+void Motion_MaxVeloSet(float gain)
+{
+    //0~160
+    gain_velo = gain;
+}
 
 void Motion_enkai(void)
 {
@@ -278,7 +284,7 @@ void Motion_LeftTurn(void)
     }
     else
     {
-        Control_StrCalculator(35.0f - enc.offset, VELO_S, VELO_S, VELO_S, 1, 1);
+        Control_StrCalculator(36.0f - enc.offset, VELO_S, VELO_S, VELO_S, 1, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)
@@ -293,7 +299,7 @@ void Motion_LeftTurn(void)
     {
     }
     //offset out
-    Control_StrCalculator(45.0f, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_StrCalculator(42.0f, VELO_S, VELO_S, VELO_S, 1, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -322,13 +328,13 @@ void Motion_RightTurn(void)
     }
     //turn
     Control_StrCalculator(180.0f, VELO_S, VELO_S, VELO_S, 1, 1);
-    Control_AngCalculator(90.8f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, -1); //90.80f
+    Control_AngCalculator(91.0f, 0, VELO_ANG_S_SLALOM, 0, ACCEL_ANG_S_SLALOM, -1); //90.80f
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     //offset out
-    Control_StrCalculator(40.0f, VELO_S, VELO_S, VELO_S, 1, 1);
+    Control_StrCalculator(52.0f, VELO_S, VELO_S, VELO_S, 1, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -367,13 +373,8 @@ void Motion_FastStart(uint8_t step, float velo_end)
 {
     diagonal_step = 90.0f * sqrt(2);
     Control_ResetVelo();
-    /*float velo = VELO_F + gain_velo * (float)step;
-    if (velo > 2500)
-    {
-        velo = 2500;
-    }
-    */
-    Control_StrCalculator(40.0f + 90.0f * (float)step, 0.0f, VELO_F, velo_end, ACCEL_F, 1);
+    float velo = VELO_F + gain_velo * (float)(step - 1);
+    Control_StrCalculator(40.0f + 90.0f * (float)step, 0.0f, velo, velo_end, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -384,8 +385,8 @@ void Motion_FastStart(uint8_t step, float velo_end)
 
 void Motion_FastStraight(uint8_t step, float v_start, float v_end)
 {
-    //float velo = VELO_F + gain_velo * (float)(step - 1);
-    Control_StrCalculator(90.0f * (float)step - enc.offset, v_start, VELO_F, v_end, ACCEL_F, 1);
+    float velo = VELO_F + gain_velo * (float)step;
+    Control_StrCalculator(90.0f * (float)step - enc.offset, v_start, velo, v_end, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -398,8 +399,8 @@ void Motion_Adjust(uint16_t step, float velo_s)
 {
     if (step == 1)
     {
-        Control_EdgeSet(100);
-        Control_StrCalculator(190.0f - enc.offset, velo_s, VELO_F, VELO_F, 1, 1);
+        Control_EdgeSet(20);
+        Control_StrCalculator(110.0f - enc.offset, velo_s, VELO_F, VELO_F, ACCEL_F, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
     }
     else
@@ -417,12 +418,8 @@ void Motion_Adjust(uint16_t step, float velo_s)
 
 void Motion_FastGoal(uint8_t step, float v_start)
 {
-    float velo = VELO_F + gain_velo * step;
-    if (velo > 2500)
-    {
-        velo = 2500;
-    }
-    Control_StrCalculator(90.0f + 90.0f * (float)step - enc.offset, v_start, VELO_F, 0, ACCEL_F, 1);
+    float velo = VELO_F + gain_velo * (step - 1);
+    Control_StrCalculator(90.0f + 90.0f * (float)step - enc.offset, v_start, velo, 0, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -449,7 +446,8 @@ void Motion_DiagonalLeft(uint8_t step)
     control_wall_flag = 3;
     if (step > 1)
     {
-        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+        float velo = VELO_F + gain_velo * (step - 1);
+        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, velo, VELO_F, ACCEL_F, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)
@@ -473,7 +471,8 @@ void Motion_DiagonalRight(uint8_t step)
     control_wall_flag = 3;
     if (step > 1)
     {
-        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+        float velo = VELO_F + gain_velo * (step - 1);
+        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, velo, VELO_F, ACCEL_F, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)
@@ -627,7 +626,7 @@ void Motion_OutRight45Turn(float v_end)
 void Motion_Left90Turn(float v_end)
 {
     //offset in
-    Control_StrCalculator(8.0f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+    Control_StrCalculator(10.5f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -641,7 +640,7 @@ void Motion_Left90Turn(float v_end)
     {
     }
     //offset out
-    Control_StrCalculator(29.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
+    Control_StrCalculator(20.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -653,7 +652,7 @@ void Motion_Left90Turn(float v_end)
 void Motion_Right90Turn(float v_end)
 {
     //offset in
-    Control_StrCalculator(13.0f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
+    Control_StrCalculator(12.0f - enc.offset, VELO_F, VELO_F, VELO_F, ACCEL_F, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -667,7 +666,7 @@ void Motion_Right90Turn(float v_end)
     {
     }
     //offset out
-    Control_StrCalculator(20.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
+    Control_StrCalculator(28.0f, VELO_F, VELO_F, v_end, 16000.0f, 1);
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
@@ -713,7 +712,7 @@ void Motion_FastLeftTurn(uint8_t type, float v_end)
         Motion_Left90Turn(v_end);
         break;
     case T_180:
-        Turn(36.0f, 50.0f, 800.0f, v_end, 181.0f, 520.0f, 5000.0f, 1);
+        Turn(36.0f, 53.0f, 800.0f, v_end, 181.0f, 530.0f, 5000.0f, 1);
         break;
     case T_45IN:
         //control_wall_flag = 0;
@@ -748,7 +747,7 @@ void Motion_FastRightTurn(uint8_t type, float v_end)
         Motion_Right90Turn(v_end);
         break;
     case T_180:
-        Turn(30.0f, 38.0f, 800.0f, v_end, 181.0f, 550.0f, 5000.0f, -1);
+        Turn(30.0f, 50.0f, 800.0f, v_end, 181.0f, 530.0f, 5000.0f, -1);
         break;
     case T_45IN:
         //control_wall_flag = 0;

@@ -7,7 +7,7 @@ extern "C"
 #endif
 
 #include "stdint.h"
-
+    void Motion_MaxVeloSet(float gain);
     //adjust
     void Motion_enkai(void);
     void Motion_TestTurn(void);

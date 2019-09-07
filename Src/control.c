@@ -55,6 +55,9 @@ uint8_t walledge_offset = 0;
 uint8_t walledge_flag = 0;
 int32_t walledge_cnt = 0;
 float walledge_diff = 0.0f;
+//counnter
+uint16_t counter_ms=0;
+uint8_t counter_s; 
 
 /****************************************************************************************
  * outline  : PID control
@@ -211,18 +214,18 @@ void SideWallFix(void)
             add_r = 0;
             add_l = 0;
         }
-        else if (sen_l.now > sen_l.threshold + add_l && sen_r.now > sen_r.threshold + add_r)
+        else if (sen_l.now > (sen_l.threshold + add_l) && sen_r.now > (sen_r.threshold + add_r))
         {
             wall_dif = kp * ((sen_l.now - sen_l.reference) - (sen_r.now - sen_r.reference));
             add_l = 0;
             add_r = 0;
         }
-        else if (sen_l.now > sen_l.threshold + add_l)
+        else if (sen_l.now > (sen_l.threshold + add_l))
         {
             wall_dif = 2.5f * kp * (sen_l.now - sen_l.reference);
             add_l = 0;
         }
-        else if (sen_r.now > sen_r.threshold + add_r)
+        else if (sen_r.now > (sen_r.threshold + add_r))
         {
             wall_dif = -2.0f * kp * (sen_r.now - sen_r.reference);
             add_r = 0;
@@ -438,6 +441,11 @@ void Control_UpdatePwm(void)
     if (motor_flag == TRUE)
     {
         //UpdateLoger();
+        counter_ms++;
+        if(counter_ms>999){
+            counter_s++;
+            counter_ms=0;
+        }
         if (motion_end_flag == FALSE)
         {
             UpdateStrTarget();

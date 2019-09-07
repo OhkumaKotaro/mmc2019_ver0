@@ -26,8 +26,9 @@ extern enc_t enc;
 extern volatile uint8_t motor_flag;
 extern loger_t loger;
 extern volatile uint8_t control_wall_flag;
+extern uint8_t counter_s; 
 
-unsigned char gx = 1, gy = 0;
+unsigned char gx = 7, gy = 7;
 
 //Prototype Function
 void SensorCheck(void);
@@ -42,7 +43,7 @@ void PrintMotion(uint16_t *motion, uint32_t *velocity, uint8_t tail);
 void AdjustStraight(void);
 void AdjustTurn(void);
 void SearchRun(void);
-void Mode_FastRun(uint8_t diagonal_flag, uint8_t w_str, uint8_t w_turn);
+void Mode_FastRun(uint8_t diagonal_flag, float gain,uint8_t w_str, uint8_t w_turn);
 void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir);
 void Turn45_Test(uint8_t in_dir, uint8_t out_dir, uint8_t step);
 void Turn135_Test(uint8_t in_dir, uint8_t out_dir, uint8_t step);
@@ -64,7 +65,7 @@ void Mode_Mouse(int8_t mode)
         SearchRun();
         break;
     case 1:
-        Mode_FastRun(FALSE, 1, 3);
+        Mode_FastRun(FALSE,0.0f, 1, 3);
         break;
     case 2:
         /*
@@ -72,7 +73,7 @@ void Mode_Mouse(int8_t mode)
         control_wall_flag = FALSE;
         Motion_enkai();
         */
-        Mode_FastRun(TRUE, 7, 5);
+        Mode_FastRun(TRUE, 0.0f, 7, 5);
         break;
     case 3:
         SensorCheck();
@@ -85,7 +86,8 @@ void Mode_Mouse(int8_t mode)
         PrintWallData();
         break;
     case 6: //straight
-        CheckDiagonal(5);
+        //CheckDiagonal(5);
+        Mode_FastRun(FALSE,80.0f, 1, 3);
         /*
         control_wall_flag = 2;
         CheckFastStraight(5);
@@ -96,8 +98,9 @@ void Mode_Mouse(int8_t mode)
         */
         break;
     case 7: //turn
-        control_wall_flag = FALSE;
-        CheckTurn(4);
+        Mode_FastRun(TRUE, 80.0f, 7, 5);
+        //control_wall_flag = FALSE;
+        //CheckTurn(4);
         break;
     //YELLOW
     case 8: //left turn
@@ -129,12 +132,12 @@ void Mode_Mouse(int8_t mode)
     case 10: //circuit left
         control_wall_flag = FALSE;
         SetRunMode();
-        Circuit(1, 1, 3, 1);
+        Circuit(2, 2, 3, 1);
         break;
     case 11: //circuit right
         control_wall_flag = FALSE;
         SetRunMode();
-        Circuit(1, 1, 3, -1);
+        Circuit(2, 2, 3, -1);
         break;
     //GREEN
     case 12: //left quarter turn
@@ -168,13 +171,13 @@ void Mode_Mouse(int8_t mode)
         break;
     case 18:
         control_wall_flag = FALSE;
-        //TurnBig180_Test(LEFT);
-        TurnV90_Test(LEFT);
+        TurnBig180_Test(LEFT);
+        //TurnV90_Test(LEFT);
         break;
     case 19:
         control_wall_flag = FALSE;
-        //TurnBig180_Test(RIGHT);
-        TurnV90_Test(RIGHT);
+        TurnBig180_Test(RIGHT);
+        //TurnV90_Test(RIGHT);
         break;
     default:
         break;
@@ -371,6 +374,8 @@ void SearchRun(void)
     unsigned char flag_goal = 0;
     //enable control side wall
     control_wall_flag = TRUE;
+    //counter set
+    counter_s=0;
     SetRunMode();
     Motion_Start();
     while (1)
@@ -418,6 +423,9 @@ void SearchRun(void)
                 }
             }
         }
+        if(counter_s > 150 && flag_goal==1){
+            flag_goal=2;
+        }
         if (flag_goal == 2)
         {
             Motion_End();
@@ -433,7 +441,7 @@ void SearchRun(void)
     }
 }
 
-void Mode_FastRun(uint8_t diagonal_flag, uint8_t w_str, uint8_t w_turn)
+void Mode_FastRun(uint8_t diagonal_flag, float gain,uint8_t w_str, uint8_t w_turn)
 {
     wallData_t wallData;
     pos_t pos;
@@ -442,7 +450,8 @@ void Mode_FastRun(uint8_t diagonal_flag, uint8_t w_str, uint8_t w_turn)
     uint8_t tail = 0;
     uint8_t head = 0;
     Flash_Load(start_address, (uint8_t *)&wallData, sizeof(wallData_t));
-    Maze_UpdateStepMapEx(&wallData, 7, 5, 4, 7);
+    Maze_UpdateStepMapEx(&wallData, w_str, w_turn, gx, gy);
+    Motion_MaxVeloSet(gain);
     pos.dir = NORTH;
     pos.x = 0;
     pos.y = 1;
@@ -758,7 +767,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
     {
         if (row > 1)
         {
-            Motion_FastStraight(row - 1, VELO_S, VELO_S);
+            Motion_Straight();
         }
 
         if (dir == 1)
@@ -772,7 +781,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (colum > 1)
         {
-            Motion_FastStraight(colum - 1, VELO_S, VELO_S);
+            Motion_Straight();
         }
 
         if (dir == 1)
@@ -786,7 +795,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (row > 1)
         {
-            Motion_FastStraight(row - 1, VELO_S, VELO_S);
+            Motion_Straight();
         }
 
         if (dir == 1)
@@ -800,7 +809,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (colum > 1)
         {
-            Motion_FastStraight(colum - 1, VELO_S, VELO_S);
+            Motion_Straight();
         }
         if (dir == 1)
         {
@@ -878,12 +887,12 @@ void Turn135_Test(uint8_t in_dir, uint8_t out_dir, uint8_t step)
         break;
     case LEFT:
         Motion_FastStart(1, VELO_F);
-        Motion_Adjust(VELO_F, 1);
+        Motion_Adjust(1,VELO_F);
         Motion_FastLeftTurn(T_135IN, 800.0f);
         break;
     case RIGHT:
         Motion_FastStart(1, VELO_F);
-        Motion_Adjust(VELO_F, 1);
+        Motion_Adjust(1,VELO_F);
         Motion_FastRightTurn(T_135IN, 800.0f);
         break;
     default:
@@ -925,7 +934,7 @@ void TurnBig90_Test(int8_t dir)
 {
     SetRunMode();
     Motion_FastStart(1, VELO_F);
-    Motion_Adjust(VELO_F, 1);
+    Motion_Adjust(1,VELO_F);
     if (dir == LEFT)
     {
         Motion_Left90Turn(VELO_F);
@@ -945,7 +954,7 @@ void TurnBig180_Test(int8_t dir)
 {
     SetRunMode();
     Motion_FastStart(1, VELO_F);
-    Motion_Adjust(VELO_F, 1);
+    Motion_Adjust(1, VELO_F);
     if (dir == LEFT)
     {
         Motion_FastLeftTurn(T_180, VELO_F);
@@ -965,7 +974,7 @@ void TurnV90_Test(int8_t dir)
 {
     SetRunMode();
     Motion_FastStart(1, VELO_F);
-    Motion_Adjust(VELO_F, 1);
+    Motion_Adjust(1,VELO_F);
     if (dir == LEFT)
     {
         Motion_InLeft45Turn();
