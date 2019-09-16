@@ -876,6 +876,17 @@ uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall) {
 	return tmp_dir;
 }
 
+uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall,uint16_t next_motion){
+	uint16_t motion = next_motion;
+	uint16_t counter = 0;
+	while (motion&0xff==FRONT && wall->horizontal_known[mypos->y])
+	{
+		Maze_UpdatePosition(FRONT,mypos);
+		motion = Maze_GetNextMotion(mypos,wall);
+	}
+	
+}
+
 uint16_t Maze_GetStepEx_h(uint8_t x, uint8_t y) {
 	return stepEx_h[x][y];
 }

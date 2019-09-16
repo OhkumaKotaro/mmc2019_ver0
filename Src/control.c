@@ -479,7 +479,7 @@ void Control_UpdatePwm(void)
                 motor_flag = FALSE;
             }
         }
-        if (accel.y < -60.0f)
+        if (accel.y < -100.0f)
         {
             if (straight.dir != -1)
             {

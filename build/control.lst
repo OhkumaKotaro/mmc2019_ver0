@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
   29:Src/control.c **** target_t straight;
   30:Src/control.c **** volatile float dist_idial = 0.0f;
   31:Src/control.c **** float error_sum;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 2
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 2
 
 
   32:Src/control.c **** float error_old;
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
   74:Src/control.c **** 
   75:Src/control.c ****     *sum += error * dt;
   40              		.loc 1 75 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 3
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 3
 
 
   41 0008 DFED0C7A 		vldr.32	s15, .L2
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
   82              		@ args = 0, pretend = 0, frame = 0
   83              		@ frame_needed = 0, uses_anonymous_args = 0
   84              		@ link register save eliminated.
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 4
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 4
 
 
   85              	.LVL7:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  128              	.L6:
  129 0060 00000000 		.word	straight
  130 0064 00000000 		.word	.LANCHOR0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 5
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 5
 
 
  131              		.cfi_endproc
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  173 0040 83ED020A 		vstr.32	s0, [r3, #8]
  116:Src/control.c ****         angle.accel = accel;
  174              		.loc 1 116 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 6
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 6
 
 
  175 0044 83ED042A 		vstr.32	s4, [r3, #16]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  220 000a 27EE277A 		vmul.f32	s14, s14, s15
  221 000e 8DED017A 		vstr.32	s14, [sp, #4]
  128:Src/control.c ****     buff += accel;
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 7
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 7
 
 
  222              		.loc 1 128 0
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  141:Src/control.c **** void UpdateStrTarget()
  142:Src/control.c **** {
  266              		.loc 1 142 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 8
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 8
 
 
  267              		.cfi_startproc
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  306 005a 07DD     		ble	.L23
  307              		.loc 1 157 0 is_stmt 0 discriminator 1
  308 005c 154B     		ldr	r3, .L37
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 9
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 9
 
 
  309 005e D3ED037A 		vldr.32	s15, [r3, #12]
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  349              		.loc 1 159 0
  350 009e 1946     		mov	r1, r3
  351 00a0 93ED040A 		vldr.32	s0, [r3, #16]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 10
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 10
 
 
  352 00a4 B1EE400A 		vneg.f32	s0, s0
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  403              		.section	.text.WallEdgeFix,"ax",%progbits
  404              		.align	1
  405              		.global	WallEdgeFix
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 11
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 11
 
 
  406              		.syntax unified
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  453              		.fpu fpv4-sp-d16
  455              	SideWallFix:
  456              	.LFB166:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 12
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 12
 
 
  183:Src/control.c **** 
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  496 0030 1420     		movs	r0, #20
  497 0032 0870     		strb	r0, [r1]
  498              	.L48:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 13
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 13
 
 
  198:Src/control.c ****     }
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  533 007c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
  534 007e 0A44     		add	r2, r2, r1
  535 0080 9342     		cmp	r3, r2
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 14
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 14
 
 
  536 0082 09DD     		ble	.L57
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  199:Src/control.c ****     {
  576              		.loc 1 199 0
  577 00d6 12F10A0F 		cmn	r2, #10
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 15
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 15
 
 
  578 00da ABDA     		bge	.L48
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  624 012c B2F91620 		ldrsh	r2, [r2, #22]
  625 0130 9B1A     		subs	r3, r3, r2
  626 0132 07EE903A 		vmov	s15, r3	@ int
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 16
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 16
 
 
  627 0136 F8EEE77A 		vcvt.f32.s32	s15, s15
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  670              		.syntax unified
  671              		.thumb
  672              		.thumb_func
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 17
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 17
 
 
  673              		.fpu fpv4-sp-d16
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  260:Src/control.c ****     }
  261:Src/control.c ****     else if (diff_l < -10)
  711              		.loc 1 261 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 18
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 18
 
 
  712 0028 13F10A0F 		cmn	r3, #10
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  743 005e 93ED037A 		vldr.32	s14, [r3, #12]
  744 0062 DFED457A 		vldr.32	s15, .L84+28
  745 0066 B4EEE77A 		vcmpe.f32	s14, s15
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 19
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 19
 
 
  746 006a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  781 00b2 B2F91620 		ldrsh	r2, [r2, #22]
  782 00b6 9B1A     		subs	r3, r3, r2
  783 00b8 07EE903A 		vmov	s15, r3	@ int
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 20
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 20
 
 
  784 00bc F8EEE77A 		vcvt.f32.s32	s15, s15
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  831 0116 C3ED007A 		vstr.32	s15, [r3]
  293:Src/control.c ****             add_r = 0;
  832              		.loc 1 293 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 21
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 21
 
 
  833 011a 0023     		movs	r3, #0
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  872              	.L84:
  873 015c 00000000 		.word	sen_l
  874 0160 00000000 		.word	sen_r
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 22
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 22
 
 
  875 0164 00000000 		.word	.LANCHOR4
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  913 0018 F62B     		cmp	r3, #246
  914 001a 1DDC     		bgt	.L94
  335:Src/control.c ****         {
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 23
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 23
 
 
  336:Src/control.c ****             diff = -Kp * (sen_r.now - ref_r);
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  957 006e 07EE903A 		vmov	s15, r3	@ int
  958 0072 F8EEE77A 		vcvt.f32.s32	s15, s15
  959 0076 9FED0D7A 		vldr.32	s14, .L96+24
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 24
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 24
 
 
  960 007a 67EE877A 		vmul.f32	s15, s15, s14
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1007              		@ frame_needed = 0, uses_anonymous_args = 0
  1008              		@ link register save eliminated.
  352:Src/control.c ****     if (front_wall_flag == TRUE)
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 25
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 25
 
 
  1009              		.loc 1 352 0
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1048 003a 0022     		movs	r2, #0
  1049 003c 1A70     		strb	r2, [r3]
  1050              	.LBE2:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 26
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 26
 
 
  1051              		.loc 1 362 0
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1093              		.loc 1 376 0
  1094 0020 214B     		ldr	r3, .L124
  1095 0022 93ED017A 		vldr.32	s14, [r3, #4]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 27
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 27
 
 
  1096 0026 214B     		ldr	r3, .L124+4
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1134              	.L103:
  1135              		.loc 1 391 0
  1136 0074 08BD     		pop	{r3, pc}
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 28
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 28
 
 
  1137              	.L121:
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1187              		@ args = 0, pretend = 0, frame = 0
  1188              		@ frame_needed = 0, uses_anonymous_args = 0
  1189              		@ link register save eliminated.
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 29
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 29
 
 
  1190 0000 10B4     		push	{r4}
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1225 0056 4C80     		strh	r4, [r1, #2]	@ movhi
  414:Src/control.c ****     loger.cnt++;
  1226              		.loc 1 414 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 30
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 30
 
 
  1227 0058 0133     		adds	r3, r3, #1
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  421:Src/control.c **** 
  422:Src/control.c **** void UpdateSlipAngle(void)
  423:Src/control.c **** {
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 31
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 31
 
 
  1277              		.loc 1 423 0
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1317              		.cfi_def_cfa_offset 16
  1318 002a D0BD     		pop	{r4, r6, r7, pc}
  1319              	.L136:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 32
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 32
 
 
  1320              	.LCFI11:
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1371 008c 0022     		movs	r2, #0
  1372 008e 1A60     		str	r2, [r3]	@ float
  1373              		.loc 1 437 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 33
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 33
 
 
  1374 0090 C9E7     		b	.L131
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  454:Src/control.c ****         if (control_wall_flag == 1)
  455:Src/control.c ****         {
  456:Src/control.c ****             SideWallFix();
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 34
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 34
 
 
  457:Src/control.c ****         }
@@ -2006,7 +2006,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  479:Src/control.c ****                 motor_flag = FALSE;
  480:Src/control.c ****             }
  481:Src/control.c ****         }
- 482:Src/control.c ****         if (accel.y < -60.0f)
+ 482:Src/control.c ****         if (accel.y < -100.0f)
  483:Src/control.c ****         {
  484:Src/control.c ****             if (straight.dir != -1)
  485:Src/control.c ****             {
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1429 0020 1380     		strh	r3, [r2]	@ movhi
  445:Src/control.c ****             counter_s++;
  1430              		.loc 1 445 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 35
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 35
 
 
  1431 0022 B3F57A7F 		cmp	r3, #1000
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1476 006e 524B     		ldr	r3, .L160+24
  1477 0070 93F91420 		ldrsb	r2, [r3, #20]
  1478 0074 07EE902A 		vmov	s15, r2	@ int
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 36
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 36
 
 
  1479 0078 93ED030A 		vldr.32	s0, [r3, #12]
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1530 0104 95F91430 		ldrsb	r3, [r5, #20]
  1531 0108 07EE903A 		vmov	s15, r3	@ int
  1532 010c 95ED037A 		vldr.32	s14, [r5, #12]
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 37
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 37
 
 
  1533 0110 F8EEE77A 		vcvt.f32.s32	s15, s15
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1579              		.loc 1 452 0
  1580 017e FFF7FEFF 		bl	UpdateAngTarget
  1581              	.LVL66:
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 38
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 38
 
 
  1582 0182 5DE7     		b	.L142
@@ -2273,12 +2273,12 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1627 01e4 0000C8C3 		.word	-1010302976
  1628 01e8 0000C843 		.word	1137180672
  1629 01ec 00000000 		.word	accel
- 1630 01f0 000070C2 		.word	-1032847360
+ 1630 01f0 0000C8C2 		.word	-1027080192
  1631              		.cfi_endproc
  1632              	.LFE173:
  1634              		.section	.text.Control_ResetVelo,"ax",%progbits
  1635              		.align	1
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 39
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 39
 
 
  1636              		.global	Control_ResetVelo
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1678              		.loc 1 507 0
  1679 0028 0E49     		ldr	r1, .L163+36
  1680 002a 8B60     		str	r3, [r1, #8]	@ float
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 40
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 40
 
 
  508:Src/control.c ****     enc.distance = 0;
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1731              		.comm	error_ang_sum,4,4
  1732              		.global	ang_idial
  1733              		.comm	loger,40002,4
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 41
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 41
 
 
  1734              		.comm	angle,28,4
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1810 0000 00000000 		.space	4
  1811              		.section	.bss.walledge_flag,"aw",%nobits
  1812              		.set	.LANCHOR2,. + 0
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 42
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 42
 
 
  1815              	walledge_flag:
@@ -2492,101 +2492,101 @@ ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 1
  1847              		.file 19 "Inc/flash.h"
  1848              		.file 20 "Inc/adc.h"
  1849              		.file 21 "c:\\program files (x86)\\gnu tools arm embedded\\7 2017-q4-major\\arm-none-eabi\\include
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 43
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 43
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 control.c
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:18     .text.PID_value:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:25     .text.PID_value:00000000 PID_value
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:66     .text.PID_value:0000003c $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:71     .text.Control_StrCalculator:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:78     .text.Control_StrCalculator:00000000 Control_StrCalculator
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:129    .text.Control_StrCalculator:00000060 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:18     .text.PID_value:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:25     .text.PID_value:00000000 PID_value
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:66     .text.PID_value:0000003c $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:71     .text.Control_StrCalculator:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:78     .text.Control_StrCalculator:00000000 Control_StrCalculator
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:129    .text.Control_StrCalculator:00000060 $d
                             *COM*:0000001c straight
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:135    .text.Control_AngCalculator:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:142    .text.Control_AngCalculator:00000000 Control_AngCalculator
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:193    .text.Control_AngCalculator:00000060 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:135    .text.Control_AngCalculator:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:142    .text.Control_AngCalculator:00000000 Control_AngCalculator
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:193    .text.Control_AngCalculator:00000060 $d
                             *COM*:0000001c angle
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:199    .text.UpdateTargets:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:206    .text.UpdateTargets:00000000 UpdateTargets
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:252    .text.UpdateTargets:00000054 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:257    .text.UpdateStrTarget:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:264    .text.UpdateStrTarget:00000000 UpdateStrTarget
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:361    .text.UpdateStrTarget:000000b4 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:371    .text.Control_EdgeSet:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:378    .text.Control_EdgeSet:00000000 Control_EdgeSet
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:398    .text.Control_EdgeSet:0000000c $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:404    .text.WallEdgeFix:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:411    .text.WallEdgeFix:00000000 WallEdgeFix
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:441    .text.WallEdgeFix:00000024 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:448    .text.SideWallFix:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:455    .text.SideWallFix:00000000 SideWallFix
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:653    .text.SideWallFix:0000015c $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:668    .text.SideWallFiX_Fast:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:675    .text.SideWallFiX_Fast:00000000 SideWallFiX_Fast
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:873    .text.SideWallFiX_Fast:0000015c $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:886    .text.DiagonalSideWall:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:893    .text.DiagonalSideWall:00000000 DiagonalSideWall
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:982    .text.DiagonalSideWall:00000094 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:995    .text.Control_FrontWall:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1002   .text.Control_FrontWall:00000000 Control_FrontWall
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1056   .text.Control_FrontWall:00000040 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:199    .text.UpdateTargets:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:206    .text.UpdateTargets:00000000 UpdateTargets
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:252    .text.UpdateTargets:00000054 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:257    .text.UpdateStrTarget:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:264    .text.UpdateStrTarget:00000000 UpdateStrTarget
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:361    .text.UpdateStrTarget:000000b4 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:371    .text.Control_EdgeSet:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:378    .text.Control_EdgeSet:00000000 Control_EdgeSet
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:398    .text.Control_EdgeSet:0000000c $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:404    .text.WallEdgeFix:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:411    .text.WallEdgeFix:00000000 WallEdgeFix
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:441    .text.WallEdgeFix:00000024 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:448    .text.SideWallFix:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:455    .text.SideWallFix:00000000 SideWallFix
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:653    .text.SideWallFix:0000015c $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:668    .text.SideWallFiX_Fast:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:675    .text.SideWallFiX_Fast:00000000 SideWallFiX_Fast
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:873    .text.SideWallFiX_Fast:0000015c $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:886    .text.DiagonalSideWall:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:893    .text.DiagonalSideWall:00000000 DiagonalSideWall
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:982    .text.DiagonalSideWall:00000094 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:995    .text.Control_FrontWall:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1002   .text.Control_FrontWall:00000000 Control_FrontWall
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1056   .text.Control_FrontWall:00000040 $d
                             *COM*:00000001 front_wall_flag
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1063   .text.UpdateAngTarget:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1070   .text.UpdateAngTarget:00000000 UpdateAngTarget
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1167   .text.UpdateAngTarget:000000a8 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1176   .text.UpdateLoger:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1183   .text.UpdateLoger:00000000 UpdateLoger
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1251   .text.UpdateLoger:00000074 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1063   .text.UpdateAngTarget:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1070   .text.UpdateAngTarget:00000000 UpdateAngTarget
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1167   .text.UpdateAngTarget:000000a8 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1176   .text.UpdateLoger:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1183   .text.UpdateLoger:00000000 UpdateLoger
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1251   .text.UpdateLoger:00000074 $d
                             *COM*:00009c42 loger
                             *COM*:00000001 motor_flag
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1268   .text.UpdateSlipAngle:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1275   .text.UpdateSlipAngle:00000000 UpdateSlipAngle
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1378   .text.UpdateSlipAngle:00000094 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1388   .text.Control_UpdatePwm:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1395   .text.Control_UpdatePwm:00000000 Control_UpdatePwm
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1610   .text.Control_UpdatePwm:000001a0 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1268   .text.UpdateSlipAngle:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1275   .text.UpdateSlipAngle:00000000 UpdateSlipAngle
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1378   .text.UpdateSlipAngle:00000094 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1388   .text.Control_UpdatePwm:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1395   .text.Control_UpdatePwm:00000000 Control_UpdatePwm
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1610   .text.Control_UpdatePwm:000001a0 $d
                             *COM*:00000001 counter_s
                             *COM*:00000001 control_wall_flag
                             *COM*:00000004 error_old
                             *COM*:00000004 error_sum
                             *COM*:00000004 error_ang_old
-ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s 			page 44
+ARM GAS  C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s 			page 44
 
 
                             *COM*:00000004 error_ang_sum
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1635   .text.Control_ResetVelo:00000000 $t
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1642   .text.Control_ResetVelo:00000000 Control_ResetVelo
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1698   .text.Control_ResetVelo:00000040 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1763   .bss.counter_ms:00000000 counter_ms
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1809   .bss.walledge_diff:00000000 walledge_diff
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1803   .bss.walledge_cnt:00000000 walledge_cnt
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1815   .bss.walledge_flag:00000000 walledge_flag
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1821   .bss.walledge_offset:00000000 walledge_offset
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1826   .bss.walledge_step:00000000 walledge_step
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1777   .bss.front_wall_diff:00000000 front_wall_diff
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1749   .bss.add_r:00000000 add_r
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1743   .bss.add_l:00000000 add_l
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1797   .bss.wall_dif:00000000 wall_dif
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1790   .bss.slip_cnt:00000000 slip_cnt
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1784   .bss.slip_ang:00000000 slip_ang
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1756   .bss.ang_idial:00000000 ang_idial
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1770   .bss.dist_idial:00000000 dist_idial
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1744   .bss.add_l:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1750   .bss.add_r:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1752   .bss.ang_idial:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1759   .bss.counter_ms:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1766   .bss.dist_idial:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1773   .bss.front_wall_diff:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1780   .bss.slip_ang:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1791   .bss.slip_cnt:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1793   .bss.wall_dif:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1800   .bss.walledge_cnt:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1806   .bss.walledge_diff:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1816   .bss.walledge_flag:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1822   .bss.walledge_offset:00000000 $d
-C:\Users\kotaro\AppData\Local\Temp\ccHDlYql.s:1827   .bss.walledge_step:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1635   .text.Control_ResetVelo:00000000 $t
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1642   .text.Control_ResetVelo:00000000 Control_ResetVelo
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1698   .text.Control_ResetVelo:00000040 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1763   .bss.counter_ms:00000000 counter_ms
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1809   .bss.walledge_diff:00000000 walledge_diff
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1803   .bss.walledge_cnt:00000000 walledge_cnt
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1815   .bss.walledge_flag:00000000 walledge_flag
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1821   .bss.walledge_offset:00000000 walledge_offset
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1826   .bss.walledge_step:00000000 walledge_step
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1777   .bss.front_wall_diff:00000000 front_wall_diff
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1749   .bss.add_r:00000000 add_r
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1743   .bss.add_l:00000000 add_l
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1797   .bss.wall_dif:00000000 wall_dif
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1790   .bss.slip_cnt:00000000 slip_cnt
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1784   .bss.slip_ang:00000000 slip_ang
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1756   .bss.ang_idial:00000000 ang_idial
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1770   .bss.dist_idial:00000000 dist_idial
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1744   .bss.add_l:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1750   .bss.add_r:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1752   .bss.ang_idial:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1759   .bss.counter_ms:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1766   .bss.dist_idial:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1773   .bss.front_wall_diff:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1780   .bss.slip_ang:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1791   .bss.slip_cnt:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1793   .bss.wall_dif:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1800   .bss.walledge_cnt:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1806   .bss.walledge_diff:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1816   .bss.walledge_flag:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1822   .bss.walledge_offset:00000000 $d
+C:\Users\kotaro\AppData\Local\Temp\ccPd1vEb.s:1827   .bss.walledge_step:00000000 $d
 
 UNDEFINED SYMBOLS
 motion_end_flag
