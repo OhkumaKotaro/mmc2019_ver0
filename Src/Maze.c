@@ -876,15 +876,55 @@ uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall) {
 	return tmp_dir;
 }
 
-uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall,uint16_t next_motion){
+uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall, uint16_t next_motion){
 	uint16_t motion = next_motion;
 	uint16_t counter = 0;
-	while (motion&0xff==FRONT && wall->horizontal_known[mypos->y])
-	{
-		Maze_UpdatePosition(FRONT,mypos);
-		motion = Maze_GetNextMotion(mypos,wall);
+	if (motion == FRONT) {
+		while (1) {
+			uint8_t x = mypos->x;
+			uint8_t y = mypos->y;
+			switch (mypos->dir)
+			{
+			case NORTH:
+				y++;
+				break;
+			case EAST:
+				x++;
+				break;
+			case SOUTH:
+				y--;
+				break;
+			case WEST:
+				x--;
+				break;
+			default:
+				break;
+			}
+
+			uint16_t n_wall = ((wall->horizontal_known[y + 1] >> x) & 0b1);
+			uint16_t e_wall = ((wall->vertical_known[x + 1] >> y) & 0b1);
+			uint16_t s_wall = ((wall->horizontal_known[y] >> x) & 0b1);
+			uint16_t w_wall = ((wall->vertical_known[x] >> y) & 0b1);
+
+			if (1 == (n_wall&e_wall&s_wall&w_wall) && motion==FRONT) {
+				counter++;
+				Maze_UpdatePosition(FRONT, mypos);
+				motion = Maze_GetNextMotion(mypos, wall);
+			}
+			else {
+				if (counter == 0) {
+					Maze_UpdatePosition(motion, mypos);
+				}
+				break;
+			}
+		}
+		return counter << 4 | FRONT;
 	}
-	
+	else
+	{
+		Maze_UpdatePosition(motion, mypos);
+		return motion;
+	}
 }
 
 uint16_t Maze_GetStepEx_h(uint8_t x, uint8_t y) {

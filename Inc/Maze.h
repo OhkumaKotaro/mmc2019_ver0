@@ -17,6 +17,7 @@ extern "C"
 	unsigned char Maze_GetStep(unsigned char x, unsigned char y);
 	void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weight_t, uint8_t gx, uint8_t gy);
 	uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall);
+	uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall, uint16_t next_motion);
 	uint16_t Maze_GetStepEx_h(uint8_t x, uint8_t y);
 	uint16_t Maze_GetStepEx_v(uint8_t x, uint8_t y);
 	void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, uint8_t *origin_tail);

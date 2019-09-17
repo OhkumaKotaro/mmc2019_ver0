@@ -327,6 +327,7 @@ void DiagonalSideWall(void)
 
     if (angle.dir == 0)
     {
+        /*
         if (sen_l.now > ref_l)
         {
             diff = Kp * (sen_l.now - ref_l);
@@ -335,11 +336,11 @@ void DiagonalSideWall(void)
         {
             diff = -Kp * (sen_r.now - ref_r);
         }
-        else if (sen_fl.now > ref_fl)
+        else*/ if (sen_fl.now > 125)
         {
             diff = Kp * (sen_fl.now - ref_fl);
         }
-        else if (sen_fr.now > ref_fr)
+        if (sen_fr.now > 105)
         {
             diff = -Kp * (sen_fr.now - ref_fr);
         }

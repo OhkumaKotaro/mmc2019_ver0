@@ -15,7 +15,7 @@ extern "C"
     void Motion_Start(void);
     void Motion_Restart(uint8_t wall_is);
     void Motion_End(void);
-    void Motion_Straight(void);
+    void Motion_Straight(uint16_t step);
     void Motion_SpinTurn(void);
     void Motion_WallSpinTurn(void);
     void Motion_LeftTurn(void);

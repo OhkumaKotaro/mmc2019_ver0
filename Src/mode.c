@@ -28,7 +28,7 @@ extern loger_t loger;
 extern volatile uint8_t control_wall_flag;
 extern uint8_t counter_s; 
 
-unsigned char gx = 7, gy = 7;
+unsigned char gx = 1, gy = 0;
 
 //Prototype Function
 void SensorCheck(void);
@@ -98,7 +98,7 @@ void Mode_Mouse(int8_t mode)
         */
         break;
     case 7: //turn
-        Mode_FastRun(TRUE, 80.0f, 7, 5);
+        Mode_FastRun(TRUE, 160.0f, 7, 5);
         //control_wall_flag = FALSE;
         //CheckTurn(4);
         break;
@@ -389,7 +389,7 @@ void SearchRun(void)
 
         Maze_UpdateStepMap(&flag_goal, gx, gy, &wall_data);
         nextdir = Maze_GetNextMotion(&mypos, &wall_data);
-        Maze_UpdatePosition(nextdir, &mypos);
+        nextdir = Maze_KnownStepAccel(&mypos, &wall_data, nextdir);
         Motion_Switch(nextdir);
         if (mypos.x == gx && mypos.y == gy)
         {
@@ -523,7 +523,7 @@ void CheckStraight(uint8_t block)
     Motion_Start();
     for (uint8_t i = 0; i < block; i++)
     {
-        Motion_Straight();
+        Motion_Straight(0);
     }
     Motion_End();
     motor_flag = FALSE;
@@ -767,7 +767,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
     {
         if (row > 1)
         {
-            Motion_Straight();
+            Motion_Straight(1);
         }
 
         if (dir == 1)
@@ -781,7 +781,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (colum > 1)
         {
-            Motion_Straight();
+            Motion_Straight(1);
         }
 
         if (dir == 1)
@@ -795,7 +795,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (row > 1)
         {
-            Motion_Straight();
+            Motion_Straight(1);
         }
 
         if (dir == 1)
@@ -809,7 +809,7 @@ void Circuit(uint8_t row, uint8_t colum, uint8_t num, uint8_t dir)
 
         if (colum > 1)
         {
-            Motion_Straight();
+            Motion_Straight(1);
         }
         if (dir == 1)
         {
