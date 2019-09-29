@@ -126,7 +126,7 @@ void Motion_Restart(uint8_t wall_is)
         error_ang_old = 0.0f;
         HAL_Delay(500);
 
-        Control_StrCalculator(55.0f, 0, 200.0f, 0, 1000.0f, -1);
+        Control_StrCalculator(55.0f, 0, 100.0f, 0, 1000.0f, -1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)
@@ -202,7 +202,7 @@ void Motion_Straight(uint16_t step)
         }
     }
     enc.offset = 0;
-    prefront_flag = TRUE;
+    //prefront_flag = TRUE;
 }
 
 void Motion_SpinTurn(void)
@@ -482,12 +482,13 @@ void Motion_DiagonalLeft(uint8_t step)
 {
     if (step > 1)
     {
-        float velo = VELO_F + gain_velo * (step - 1);
-        if (velo > 2400)
+        step--;
+        float velo = VELO_F + gain_velo * step;
+        if (velo > 2400.0f)
         {
-            velo = 2400;
+            velo = 2400.0f;
         }
-        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, velo, VELO_F, ACCEL_F, 1);
+        Control_StrCalculator(diagonal_step * (float)step - enc.offset, VELO_F, velo, VELO_F, ACCEL_F, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)
@@ -512,12 +513,13 @@ void Motion_DiagonalRight(uint8_t step)
 {
     if (step > 1)
     {
-        float velo = VELO_F + gain_velo * (step - 1);
-        if (velo > 2400)
+        step--;
+        float velo = VELO_F + gain_velo * (float)step;
+        if (velo > 2400.0f)
         {
-            velo = 2400;
+            velo = 2400.0f;
         }
-        Control_StrCalculator(diagonal_step * (float)(step - 1) - enc.offset, VELO_F, velo, VELO_F, ACCEL_F, 1);
+        Control_StrCalculator(diagonal_step * (float)step - enc.offset, VELO_F, velo, VELO_F, ACCEL_F, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
         motion_end_flag = FALSE;
         while (motion_end_flag == FALSE)

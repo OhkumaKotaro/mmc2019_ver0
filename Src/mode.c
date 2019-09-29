@@ -28,7 +28,7 @@ extern loger_t loger;
 extern volatile uint8_t control_wall_flag;
 extern uint8_t counter_s; 
 
-unsigned char gx = 1, gy = 0;
+unsigned char gx = 2, gy = 0;
 
 //Prototype Function
 void SensorCheck(void);
@@ -65,7 +65,7 @@ void Mode_Mouse(int8_t mode)
         SearchRun();
         break;
     case 1:
-        Mode_FastRun(FALSE,0.0f, 1, 3);
+        Mode_FastRun(FALSE,160.0f, 1, 3);
         break;
     case 2:
         /*
@@ -73,7 +73,7 @@ void Mode_Mouse(int8_t mode)
         control_wall_flag = FALSE;
         Motion_enkai();
         */
-        Mode_FastRun(TRUE, 0.0f, 7, 5);
+        Mode_FastRun(TRUE, 160.0f, 7, 5);
         break;
     case 3:
         SensorCheck();
@@ -87,20 +87,16 @@ void Mode_Mouse(int8_t mode)
         break;
     case 6: //straight
         //CheckDiagonal(5);
-        Mode_FastRun(FALSE,80.0f, 1, 3);
         /*
         control_wall_flag = 2;
         CheckFastStraight(5);
         */
-        /*
         control_wall_flag = 1;
         CheckStraight(6);
-        */
         break;
     case 7: //turn
-        Mode_FastRun(TRUE, 160.0f, 7, 5);
-        //control_wall_flag = FALSE;
-        //CheckTurn(4);
+        control_wall_flag = FALSE;
+        CheckTurn(4);
         break;
     //YELLOW
     case 8: //left turn

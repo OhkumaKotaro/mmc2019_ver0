@@ -917,6 +917,9 @@ uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall, uint16_t next_motio
 				}
 				break;
 			}
+			if(motion != FRONT){
+				break;
+			}
 		}
 		return counter << 4 | FRONT;
 	}

@@ -56,8 +56,8 @@ uint8_t walledge_flag = 0;
 int32_t walledge_cnt = 0;
 float walledge_diff = 0.0f;
 //counnter
-uint16_t counter_ms=0;
-uint8_t counter_s; 
+uint16_t counter_ms = 0;
+uint8_t counter_s;
 
 /****************************************************************************************
  * outline  : PID control
@@ -186,17 +186,19 @@ void SideWallFix(void)
     float kp = 0.80f;
     int16_t diff_l = sen_l.diff;
     int16_t diff_r = sen_r.diff;
+    int16_t ref_fl = 100;
+    int16_t ref_fr = 83;
 
-    if (diff_l < -10 && diff_r < -10)
+    if (diff_l < -5 && diff_r < -5)
     {
         add_l = 20;
         add_r = 35;
     }
-    else if (diff_l < -10)
+    else if (diff_l < -5)
     {
         add_l = 20;
     }
-    else if (diff_r < -10)
+    else if (diff_r < -5)
     {
         add_r = 35;
     }
@@ -234,6 +236,18 @@ void SideWallFix(void)
         {
             wall_dif = 0;
         }
+
+        if (sen_front.now < 95)
+        {
+            if (sen_fl.now > ref_fl)
+            {
+                wall_dif += 2.0 * kp * (sen_fl.now - ref_fl);
+            }
+            else if (sen_fr.now > ref_fr)
+            {
+                wall_dif -= 2.0 * kp * (sen_fr.now - ref_fr);
+            }
+        }
     }
     else
     {
@@ -247,7 +261,7 @@ void SideWallFiX_Fast(void)
     int16_t diff_l = sen_l.diff;
     int16_t diff_r = sen_r.diff;
 
-    if (diff_l < -10 && diff_r < -10)
+    if (diff_l < -5 && diff_r < -5)
     {
         add_l = 20;
         add_r = 35;
@@ -258,12 +272,12 @@ void SideWallFiX_Fast(void)
         }
         */
     }
-    else if (diff_l < -10)
+    else if (diff_l < -5)
     {
         add_l = 20;
         //walledge_cnt++;
     }
-    else if (diff_r < -10)
+    else if (diff_r < -5)
     {
         add_r = 35;
         //walledge_cnt--;
@@ -317,8 +331,8 @@ void SideWallFiX_Fast(void)
 
 void DiagonalSideWall(void)
 {
-    int16_t ref_l = 155;
-    int16_t ref_r = 246;
+    //int16_t ref_l = 155;
+    //int16_t ref_r = 246;
     int16_t ref_fl = 96;
     int16_t ref_fr = 74;
 
@@ -336,7 +350,8 @@ void DiagonalSideWall(void)
         {
             diff = -Kp * (sen_r.now - ref_r);
         }
-        else*/ if (sen_fl.now > 125)
+        else*/
+        if (sen_fl.now > 125)
         {
             diff = Kp * (sen_fl.now - ref_fl);
         }
@@ -441,11 +456,23 @@ void Control_UpdatePwm(void)
 {
     if (motor_flag == TRUE)
     {
+        //sensor diffe updata
+        sen_l.diff = sen_l.now - sen_l.befor[19];
+        sen_r.diff = sen_r.now - sen_r.befor[19];
+        for (uint8_t i = 19; i > 0; i--)
+        {
+            sen_l.befor[i] = sen_l.befor[i - 1];
+            sen_r.befor[i] = sen_r.befor[i - 1];
+        }
+        sen_l.befor[0] = sen_l.now;
+        sen_r.befor[0] = sen_r.now;
+
         //UpdateLoger();
         counter_ms++;
-        if(counter_ms>999){
+        if (counter_ms > 999)
+        {
             counter_s++;
-            counter_ms=0;
+            counter_ms = 0;
         }
         if (motion_end_flag == FALSE)
         {

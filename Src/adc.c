@@ -358,26 +358,6 @@ void Adc_CheckConvert(void)
     update_sensor_data();
     adc_counter = 0;
     HAL_ADC_Start_DMA(&hadc2, (uint32_t *)ADCBuff, ADC_CONVERT_DATA_SIZE);
-
-    if (cnt_100ms > 5)
-    {
-
-      sen_l.diff = sen_l.now - sen_l.befor[9];
-      sen_r.diff = sen_r.now - sen_r.befor[9];
-      for (uint8_t i = 9; i > 0; i--)
-      {
-        sen_l.befor[i] = sen_l.befor[i - 1];
-        sen_r.befor[i] = sen_r.befor[i - 1];
-      }
-      sen_l.befor[0] = sen_l.now;
-      sen_r.befor[0] = sen_r.now;
-
-      cnt_100ms = 0;
-    }
-    else
-    {
-      cnt_100ms++;
-    }
   }
 }
 
