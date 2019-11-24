@@ -25,6 +25,8 @@ extern "C"
     void Motion_FastStart(uint8_t step, float velo_end);
     void Motion_FastStraight(uint8_t step, float v_start, float v_end);
     void Motion_Adjust(uint16_t step,float velo_s);
+    void Motion_Adjust_L(uint16_t step, float velo_s);
+    void Motion_Adjust_R(uint16_t step, float velo_s);
     void Motion_FastGoal(uint8_t step, float v_start);
     void Motion_Diagonal(uint8_t step);
     void Motion_DiagonalLeft(uint8_t step);
@@ -39,6 +41,15 @@ extern "C"
     void Motion_Right90Turn(float v_end);
     void Motion_FastLeftTurn(uint8_t type, float v_end);
     void Motion_FastRightTurn(uint8_t type, float v_end);
+    //fastest
+    void Motion_FastestStart(uint8_t step, float velo_end);
+    void Motion_FastestStraight(uint8_t step, float v_start, float v_end);
+    void Motion_FastestGoal(uint8_t step, float v_start);
+    void Motion_FastestAdjust_L(uint16_t step, float velo_s);
+    void Motion_FastestAdjust_R(uint16_t step, float velo_s);
+    void Motion_FastestLeftTurn(uint8_t type, float v_end);
+    void Motion_FastestRightTurn(uint8_t type, float v_end);
+    
 
 #ifdef __cplusplus
 }

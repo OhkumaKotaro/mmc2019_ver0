@@ -51,13 +51,20 @@ float front_wall_diff = 0.0f;
 volatile uint8_t front_wall_flag;
 //wall edge
 uint8_t walledge_step = 0;
-uint8_t walledge_offset = 0;
+float walledge_offset = 0;
 uint8_t walledge_flag = 0;
 int32_t walledge_cnt = 0;
 float walledge_diff = 0.0f;
 //counnter
 uint16_t counter_ms = 0;
 uint8_t counter_s;
+//pid
+float str_p = 2.0f;//1.7
+float str_i = 9.0f;//11.5
+float str_d = 0;
+float ang_p = 0.9f;
+float ang_i = 21.0f;
+float ang_d = 1.0f;
 
 /****************************************************************************************
  * outline  : PID control
@@ -166,17 +173,17 @@ void UpdateStrTarget()
     }
 }
 
-void Control_EdgeSet(uint8_t offset)
+void Control_EdgeSet(float offset)
 {
     walledge_flag = FALSE;
     walledge_offset = offset;
 }
 
-void WallEdgeFix(uint8_t dist)
+void WallEdgeFix(float dist)
 {
-    if (walledge_flag == FALSE)
+    if (walledge_flag == FALSE && dist_idial > 16.0f)
     {
-        dist_idial = (float)(dist + walledge_offset);
+        dist_idial = dist + walledge_offset;
         walledge_flag = TRUE;
     }
 }
@@ -186,15 +193,15 @@ void SideWallFix(void)
     float kp = 0.80f;
     int16_t diff_l = sen_l.diff;
     int16_t diff_r = sen_r.diff;
-    int16_t ref_fl = 100;
-    int16_t ref_fr = 83;
+    int16_t ref_fl = 120; //100
+    int16_t ref_fr = 103; //83
 
-    if (diff_l < -5 && diff_r < -5)
+    if (diff_l < -10 && diff_r < -5)
     {
         add_l = 20;
         add_r = 35;
     }
-    else if (diff_l < -5)
+    else if (diff_l < -10)
     {
         add_l = 20;
     }
@@ -203,14 +210,18 @@ void SideWallFix(void)
         add_r = 35;
     }
 
-    if (diff_l < -20 || diff_r < -20)
+    if (diff_r <= -12)
     {
-        WallEdgeFix(73);
+        WallEdgeFix(71.0f);
+    }
+    else if (diff_l <= -10)
+    {
+        WallEdgeFix(78.0f);
     }
 
     if (sen_front.now < 120)
     {
-        if (angle.dir != 0 || straight.v_now < 380)
+        if (angle.dir != 0 || straight.v_now < 600.0f)
         {
             wall_dif = 0;
             add_r = 0;
@@ -232,32 +243,34 @@ void SideWallFix(void)
             wall_dif = -2.0f * kp * (sen_r.now - sen_r.reference);
             add_r = 0;
         }
+        else if (sen_fl.now > ref_fl && sen_fr.now < ref_fr)
+        {
+            wall_dif += 2.0f * kp * (sen_fl.now - ref_fl);
+        }
+        else if (sen_fr.now > ref_fr && sen_fl.now < ref_fl)
+        {
+            wall_dif -= 2.0f * kp * (sen_fr.now - ref_fr);
+        }
         else
         {
             wall_dif = 0;
-        }
-
-        if (sen_front.now < 95)
-        {
-            if (sen_fl.now > ref_fl)
-            {
-                wall_dif += 2.0 * kp * (sen_fl.now - ref_fl);
-            }
-            else if (sen_fr.now > ref_fr)
-            {
-                wall_dif -= 2.0 * kp * (sen_fr.now - ref_fr);
-            }
         }
     }
     else
     {
         wall_dif = 0;
     }
+
+    if(wall_dif > 20){
+        wall_dif =20;
+    }else if(wall_dif < -20){
+        wall_dif = -20;
+    }
 }
 
 void SideWallFiX_Fast(void)
 {
-    float kp = 0.50f;
+    float kp = 0.6; //0.50f;
     int16_t diff_l = sen_l.diff;
     int16_t diff_r = sen_r.diff;
 
@@ -282,20 +295,25 @@ void SideWallFiX_Fast(void)
         add_r = 35;
         //walledge_cnt--;
     }
+    /*
     else
     {
-        //walledge_cnt = 0;
-        //walledge_diff = 0.0f;
-    }
+        walledge_cnt = 0;
+        walledge_diff = 0.0f;
+    }*/
 
-    if (diff_l < -20 || diff_r < -20)
+    if (diff_l < -10) //-20
     {
-        WallEdgeFix(73);
+        WallEdgeFix(77.0f); //73
+    }
+    else if (diff_r < -10)
+    {
+        WallEdgeFix(77.0f); //73
     }
 
     if (sen_front.now < 120)
     {
-        if (angle.dir != 0 || straight.v_now < 380)
+        if (angle.dir != 0)
         {
             wall_dif = 0;
             add_r = 0;
@@ -309,7 +327,86 @@ void SideWallFiX_Fast(void)
         }
         else if (sen_l.now > sen_l.threshold + add_l)
         {
-            wall_dif = 2.5f * kp * (sen_l.now - sen_l.reference);
+            wall_dif = 2.0f * kp * (sen_l.now - sen_l.reference);
+            add_l = 0;
+        }
+        else if (sen_r.now > sen_r.threshold + add_r)
+        {
+            wall_dif = -2.0f * kp * (sen_r.now - sen_r.reference);
+            add_r = 0;
+        }
+        else
+        {
+            wall_dif = 0;
+        }
+    }
+    else
+    {
+        wall_dif = 0;
+    }
+    //wall_dif -= walledge_diff;
+}
+
+void SideWallFiX_Fastest(void)
+{
+    float kp = 0.50f; //0.50f;
+    int16_t diff_l = sen_l.diff;
+    int16_t diff_r = sen_r.diff;
+
+    if (diff_l < -5 && diff_r < -5)
+    {
+        add_l = 20;
+        add_r = 35;
+        /*
+        if (walledge_diff == 0.0f)
+        {
+            walledge_diff = 0.50f * (float)walledge_cnt;
+        }
+        */
+    }
+    else if (diff_l < -5)
+    {
+        add_l = 20;
+        //walledge_cnt++;
+    }
+    else if (diff_r < -5)
+    {
+        add_r = 35;
+        //walledge_cnt--;
+    }
+    /*
+    else
+    {
+        walledge_cnt = 0;
+        walledge_diff = 0.0f;
+    }*/
+
+    if (diff_l < -11) //-20
+    {
+        WallEdgeFix(79.0f); //73
+    }
+    else if (diff_r < -19)
+    {
+        WallEdgeFix(73.0f); //73
+    }
+
+    if (sen_front.now < 120)
+    {
+        if (angle.dir != 0)
+        {
+            wall_dif = 0;
+            add_r = 0;
+            add_l = 0;
+        }
+        else if (sen_l.now > sen_l.threshold + add_l && sen_r.now > sen_r.threshold + add_r)
+        {
+            wall_dif = kp * ((sen_l.now - sen_l.reference) - (sen_r.now - sen_r.reference));
+            add_l = 0;
+            add_r = 0;
+        }
+        else if (sen_l.now > sen_l.threshold + add_l)
+        {
+            wall_dif = 2.0f * kp * (sen_l.now - sen_l.reference);
             add_l = 0;
         }
         else if (sen_r.now > sen_r.threshold + add_r)
@@ -331,36 +428,31 @@ void SideWallFiX_Fast(void)
 
 void DiagonalSideWall(void)
 {
-    //int16_t ref_l = 155;
-    //int16_t ref_r = 246;
-    int16_t ref_fl = 96;
-    int16_t ref_fr = 74;
-
-    float diff = 0;
-    float Kp = 0.8;
+    //int16_t ref_l = 172;  //142
+    //int16_t ref_r = 240;  //210
+    int16_t ref_fl = 112; //107
+    int16_t ref_fr = 92;  //87
 
     if (angle.dir == 0)
     {
-        /*
-        if (sen_l.now > ref_l)
+        if (sen_fl.now > ref_fl)
         {
-            diff = Kp * (sen_l.now - ref_l);
+            wall_dif = 0.6 * (float)(sen_fl.now - ref_fl);
+        }
+        if (sen_fr.now > ref_fr)
+        {
+            wall_dif = -0.6 * (float)(sen_fr.now - ref_fr);
+        }
+        /*
+        else if (sen_l.now > ref_l)
+        {
+            wall_dif = 0.5 * (float)(sen_l.now - ref_l);
         }
         else if (sen_r.now > ref_r)
         {
-            diff = -Kp * (sen_r.now - ref_r);
-        }
-        else*/
-        if (sen_fl.now > 125)
-        {
-            diff = Kp * (sen_fl.now - ref_fl);
-        }
-        if (sen_fr.now > 105)
-        {
-            diff = -Kp * (sen_fr.now - ref_fr);
-        }
+            wall_dif = -0.5 * (float)(sen_r.now - ref_r);
+        }*/
     }
-    wall_dif = diff;
 }
 
 void Control_FrontWall(void)
@@ -423,10 +515,10 @@ void UpdateLoger(void)
     */
 
     //wall cutoff
-    loger.target_velo[loger.cnt] = (int16_t)enc.distance;
-    loger.target_velo_ang[loger.cnt] = (int16_t)dist_idial;
+    loger.target_velo_ang[loger.cnt] = (int16_t)enc.velocity;
     loger.velo[loger.cnt] = sen_l.diff;
     loger.velo_ang[loger.cnt] = sen_r.diff;
+
     loger.cnt++;
     if (loger.cnt > 5000)
     {
@@ -457,9 +549,9 @@ void Control_UpdatePwm(void)
     if (motor_flag == TRUE)
     {
         //sensor diffe updata
-        sen_l.diff = sen_l.now - sen_l.befor[19];
-        sen_r.diff = sen_r.now - sen_r.befor[19];
-        for (uint8_t i = 19; i > 0; i--)
+        sen_l.diff = sen_l.now - sen_l.befor[9];
+        sen_r.diff = sen_r.now - sen_r.befor[9];
+        for (uint8_t i = 9; i > 0; i--)
         {
             sen_l.befor[i] = sen_l.befor[i - 1];
             sen_r.befor[i] = sen_r.befor[i - 1];
@@ -490,28 +582,33 @@ void Control_UpdatePwm(void)
         else if (control_wall_flag == 3)
         {
             DiagonalSideWall();
+        }else if(control_wall_flag == 4){
+            SideWallFiX_Fastest();
         }
         else
         {
             wall_dif = 0;
         }
         Control_FrontWall();
-        int16_t str_buff = (int16_t)PID_value(straight.dir * straight.v_now + front_wall_diff, enc.velocity, &error_sum, &error_old, 2.0f, 9.0f, 0);   //1.7f, 11.5f, 0
-        int16_t ang_buff = (int16_t)PID_value(angle.dir * angle.v_now - wall_dif, gyro_z.velocity, &error_ang_sum, &error_ang_old, 0.8f, 20.0f, 1.0f); // 1.0f, 52.0f, 1.0f
+        int16_t str_buff = (int16_t)PID_value(straight.dir * straight.v_now + front_wall_diff, enc.velocity, &error_sum, &error_old, str_p, str_i, str_d); //1.7f, 11.5f, 0
+        int16_t ang_buff = (int16_t)PID_value(angle.dir * angle.v_now - wall_dif, gyro_z.velocity, &error_ang_sum, &error_ang_old, 0.9f, 21.0f, 1.0f);     // 1.0f, 20.0f, 1.0f
 
         Tim_MotorPwm(str_buff - ang_buff, str_buff + ang_buff);
-        if ((angle.dir * angle.v_now - gyro_z.velocity < -400) || (angle.dir * angle.v_now - gyro_z.velocity) > 400)
+
+        if ((angle.dir * angle.v_now - gyro_z.velocity < -1000) || (angle.dir * angle.v_now - gyro_z.velocity) > 1000)
         {
             if (straight.dir != -1)
             {
                 motor_flag = FALSE;
+                Tim_FanPwm(0);
             }
         }
-        if (accel.y < -100.0f)
+        if (accel.y < -90.0f) //-100
         {
             if (straight.dir != -1)
             {
                 motor_flag = FALSE;
+                Tim_FanPwm(0);
             }
         }
     }
@@ -537,4 +634,17 @@ void Control_ResetVelo(void)
     front_wall_flag = FALSE;
     front_wall_diff = 0;
     walledge_flag = TRUE;
+}
+
+void Control_SetupStraightPID(float Kp, float Ki, float Kd)
+{
+    str_p = Kp;
+    str_i = Ki;
+    str_d = Kd;
+}
+void Control_SetupTurnPID(float Kp, float Ki, float Kd)
+{
+    ang_p = Kp;
+    ang_i = Ki;
+    ang_d = Kd;
 }

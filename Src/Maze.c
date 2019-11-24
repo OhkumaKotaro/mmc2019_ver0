@@ -8,18 +8,24 @@
 #define MAX_STEP_EX 0xffff
 
 unsigned char step[MAZE_SIZE][MAZE_SIZE];
-volatile uint16_t stepEx_h[MAZE_SIZE+1][MAZE_SIZE+1];
-volatile uint16_t stepEx_v[MAZE_SIZE+1][MAZE_SIZE+1];
-unsigned char goal_size = 1;
+volatile uint16_t stepEx_h[MAZE_SIZE + 1][MAZE_SIZE + 1];
+volatile uint16_t stepEx_v[MAZE_SIZE + 1][MAZE_SIZE + 1];
+unsigned char goal_size = 4;
 
-void Maze_UpdatePosition(uint16_t dir, pos_t *pos) {
+uint8_t Maze_GetGoalSize(void) {
+	return goal_size;
+}
+void Maze_UpdatePosition(uint16_t dir, pos_t *pos)
+{
 	if (dir > 3)
 	{
 		dir = 3;
 	}
-	// ���̓���Ō����A���W���X�V����	
-	if (dir == FRONT) {
-		switch (pos->dir) {
+	// ���̓���Ō����A���W���X�V����
+	if (dir == FRONT)
+	{
+		switch (pos->dir)
+		{
 		case NORTH:
 			pos->y++;
 			break;
@@ -36,8 +42,10 @@ void Maze_UpdatePosition(uint16_t dir, pos_t *pos) {
 			break;
 		}
 	}
-	else if (dir == LEFT) {
-		switch (pos->dir) {
+	else if (dir == LEFT)
+	{
+		switch (pos->dir)
+		{
 		case NORTH:
 			pos->x--;
 			pos->dir = WEST;
@@ -58,8 +66,10 @@ void Maze_UpdatePosition(uint16_t dir, pos_t *pos) {
 			break;
 		}
 	}
-	else if (dir == RIGHT) {
-		switch (pos->dir) {
+	else if (dir == RIGHT)
+	{
+		switch (pos->dir)
+		{
 		case NORTH:
 			pos->x++;
 			pos->dir = EAST;
@@ -80,8 +90,10 @@ void Maze_UpdatePosition(uint16_t dir, pos_t *pos) {
 			break;
 		}
 	}
-	else if (dir == REAR) {
-		switch (pos->dir) {
+	else if (dir == REAR)
+	{
+		switch (pos->dir)
+		{
 		case NORTH:
 			pos->y--;
 			pos->dir = SOUTH;
@@ -104,64 +116,81 @@ void Maze_UpdatePosition(uint16_t dir, pos_t *pos) {
 	}
 }
 
-unsigned char Maze_GetWallData(unsigned char x, unsigned char y, unsigned char dir, wallData_t *wall) {
+unsigned char Maze_GetWallData(unsigned char x, unsigned char y, unsigned char dir, wallData_t *wall)
+{
 	uint16_t check_wall = 1;
 
-	if (dir > 3) {
+	if (dir > 3)
+	{
 		dir = dir - 4;
 	}
 
-	if (dir == NORTH) {
+	if (dir == NORTH)
+	{
 		check_wall <<= x;
 		check_wall &= wall->horizontal[y + 1];
-		if (check_wall != 0) {
+		if (check_wall != 0)
+		{
 			check_wall = 1;
 		}
 	}
-	else if (dir == EAST) {
+	else if (dir == EAST)
+	{
 		check_wall <<= y;
 		check_wall &= wall->vertical[x + 1];
-		if (check_wall != 0) {
+		if (check_wall != 0)
+		{
 			check_wall = 1;
 		}
 	}
-	else if (dir == SOUTH) {
+	else if (dir == SOUTH)
+	{
 		check_wall <<= x;
 		check_wall &= wall->horizontal[y];
-		if (check_wall != 0) {
+		if (check_wall != 0)
+		{
 			check_wall = 1;
 		}
 	}
-	else if (dir == WEST) {
+	else if (dir == WEST)
+	{
 		check_wall <<= y;
 		check_wall &= wall->vertical[x];
-		if (check_wall != 0) {
+		if (check_wall != 0)
+		{
 			check_wall = 1;
 		}
 	}
 
-	if (check_wall == 1) {
+	if (check_wall == 1)
+	{
 		return TRUE;
 	}
-	else {
+	else
+	{
 		return FALSE;
 	}
 }
 
-void Search_UnknownWall(wallData_t *wall, unsigned char *tail, unsigned char pos[MAX_STEP]) {
+void Search_UnknownWall(wallData_t *wall, unsigned char *tail, unsigned char pos[MAX_STEP])
+{
 	unsigned char buff_tail = *tail;
 	//init step
-	for (unsigned char i = 0; i < MAZE_SIZE; i++) {
-		for (unsigned char j = 0; j < MAZE_SIZE; j++) {
+	for (unsigned char i = 0; i < MAZE_SIZE; i++)
+	{
+		for (unsigned char j = 0; j < MAZE_SIZE; j++)
+		{
 			unsigned char tmp_step = 255;
 			//north
-			if ((wall->horizontal_known[j + 1] & (0b1 << i)) == 0) {
+			if ((wall->horizontal_known[j + 1] & (0b1 << i)) == 0)
+			{
 				tmp_step = 0;
 			}
 			//south
 			if (j > 0)
 			{
-				if ((wall->horizontal_known[j] & (0b1 << i)) == 0) {
+				if ((wall->horizontal_known[j] & (0b1 << i)) == 0)
+				{
 					tmp_step = 0;
 				}
 			}
@@ -173,12 +202,13 @@ void Search_UnknownWall(wallData_t *wall, unsigned char *tail, unsigned char pos
 			//west
 			if (i > 0)
 			{
-				if ((wall->vertical_known[i] & (0b1 << j)) == 0) {
+				if ((wall->vertical_known[i] & (0b1 << j)) == 0)
+				{
 					tmp_step = 0;
 				}
-
 			}
-			if (tmp_step == 0) {
+			if (tmp_step == 0)
+			{
 				*(pos + buff_tail) = (i << 4) | j;
 				buff_tail++;
 			}
@@ -293,11 +323,12 @@ void Maze_UpdateStepMap(unsigned char *goal_flag, unsigned char gx, unsigned cha
 	}
 }
 
-unsigned char Maze_GetNextMotion(pos_t *mypos, wallData_t *wall) {
+unsigned char Maze_GetNextMotion(pos_t *mypos, wallData_t *wall)
+{
 	unsigned char tmp_step = MAX_STEP; // ����
-	unsigned char tmp_dir = REAR;	 // ����
-									 // ���݂̌����ɉ����ďꍇ�������A ���������Ȃ������𔻒f
-									 // ���H�O�ɐi�ނ̂ƃS�[�����X�^�[�g�}�X�ȊO�̏ꍇ(0,0)�ɐi�ނ̂�j�~
+	unsigned char tmp_dir = REAR;	  // ����
+									   // ���݂̌����ɉ����ďꍇ�������A ���������Ȃ������𔻒f
+									   // ���H�O�ɐi�ނ̂ƃS�[�����X�^�[�g�}�X�ȊO�̏ꍇ(0,0)�ɐi�ނ̂�j�~
 
 	unsigned char x = mypos->x;
 	unsigned char y = mypos->y;
@@ -494,14 +525,13 @@ unsigned char Maze_GetNextMotion(pos_t *mypos, wallData_t *wall) {
 	return tmp_dir;
 }
 
-unsigned char Maze_GetStep(unsigned char x, unsigned char y) {
+unsigned char Maze_GetStep(unsigned char x, unsigned char y)
+{
 	return step[x][y];
 }
 
-
-
-
-void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weight_t, uint8_t gx, uint8_t gy) {
+void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weight_t, uint8_t gx, uint8_t gy)
+{
 	uint8_t head_h = 0;
 	uint8_t head_v = 0;
 	uint8_t tail_h = 0;
@@ -517,39 +547,136 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 	wallDate->vertical[16] = 0xffff;
 	for (uint8_t i = 0; i <= MAZE_SIZE; i++)
 	{
-		for (uint8_t j = 0; j <= MAZE_SIZE; j++) {
+		for (uint8_t j = 0; j <= MAZE_SIZE; j++)
+		{
 			stepEx_h[i][j] = MAX_STEP_EX;
 			stepEx_v[i][j] = MAX_STEP_EX;
 		}
-
 	}
 	//add goal step
 	if (goal_size == 1)
 	{
 		//horizontal step
-		if ((wallDate->horizontal[gy] & (0b1 << gx)) == FALSE) {
+		if ((wallDate->horizontal[gy] & (0b1 << gx)) == FALSE)
+		{
 			stepEx_h[gx][gy] = 0;
 			x_h[tail_h] = gx;
 			y_h[tail_h] = gy;
 			tail_h++;
 		}
-		if ((wallDate->horizontal[gy + 1] & (0b1 << gx)) == FALSE) {
+		if ((wallDate->horizontal[gy + 1] & (0b1 << gx)) == FALSE)
+		{
 			stepEx_h[gx][gy + 1] = 0;
 			x_h[tail_h] = gx;
 			y_h[tail_h] = gy + 1;
 			tail_h++;
 		}
 		//vertical step
-		if ((wallDate->vertical[gx] & (0b1 << gy)) == FALSE) {
+		if ((wallDate->vertical[gx] & (0b1 << gy)) == FALSE)
+		{
 			stepEx_v[gx][gy] = 0;
 			x_v[tail_v] = gx;
 			y_v[tail_v] = gy;
 			tail_v++;
 		}
-		if ((wallDate->vertical[gx + 1] & (0b1 << gy)) == FALSE) {
+		if ((wallDate->vertical[gx + 1] & (0b1 << gy)) == FALSE)
+		{
 			stepEx_v[gx + 1][gy] = 0;
 			x_v[tail_v] = gx + 1;
 			y_v[tail_v] = gy;
+			tail_v++;
+		}
+	}
+	else if (goal_size == 4)
+	{
+		//horizontal step
+		if ((wallDate->horizontal[gy] & (0b1 << gx)) == FALSE)
+		{
+			stepEx_h[gx][gy] = 0;
+			x_h[tail_h] = gx;
+			y_h[tail_h] = gy;
+			tail_h++;
+		}
+		if ((wallDate->horizontal[gy] & (0b1 << (gx + 1))) == FALSE)
+		{
+			stepEx_h[gx + 1][gy] = 0;
+			x_h[tail_h] = gx + 1;
+			y_h[tail_h] = gy;
+			tail_h++;
+		}
+
+		if ((wallDate->horizontal[gy + 1] & (0b1 << gx)) == FALSE)
+		{
+			stepEx_h[gx][gy + 1] = 0;
+			x_h[tail_h] = gx;
+			y_h[tail_h] = gy + 1;
+			tail_h++;
+		}
+		if ((wallDate->horizontal[gy + 1] & (0b1 << (gx + 1))) == FALSE)
+		{
+			stepEx_h[gx + 1][gy + 1] = 0;
+			x_h[tail_h] = gx + 1;
+			y_h[tail_h] = gy + 1;
+			tail_h++;
+		}
+
+		if ((wallDate->horizontal[gy + 2] & (0b1 << gx)) == FALSE)
+		{
+			stepEx_h[gx][gy + 2] = 0;
+			x_h[tail_h] = gx;
+			y_h[tail_h] = gy + 2;
+			tail_h++;
+		}
+		if ((wallDate->horizontal[gy + 2] & (0b1 << (gx + 1))) == FALSE)
+		{
+			stepEx_h[gx + 1][gy + 2] = 0;
+			x_h[tail_h] = gx + 1;
+			y_h[tail_h] = gy + 2;
+			tail_h++;
+		}
+		//vertical step
+		if ((wallDate->vertical[gx] & (0b1 << gy)) == FALSE)
+		{
+			stepEx_v[gx][gy] = 0;
+			x_v[tail_v] = gx;
+			y_v[tail_v] = gy;
+			tail_v++;
+		}
+		if ((wallDate->vertical[gx] & (0b1 << (gy + 1))) == FALSE)
+		{
+			stepEx_v[gx][gy + 1] = 0;
+			x_v[tail_v] = gx;
+			y_v[tail_v] = gy + 1;
+			tail_v++;
+		}
+
+		if ((wallDate->vertical[gx + 1] & (0b1 << gy)) == FALSE)
+		{
+			stepEx_v[gx + 1][gy] = 0;
+			x_v[tail_v] = gx + 1;
+			y_v[tail_v] = gy;
+			tail_v++;
+		}
+		if ((wallDate->vertical[gx + 1] & (0b1 << (gy + 1))) == FALSE)
+		{
+			stepEx_v[gx + 1][gy + 1] = 0;
+			x_v[tail_v] = gx + 1;
+			y_v[tail_v] = gy + 1;
+			tail_v++;
+		}
+
+		if ((wallDate->vertical[gx + 2] & (0b1 << gy)) == FALSE)
+		{
+			stepEx_v[gx + 2][gy] = 0;
+			x_v[tail_v] = gx + 2;
+			y_v[tail_v] = gy;
+			tail_v++;
+		}
+		if ((wallDate->vertical[gx + 2] & (0b1 << (gy + 1))) == FALSE)
+		{
+			stepEx_v[gx + 2][gy + 1] = 0;
+			x_v[tail_v] = gx + 2;
+			y_v[tail_v] = gy + 1;
 			tail_v++;
 		}
 	}
@@ -557,12 +684,17 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 	while (head_h != tail_h || head_v != tail_v)
 	{
 		//holizontal
-		if (head_h != tail_h) {
+		if (head_h != tail_h)
+		{
 			//holizontal->holizontal
-			if (stepEx_h[x_h[head_h]][y_h[head_h]] != MAX_STEP_EX) {
-				if (y_h[head_h] < (MAZE_SIZE - 1)) {
-					if ((wallDate->horizontal[y_h[head_h] + 1] & (0b1 << x_h[head_h])) == FALSE) {
-						if (stepEx_h[x_h[head_h]][y_h[head_h] + 1] /*== MAX_STEP_EX*/> stepEx_h[x_h[head_h]][y_h[head_h]] + weight_s) {
+			if (stepEx_h[x_h[head_h]][y_h[head_h]] != MAX_STEP_EX)
+			{
+				if (y_h[head_h] < (MAZE_SIZE - 1))
+				{
+					if ((wallDate->horizontal[y_h[head_h] + 1] & (0b1 << x_h[head_h])) == FALSE)
+					{
+						if (stepEx_h[x_h[head_h]][y_h[head_h] + 1] /*== MAX_STEP_EX*/ > stepEx_h[x_h[head_h]][y_h[head_h]] + weight_s)
+						{
 							stepEx_h[x_h[head_h]][y_h[head_h] + 1] = stepEx_h[x_h[head_h]][y_h[head_h]] + weight_s;
 							uint8_t x_buff = x_h[head_h];
 							uint8_t y_buff = y_h[head_h] + 1;
@@ -572,9 +704,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 						}
 					}
 				}
-				if (y_h[head_h] > 0) {
-					if ((wallDate->horizontal[y_h[head_h] - 1] & (0b1 << x_h[head_h])) == FALSE) {
-						if (stepEx_h[x_h[head_h]][y_h[head_h] - 1] /*== MAX_STEP_EX*/> stepEx_h[x_h[head_h]][y_h[head_h]] + weight_s) {
+				if (y_h[head_h] > 0)
+				{
+					if ((wallDate->horizontal[y_h[head_h] - 1] & (0b1 << x_h[head_h])) == FALSE)
+					{
+						if (stepEx_h[x_h[head_h]][y_h[head_h] - 1] /*== MAX_STEP_EX*/ > stepEx_h[x_h[head_h]][y_h[head_h]] + weight_s)
+						{
 							stepEx_h[x_h[head_h]][y_h[head_h] - 1] = stepEx_h[x_h[head_h]][y_h[head_h]] + weight_s;
 							uint8_t x_buff = x_h[head_h];
 							uint8_t y_buff = y_h[head_h] - 1;
@@ -585,9 +720,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 					}
 				}
 				//holizontal->vertical
-				if (x_h[head_h] > 0) {
-					if ((wallDate->vertical[x_h[head_h]] & (0b1 << y_h[head_h])) == FALSE) {
-						if (stepEx_v[x_h[head_h]][y_h[head_h]] /*== MAX_STEP_EX*/> stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t) {
+				if (x_h[head_h] > 0)
+				{
+					if ((wallDate->vertical[x_h[head_h]] & (0b1 << y_h[head_h])) == FALSE)
+					{
+						if (stepEx_v[x_h[head_h]][y_h[head_h]] /*== MAX_STEP_EX*/ > stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t)
+						{
 							stepEx_v[x_h[head_h]][y_h[head_h]] = stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t;
 							uint8_t x_buff = x_h[head_h];
 							uint8_t y_buff = y_h[head_h];
@@ -597,9 +735,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 						}
 					}
 				}
-				if (y_h[head_h] > 0) {
-					if ((wallDate->vertical[x_h[head_h]] & (0b1 << (y_h[head_h] - 1))) == FALSE) {
-						if (stepEx_v[x_h[head_h]][y_h[head_h] - 1] /*== MAX_STEP_EX*/> stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t) {
+				if (y_h[head_h] > 0)
+				{
+					if ((wallDate->vertical[x_h[head_h]] & (0b1 << (y_h[head_h] - 1))) == FALSE)
+					{
+						if (stepEx_v[x_h[head_h]][y_h[head_h] - 1] /*== MAX_STEP_EX*/ > stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t)
+						{
 							stepEx_v[x_h[head_h]][y_h[head_h] - 1] = stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t;
 							uint8_t x_buff = x_h[head_h];
 							uint8_t y_buff = y_h[head_h] - 1;
@@ -609,21 +750,27 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 						}
 					}
 				}
-				if (x_h[head_h] < (MAZE_SIZE - 1)) {
-					if ((wallDate->vertical[x_h[head_h] + 1] & (0b1 << (y_h[head_h]))) == FALSE) {
-						if (stepEx_v[x_h[head_h] + 1][y_h[head_h]] /*== MAX_STEP_EX*/> stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t) {
+				if (x_h[head_h] < (MAZE_SIZE - 1))
+				{
+					if ((wallDate->vertical[x_h[head_h] + 1] & (0b1 << (y_h[head_h]))) == FALSE)
+					{
+						if (stepEx_v[x_h[head_h] + 1][y_h[head_h]] /*== MAX_STEP_EX*/ > stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t)
+						{
 							stepEx_v[x_h[head_h] + 1][y_h[head_h]] = stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t;
-							uint8_t x_buff= x_h[head_h] + 1;
-							uint8_t y_buff= y_h[head_h];
+							uint8_t x_buff = x_h[head_h] + 1;
+							uint8_t y_buff = y_h[head_h];
 							x_v[tail_v] = x_buff;
 							y_v[tail_v] = y_buff;
 							tail_v++;
 						}
 					}
 				}
-				if ((y_h[head_h] > 0) && (x_h[head_h] < (MAZE_SIZE - 1))) {
-					if ((wallDate->vertical[x_h[head_h] + 1] & (0b1 << (y_h[head_h] - 1))) == FALSE) {
-						if (stepEx_v[x_h[head_h] + 1][y_h[head_h] - 1] == MAX_STEP_EX/*> stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t*/) {
+				if ((y_h[head_h] > 0) && (x_h[head_h] < (MAZE_SIZE - 1)))
+				{
+					if ((wallDate->vertical[x_h[head_h] + 1] & (0b1 << (y_h[head_h] - 1))) == FALSE)
+					{
+						if (stepEx_v[x_h[head_h] + 1][y_h[head_h] - 1] == MAX_STEP_EX /*> stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t*/)
+						{
 							stepEx_v[x_h[head_h] + 1][y_h[head_h] - 1] = stepEx_h[x_h[head_h]][y_h[head_h]] + weight_t;
 							uint8_t x_buff = x_h[head_h] + 1;
 							uint8_t y_buff = y_h[head_h] - 1;
@@ -637,12 +784,17 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 			head_h++;
 		}
 		//vertical
-		if (head_v != tail_v) {
-			if (stepEx_v[x_v[head_v]][y_v[head_v]] != MAX_STEP_EX) {
+		if (head_v != tail_v)
+		{
+			if (stepEx_v[x_v[head_v]][y_v[head_v]] != MAX_STEP_EX)
+			{
 				//vertical->vertical
-				if (x_v[head_v] < MAZE_SIZE - 1) {
-					if ((wallDate->vertical[x_v[head_v] + 1] & (0b1 << y_v[head_v])) == FALSE) {
-						if (stepEx_v[x_v[head_v] + 1][y_v[head_v]] /*== MAX_STEP_EX*/> stepEx_v[x_v[head_v]][y_v[head_v]] + weight_s) {
+				if (x_v[head_v] < MAZE_SIZE - 1)
+				{
+					if ((wallDate->vertical[x_v[head_v] + 1] & (0b1 << y_v[head_v])) == FALSE)
+					{
+						if (stepEx_v[x_v[head_v] + 1][y_v[head_v]] /*== MAX_STEP_EX*/ > stepEx_v[x_v[head_v]][y_v[head_v]] + weight_s)
+						{
 							stepEx_v[x_v[head_v] + 1][y_v[head_v]] = stepEx_v[x_v[head_v]][y_v[head_v]] + weight_s;
 							uint8_t x_buff = x_v[head_v] + 1;
 							uint8_t y_buff = y_v[head_v];
@@ -652,9 +804,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 						}
 					}
 				}
-				if (x_v[head_v] > 0) {
-					if ((wallDate->vertical[x_v[head_v] - 1] & (0b1 << y_v[head_v])) == FALSE) {
-						if (stepEx_v[x_v[head_v] - 1][y_v[head_v]] /*== MAX_STEP_EX */> stepEx_v[x_v[head_v]][y_v[head_v]] + weight_s) {
+				if (x_v[head_v] > 0)
+				{
+					if ((wallDate->vertical[x_v[head_v] - 1] & (0b1 << y_v[head_v])) == FALSE)
+					{
+						if (stepEx_v[x_v[head_v] - 1][y_v[head_v]] /*== MAX_STEP_EX */ > stepEx_v[x_v[head_v]][y_v[head_v]] + weight_s)
+						{
 							stepEx_v[x_v[head_v] - 1][y_v[head_v]] = stepEx_v[x_v[head_v]][y_v[head_v]] + weight_s;
 							uint8_t x_buff = x_v[head_v] - 1;
 							uint8_t y_buff = y_v[head_v];
@@ -665,9 +820,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 					}
 				}
 				//vertical->horizontal
-				if (y_v[head_v] > 0) {
-					if ((wallDate->horizontal[y_v[head_v]] & (0b1 << x_v[head_v])) == FALSE) {
-						if (stepEx_h[x_v[head_v]][y_v[head_v]] /*== MAX_STEP_EX */> stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t) {
+				if (y_v[head_v] > 0)
+				{
+					if ((wallDate->horizontal[y_v[head_v]] & (0b1 << x_v[head_v])) == FALSE)
+					{
+						if (stepEx_h[x_v[head_v]][y_v[head_v]] /*== MAX_STEP_EX */ > stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t)
+						{
 							stepEx_h[x_v[head_v]][y_v[head_v]] = stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t;
 							uint8_t x_buff = x_v[head_v];
 							uint8_t y_buff = y_v[head_v];
@@ -677,9 +835,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 						}
 					}
 				}
-				if (x_v[head_v] > 0) {
-					if ((wallDate->horizontal[y_v[head_v]] & (0b1 << (x_v[head_v] - 1))) == FALSE) {
-						if (stepEx_h[x_v[head_v] - 1][y_v[head_v]] /*== MAX_STEP_EX */> stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t) {
+				if (x_v[head_v] > 0)
+				{
+					if ((wallDate->horizontal[y_v[head_v]] & (0b1 << (x_v[head_v] - 1))) == FALSE)
+					{
+						if (stepEx_h[x_v[head_v] - 1][y_v[head_v]] /*== MAX_STEP_EX */ > stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t)
+						{
 							stepEx_h[x_v[head_v] - 1][y_v[head_v]] = stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t;
 							uint8_t x_buff = x_v[head_v] - 1;
 							uint8_t y_buff = y_v[head_v];
@@ -689,9 +850,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 						}
 					}
 				}
-				if (y_v[head_v] < (MAZE_SIZE - 1)) {
-					if ((wallDate->horizontal[y_v[head_v] + 1] & (0b1 << x_v[head_v])) == FALSE) {
-						if (stepEx_h[x_v[head_v]][y_v[head_v] + 1] /*== MAX_STEP_EX */> stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t) {
+				if (y_v[head_v] < (MAZE_SIZE - 1))
+				{
+					if ((wallDate->horizontal[y_v[head_v] + 1] & (0b1 << x_v[head_v])) == FALSE)
+					{
+						if (stepEx_h[x_v[head_v]][y_v[head_v] + 1] /*== MAX_STEP_EX */ > stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t)
+						{
 							stepEx_h[x_v[head_v]][y_v[head_v] + 1] = stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t;
 							uint8_t x_buff = x_v[head_v];
 							uint8_t y_buff = y_v[head_v] + 1;
@@ -701,9 +865,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 						}
 					}
 				}
-				if (((y_v[head_v] < (MAZE_SIZE - 1)) && (x_v[head_v] > 0))) {
-					if ((wallDate->horizontal[y_v[head_v] + 1] & (0b1 << (x_v[head_v] - 1))) == FALSE) {
-						if (stepEx_h[x_v[head_v] - 1][y_v[head_v] + 1] /*== MAX_STEP_EX*/ > stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t) {
+				if (((y_v[head_v] < (MAZE_SIZE - 1)) && (x_v[head_v] > 0)))
+				{
+					if ((wallDate->horizontal[y_v[head_v] + 1] & (0b1 << (x_v[head_v] - 1))) == FALSE)
+					{
+						if (stepEx_h[x_v[head_v] - 1][y_v[head_v] + 1] /*== MAX_STEP_EX*/ > stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t)
+						{
 							stepEx_h[x_v[head_v] - 1][y_v[head_v] + 1] = stepEx_v[x_v[head_v]][y_v[head_v]] + weight_t;
 							uint8_t x_buff = x_v[head_v] - 1;
 							uint8_t y_buff = y_v[head_v] + 1;
@@ -719,12 +886,12 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 	}
 }
 
-
-uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall) {
+uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall)
+{
 	volatile uint16_t tmp_step = 0xffff; // ����
-	uint16_t tmp_dir = 3;	 // ����
-									 // ���݂̌����ɉ����ďꍇ�������A ���������Ȃ������𔻒f
-									 // ���H�O�ɐi�ނ̂ƃS�[�����X�^�[�g�}�X�ȊO�̏ꍇ(0,0)�ɐi�ނ̂�j�~
+	uint16_t tmp_dir = 3;				 // ����
+										 // ���݂̌����ɉ����ďꍇ�������A ���������Ȃ������𔻒f
+										 // ���H�O�ɐi�ނ̂ƃS�[�����X�^�[�g�}�X�ȊO�̏ꍇ(0,0)�ɐi�ނ̂�j�~
 	uint8_t x = mypos->x;
 	uint8_t y = mypos->y;
 
@@ -738,7 +905,7 @@ uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall) {
 				if (((wall->horizontal[y + 1] >> x) & 0b1) == FALSE)
 				{
 					tmp_step = stepEx_h[x][y + 1];
-					tmp_dir = 2<<4|FRONT;
+					tmp_dir = 2 << 4 | FRONT;
 				}
 			}
 		}
@@ -777,7 +944,7 @@ uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall) {
 				}
 			}
 		}
-		if (stepEx_h[x][y+1] < tmp_step)
+		if (stepEx_h[x][y + 1] < tmp_step)
 		{
 			if (y < MAZE_SIZE - 1)
 			{
@@ -876,11 +1043,14 @@ uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall) {
 	return tmp_dir;
 }
 
-uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall, uint16_t next_motion){
+uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall, uint16_t next_motion)
+{
 	uint16_t motion = next_motion;
 	uint16_t counter = 0;
-	if (motion == FRONT) {
-		while (1) {
+	if (motion == FRONT)
+	{
+		while (1)
+		{
 			uint8_t x = mypos->x;
 			uint8_t y = mypos->y;
 			switch (mypos->dir)
@@ -906,18 +1076,22 @@ uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall, uint16_t next_motio
 			uint16_t s_wall = ((wall->horizontal_known[y] >> x) & 0b1);
 			uint16_t w_wall = ((wall->vertical_known[x] >> y) & 0b1);
 
-			if (1 == (n_wall&e_wall&s_wall&w_wall) && motion==FRONT) {
+			if (1 == (n_wall & e_wall & s_wall & w_wall) && motion == FRONT)
+			{
 				counter++;
 				Maze_UpdatePosition(FRONT, mypos);
 				motion = Maze_GetNextMotion(mypos, wall);
 			}
-			else {
-				if (counter == 0) {
+			else
+			{
+				if (counter == 0)
+				{
 					Maze_UpdatePosition(motion, mypos);
 				}
 				break;
 			}
-			if(motion != FRONT){
+			if (motion != FRONT)
+			{
 				break;
 			}
 		}
@@ -930,14 +1104,15 @@ uint16_t Maze_KnownStepAccel(pos_t *mypos, wallData_t *wall, uint16_t next_motio
 	}
 }
 
-uint16_t Maze_GetStepEx_h(uint8_t x, uint8_t y) {
+uint16_t Maze_GetStepEx_h(uint8_t x, uint8_t y)
+{
 	return stepEx_h[x][y];
 }
 
-uint16_t Maze_GetStepEx_v(uint8_t x, uint8_t y) {
+uint16_t Maze_GetStepEx_v(uint8_t x, uint8_t y)
+{
 	return stepEx_v[x][y];
 }
-
 
 void Compress_T90(uint16_t *motion, uint8_t *origin_tail)
 {
@@ -955,34 +1130,39 @@ void Compress_T90(uint16_t *motion, uint8_t *origin_tail)
 			head++;
 			buff_motion[buff_tail] = *(motion + head);
 			buff_tail++;
-			if ((*(motion + head ) == ((2 << 4) | FRONT)) && ((*(motion + head - 2) & 0xf) == FRONT))
+			if ((*(motion + head) == ((2 << 4) | FRONT)) && ((*(motion + head - 2) & 0xf) == FRONT))
 			{
 				buff_tail -= 3;
-				if (buff_motion[buff_tail] == ((2 << 4) | FRONT)) {
-					buff_motion[buff_tail] = 1<<4|ADJUST;
+				if (buff_motion[buff_tail] == ((2 << 4) | FRONT))
+				{
+					buff_motion[buff_tail] = 1 << 4 | ADJUST;
 					buff_tail++;
 				}
 				buff_motion[buff_tail] = T_90 << 4 | *(motion + head - 1);
 				buff_tail++;
 				buff_motion[buff_tail] = (1 << 4) | FRONT;
 				buff_tail++;
-			}else if (((*(motion + head)&0xf) == ADJUST) && ((*(motion + head - 2) & 0xf) == FRONT))
+			}
+			else if (((*(motion + head) & 0xf) == ADJUST) && ((*(motion + head - 2) & 0xf) == FRONT))
 			{
 				buff_tail -= 3;
-				if (buff_motion[buff_tail] == ((2 << 4) | FRONT)) {
-					buff_motion[buff_tail] = 1<<4|ADJUST;
+				if (buff_motion[buff_tail] == ((2 << 4) | FRONT))
+				{
+					buff_motion[buff_tail] = 1 << 4 | ADJUST;
 					buff_tail++;
 				}
 				buff_motion[buff_tail] = T_90 << 4 | *(motion + head - 1);
 				buff_tail++;
 				head++;
-				buff_motion[buff_tail] = *(motion+head);
+				buff_motion[buff_tail] = *(motion + head);
 				buff_tail++;
 			}
-			else if (*(motion + head) == GOAL && ((*(motion + head - 2) & 0xf) == FRONT)) {
+			else if (*(motion + head) == GOAL && ((*(motion + head - 2) & 0xf) == FRONT))
+			{
 				buff_tail -= 3;
-				if (buff_motion[buff_tail] ==(( 2 << 4) | FRONT)) {
-					buff_motion[buff_tail] = 1<<4|ADJUST;
+				if (buff_motion[buff_tail] == ((2 << 4) | FRONT))
+				{
+					buff_motion[buff_tail] = 1 << 4 | ADJUST;
 					buff_tail++;
 				}
 				buff_motion[buff_tail] = (T_90 << 4) | *(motion + head - 1);
@@ -994,13 +1174,15 @@ void Compress_T90(uint16_t *motion, uint8_t *origin_tail)
 		}
 		head++;
 	}
-	for (uint8_t i = 0; i < buff_tail; i++) {
+	for (uint8_t i = 0; i < buff_tail; i++)
+	{
 		motion[i] = buff_motion[i];
 	}
 	*origin_tail = buff_tail;
 }
 
-void Compress_T180(uint16_t *motion, uint8_t *origin_tail) {
+void Compress_T180(uint16_t *motion, uint8_t *origin_tail)
+{
 	uint8_t head = 0;
 	uint8_t tail = *origin_tail;
 	uint8_t buff_tail = 0;
@@ -1015,16 +1197,17 @@ void Compress_T180(uint16_t *motion, uint8_t *origin_tail) {
 			head++;
 			buff_motion[buff_tail] = *(motion + head);
 			buff_tail++;
-			if (*(motion + head) == *(motion + head - 1)) 
+			if (*(motion + head) == *(motion + head - 1))
 			{
 				head++;
 				buff_motion[buff_tail] = *(motion + head);
 				buff_tail++;
-				if ((*(motion + head) == ((2 << 4) | FRONT)) && ((*(motion + head - 3)&0xf)==FRONT))
+				if ((*(motion + head) == ((2 << 4) | FRONT)) && ((*(motion + head - 3) & 0xf) == FRONT))
 				{
 					buff_tail -= 4;
-					if (buff_motion[buff_tail] == ((2 << 4) | FRONT)) {
-						buff_motion[buff_tail] = 1<<4|ADJUST;
+					if (buff_motion[buff_tail] == ((2 << 4) | FRONT))
+					{
+						buff_motion[buff_tail] = 1 << 4 | ADJUST;
 						buff_tail++;
 					}
 					buff_motion[buff_tail] = (T_180 << 4) | *(motion + head - 1);
@@ -1032,22 +1215,26 @@ void Compress_T180(uint16_t *motion, uint8_t *origin_tail) {
 					buff_motion[buff_tail] = 1 << 4 | FRONT;
 					buff_tail++;
 				}
-				else if (((*(motion + head)&0xf) == ADJUST) && ((*(motion + head - 3) & 0xf) == FRONT)) {
+				else if (((*(motion + head) & 0xf) == ADJUST) && ((*(motion + head - 3) & 0xf) == FRONT))
+				{
 					buff_tail -= 4;
-					if (buff_motion[buff_tail] == ((2 << 4) | FRONT)) {
-						buff_motion[buff_tail] = 1<<4|ADJUST;
+					if (buff_motion[buff_tail] == ((2 << 4) | FRONT))
+					{
+						buff_motion[buff_tail] = 1 << 4 | ADJUST;
 						buff_tail++;
 					}
 					buff_motion[buff_tail] = (T_180 << 4) | *(motion + head - 1);
 					buff_tail++;
 					head++;
-					buff_motion[buff_tail] = *(motion+head);
+					buff_motion[buff_tail] = *(motion + head);
 					buff_tail++;
 				}
-				else if (*(motion + head) == GOAL) {
+				else if (*(motion + head) == GOAL)
+				{
 					buff_tail -= 4;
-					if (buff_motion[buff_tail] == ((2 << 4) | FRONT) && ((*(motion + head - 3) & 0xf) == FRONT)) {
-						buff_motion[buff_tail] = 1<<4|ADJUST;
+					if (buff_motion[buff_tail] == ((2 << 4) | FRONT) && ((*(motion + head - 3) & 0xf) == FRONT))
+					{
+						buff_motion[buff_tail] = 1 << 4 | ADJUST;
 						buff_tail++;
 					}
 					buff_motion[buff_tail] = T_180 << 4 | *(motion + head - 1);
@@ -1060,7 +1247,8 @@ void Compress_T180(uint16_t *motion, uint8_t *origin_tail) {
 		}
 		head++;
 	}
-	for (uint8_t i = 0; i < buff_tail; i++) {
+	for (uint8_t i = 0; i < buff_tail; i++)
+	{
 		motion[i] = buff_motion[i];
 	}
 	*origin_tail = buff_tail;
@@ -1083,20 +1271,23 @@ void Compress_Diagonal(uint16_t *motion, uint8_t *origin_tail)
 			head++;
 			buff_motion[buff_tail] = *(motion + head);
 			buff_tail++;
-			if (*(motion + head) == *(motion + head - 1)) {
+			if (*(motion + head) == *(motion + head - 1))
+			{
 				buff_tail -= 3;
-				if (buff_motion[buff_tail] == ((2 << 4) | FRONT)) {
-					buff_motion[buff_tail] = 1<<4|ADJUST;
+				if (buff_motion[buff_tail] == ((2 << 4) | FRONT))
+				{
+					buff_motion[buff_tail] = 1 << 4 | ADJUST;
 					buff_tail++;
 				}
 				buff_motion[buff_tail] = T_135IN << 4 | *(motion + head);
 				buff_tail++;
 			}
-			else if(*(motion + head) == LEFT || *(motion + head) == RIGHT)
+			else if (*(motion + head) == LEFT || *(motion + head) == RIGHT)
 			{
 				buff_tail -= 3;
-				if (buff_motion[buff_tail] == ((2 << 4) | FRONT)) {
-					buff_motion[buff_tail] = 1<<4|ADJUST;
+				if (buff_motion[buff_tail] == ((2 << 4) | FRONT))
+				{
+					buff_motion[buff_tail] = 1 << 4 | ADJUST;
 					buff_tail++;
 				}
 				buff_motion[buff_tail] = T_45IN << 4 | *(motion + head - 1);
@@ -1106,23 +1297,24 @@ void Compress_Diagonal(uint16_t *motion, uint8_t *origin_tail)
 			while (1)
 			{
 				head++;
-				if (*(motion + head) == ((2<<4)|FRONT))
+				if (*(motion + head) == ((2 << 4) | FRONT))
 				{
 					if (step > 1)
 					{
-						buff_motion[buff_tail] = ((step-1) << 4) | DIAGONAL;
+						buff_motion[buff_tail] = ((step - 1) << 4) | DIAGONAL;
 						buff_tail++;
 					}
 					buff_motion[buff_tail] = T_45OUT << 4 | *(motion + head - 1);
 					buff_tail++;
-					buff_motion[buff_tail] = (1<<4)|FRONT;
+					buff_motion[buff_tail] = (1 << 4) | FRONT;
 					buff_tail++;
 					break;
 				}
-				else if ((*(motion + head)&0xf) == ADJUST) {
+				else if ((*(motion + head) & 0xf) == ADJUST)
+				{
 					if (step > 1)
 					{
-						buff_motion[buff_tail] = ((step-1) << 4) | DIAGONAL;
+						buff_motion[buff_tail] = ((step - 1) << 4) | DIAGONAL;
 						buff_tail++;
 					}
 					buff_motion[buff_tail] = T_45OUT << 4 | *(motion + head - 1);
@@ -1132,10 +1324,11 @@ void Compress_Diagonal(uint16_t *motion, uint8_t *origin_tail)
 					buff_tail++;
 					break;
 				}
-				else if (*(motion + head) == GOAL) {
+				else if (*(motion + head) == GOAL)
+				{
 					if (step > 1)
 					{
-						buff_motion[buff_tail] = ((step-1) << 4) | DIAGONAL;
+						buff_motion[buff_tail] = ((step - 1) << 4) | DIAGONAL;
 						buff_tail++;
 					}
 					buff_motion[buff_tail] = T_45OUT << 4 | *(motion + head - 1);
@@ -1144,25 +1337,27 @@ void Compress_Diagonal(uint16_t *motion, uint8_t *origin_tail)
 					buff_tail++;
 					break;
 				}
-				else if(*(motion + head) == *(motion + head -1))
+				else if (*(motion + head) == *(motion + head - 1))
 				{
 					head++;
-					if (*(motion + head) == ((2<<4)|FRONT)) {
+					if (*(motion + head) == ((2 << 4) | FRONT))
+					{
 						if (step > 1)
 						{
-							buff_motion[buff_tail] = ((step-1)  << 4) | DIAGONAL;
+							buff_motion[buff_tail] = ((step - 1) << 4) | DIAGONAL;
 							buff_tail++;
 						}
 						buff_motion[buff_tail] = T_135OUT << 4 | *(motion + head - 1);
 						buff_tail++;
-						buff_motion[buff_tail] = (1<<4)|FRONT;
+						buff_motion[buff_tail] = (1 << 4) | FRONT;
 						buff_tail++;
 						break;
 					}
-					else if ((*(motion + head)&0xf) == ADJUST) {
+					else if ((*(motion + head) & 0xf) == ADJUST)
+					{
 						if (step > 1)
 						{
-							buff_motion[buff_tail] = ((step-1) << 4) | DIAGONAL;
+							buff_motion[buff_tail] = ((step - 1) << 4) | DIAGONAL;
 							buff_tail++;
 						}
 						buff_motion[buff_tail] = T_135OUT << 4 | *(motion + head - 1);
@@ -1171,12 +1366,12 @@ void Compress_Diagonal(uint16_t *motion, uint8_t *origin_tail)
 						buff_motion[buff_tail] = *(motion + head);
 						buff_tail++;
 						break;
-
 					}
-					else if (*(motion + head) == GOAL) {
+					else if (*(motion + head) == GOAL)
+					{
 						if (step > 1)
 						{
-							buff_motion[buff_tail] = ((step-1) << 4) | DIAGONAL;
+							buff_motion[buff_tail] = ((step - 1) << 4) | DIAGONAL;
 							buff_tail++;
 						}
 						buff_motion[buff_tail] = T_135OUT << 4 | *(motion + head - 1);
@@ -1189,7 +1384,7 @@ void Compress_Diagonal(uint16_t *motion, uint8_t *origin_tail)
 					{
 						if (step > 1)
 						{
-							buff_motion[buff_tail] = ((step-1)<<4)|DIAGONAL;
+							buff_motion[buff_tail] = ((step - 1) << 4) | DIAGONAL;
 							buff_tail++;
 							step = 1;
 						}
@@ -1205,14 +1400,14 @@ void Compress_Diagonal(uint16_t *motion, uint8_t *origin_tail)
 		}
 		head++;
 	}
-	for (uint8_t i = 0; i < buff_tail; i++) {
+	for (uint8_t i = 0; i < buff_tail; i++)
+	{
 		motion[i] = buff_motion[i];
 	}
 	*origin_tail = buff_tail;
 }
 
-
-void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, uint8_t *origin_tail)
+void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, uint8_t *origin_tail, float v_search, float v_fast)
 {
 	//add fast turn
 	Compress_T90(motion, origin_tail);
@@ -1229,30 +1424,32 @@ void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, 
 	while (head < tail)
 	{
 		uint16_t step = 0;
-		switch (*(motion + head)&0xf)
+		switch (*(motion + head) & 0xf)
 		{
 		case START:
 			head++;
-			while ((*(motion + head)&0xf) == FRONT)
+			while ((*(motion + head) & 0xf) == FRONT)
 			{
-				step += (*(motion+head)>>4);
+				step += (*(motion + head) >> 4);
 				head++;
 			}
 			buff_motion[buff_tail] = step << 4 | START;
 			buff_tail++;
-			if (*(motion + head) == LEFT || *(motion + head) == RIGHT) {
-				if (step >= 2) {
+			if (*(motion + head) == LEFT || *(motion + head) == RIGHT)
+			{
+				if (step >= 2)
+				{
 					step -= 2;
 					buff_tail--;
 					buff_motion[buff_tail] = step << 4 | START;
 					buff_tail++;
-					buff_motion[buff_tail] = 2<<4|ADJUST;
+					buff_motion[buff_tail] = 2 << 4 | ADJUST;
 					buff_tail++;
 				}
 			}
 			break;
 		case FRONT:
-			while ((*(motion + head)&0xf) == FRONT)
+			while ((*(motion + head) & 0xf) == FRONT)
 			{
 				step += (*(motion + head) >> 4);
 				head++;
@@ -1267,8 +1464,10 @@ void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, 
 			{
 				buff_motion[buff_tail] = step << 4 | FRONT;
 				buff_tail++;
-				if (*(motion + head) == LEFT || *(motion + head) == RIGHT) {
-					if (step > 2) {
+				if (*(motion + head) == LEFT || *(motion + head) == RIGHT)
+				{
+					if (step > 2)
+					{
 						step -= 2;
 						buff_tail--;
 						buff_motion[buff_tail] = step << 4 | FRONT;
@@ -1292,38 +1491,43 @@ void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, 
 			break;
 		}
 	}
-	for (uint8_t i = 0; i < buff_tail; i++) {
+	for (uint8_t i = 0; i < buff_tail; i++)
+	{
 		*(motion + i) = buff_motion[i];
 	}
-	
+
 	tail = buff_tail;
 	head = 0;
 	buff_tail = 0;
-	
+
 	while (head < tail)
 	{
-		*(velocity + buff_tail) = (uint32_t)VELO_F << 16 | (uint32_t)VELO_F;
+		*(velocity + buff_tail) = (uint32_t)v_fast << 16 | (uint32_t)v_fast;
 		if (*(motion + head - 1) == LEFT || *(motion + head - 1) == RIGHT)
 		{
 			buff_velocity = *(velocity + head) & 0xffff;
-			*(velocity + buff_tail) = (uint32_t)VELO_S<<16| buff_velocity;
+			*(velocity + buff_tail) = (uint32_t)v_search << 16 | buff_velocity;
 		}
 		if (*(motion + head + 1) == LEFT || *(motion + head + 1) == RIGHT)
 		{
-			if ((*(motion + head)&0xf)==ADJUST) {
-				*(velocity + buff_tail) = (uint32_t)VELO_S << 16 | (uint32_t)VELO_S;
-				if ((*(motion + head - 1)&0xf) == FRONT) {
+			if ((*(motion + head) & 0xf) == ADJUST)
+			{
+				*(velocity + buff_tail) = (uint32_t)v_search << 16 | (uint32_t)v_search;
+				if ((*(motion + head - 1) & 0xf) == FRONT)
+				{
 					buff_velocity = *(velocity + head - 1) >> 16;
-					*(velocity + buff_tail - 1) =  buff_velocity <<16 | (uint32_t)VELO_S;
+					*(velocity + buff_tail - 1) = buff_velocity << 16 | (uint32_t)v_search;
 				}
 			}
-			else {
+			else
+			{
 				buff_velocity = *(velocity + head) >> 16;
-				*(velocity + buff_tail) = buff_velocity << 16| (uint32_t)VELO_S;
+				*(velocity + buff_tail) = buff_velocity << 16 | (uint32_t)v_search;
 			}
 		}
-		if (*(motion + head + 1) == GOAL && (*(motion+head)>>4)!=0) {
-			*(velocity + buff_tail) = (uint32_t)VELO_F << 16 | 0;
+		if (*(motion + head + 1) == GOAL && (*(motion + head) >> 4) != 0)
+		{
+			*(velocity + buff_tail) = (uint32_t)v_fast << 16 | 0;
 			buff_tail++;
 			break;
 		}
@@ -1332,14 +1536,37 @@ void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, 
 	}
 	*origin_tail = buff_tail;
 	head = 0;
-	while(head < buff_tail){
-		if((*(motion+head)&0xf)==DIAGONAL){
-			if((*(motion+head+1)&0xf)==LEFT){
-				uint16_t buff_step = *(motion+head)>>4;
-				*(motion+head)=(buff_step<<4)|DIAGONAL_L;
-			}else if((*(motion+head+1)&0xf)==RIGHT){
-				uint16_t buff_step = *(motion+head)>>4;
-				*(motion+head)=(buff_step<<4)|DIAGONAL_R;
+	while (head < buff_tail)
+	{
+		if ((*(motion + head) & 0xf) == DIAGONAL)
+		{
+			if ((*(motion + head + 1) & 0xf) == LEFT)
+			{
+				uint16_t buff_step = *(motion + head) >> 4;
+				*(motion + head) = (buff_step << 4) | DIAGONAL_L;
+			}
+			else if ((*(motion + head + 1) & 0xf) == RIGHT)
+			{
+				uint16_t buff_step = *(motion + head) >> 4;
+				*(motion + head) = (buff_step << 4) | DIAGONAL_R;
+			}
+		}
+		head++;
+	}
+	head = 0;
+	while (head < buff_tail)
+	{
+		if ((*(motion + head) & 0xf) == ADJUST)
+		{
+			if ((*(motion + head + 1) & 0xf) == LEFT)
+			{
+				uint16_t buff_step = *(motion + head) >> 4;
+				*(motion + head) = (buff_step << 4) | ADJUST_L;
+			}
+			else if ((*(motion + head + 1) & 0xf) == RIGHT)
+			{
+				uint16_t buff_step = *(motion + head) >> 4;
+				*(motion + head) = (buff_step << 4) | ADJUST_R;
 			}
 		}
 		head++;

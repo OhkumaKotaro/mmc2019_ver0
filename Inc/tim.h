@@ -93,6 +93,7 @@ void Tim_MotorPwm(int16_t left_pwm,int16_t right_pwm);
 void Tim_MotorBrake(void);
 void Tim_UpdateEncoder(void);
 void Tim_FanPwm(uint16_t vol);
+void Tim_SetTireRadius(float tire_radius);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

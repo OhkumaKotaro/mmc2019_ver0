@@ -48,13 +48,14 @@
 #include "stdint.h"
 #include "arm_math.h"
 //defines
-#define ENC_CUL_ROT 1024.0f//512 * 2
-#define TIRE_RADIUS 12.45f  //[mm] 24.58mm
+#define ENC_CUL_ROT 1024.0f //512 * 2
+//#define TIRE_RADIUS 12.45f  //[mm] 24.58mm
 #define GEAR_RATE 3.5f
 //variables
 TIM_MasterConfigTypeDef sMasterConfig;
 TIM_OC_InitTypeDef sConfigOC;
 enc_t enc;
+float radius = 12.45f;
 
 /* USER CODE END 0 */
 
@@ -594,17 +595,17 @@ void Tim_UpdateEncoder(void)
   {
     r_buff = -1 * r_buff;
   }
-  enc.velocity = (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * TIRE_RADIUS * 1000.0f;
-  enc.offset += (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * TIRE_RADIUS;
-  enc.distance += (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * TIRE_RADIUS;
+  enc.velocity = (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * radius * 1000.0f;
+  enc.offset += (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * radius;
+  //enc.distance += (float)(l_buff + r_buff) / ENC_CUL_ROT / GEAR_RATE * PI * radius;
 }
 
 void Tim_FanPwm(uint16_t vol)
 {
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
+  htim3.Init.Prescaler = 999;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 999;
+  htim3.Init.Period = 9;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.RepetitionCounter = 0;
   if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
@@ -628,6 +629,10 @@ void Tim_FanPwm(uint16_t vol)
   {
     Error_Handler();
   }
+}
+void Tim_SetTireRadius(float tire_radius)
+{
+  radius = tire_radius;
 }
 /* USER CODE END 1 */
 

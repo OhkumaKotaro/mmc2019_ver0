@@ -23,8 +23,8 @@ extern "C"
 
 
 //search
-#define VELO_S 400.0f
-#define ACCEL_S 4000.0f
+#define VELO_S 600.0f
+#define ACCEL_S 6000.0f
 #define VELO_ANG_S 400.0f
 #define ACCEL_ANG_S 8000.0f
 #define VELO_ANG_S_SLALOM 600.0f
@@ -36,6 +36,10 @@ extern "C"
 #define VELO_ANG_D 400.0f
 #define ACCEL_ANG_D 8000.0f
 
+//fastest
+#define ACCEL_EST 20000.0f
+#define VELO_EST 1200.0f
+
 #define FRONT 0
 #define LEFT 1
 #define RIGHT 2
@@ -46,7 +50,9 @@ extern "C"
 #define DIAGONAL 7
 #define DIAGONAL_L 8 //90*sqrt(2)
 #define DIAGONAL_R 9
-#define ADJUST 10 
+#define ADJUST 10
+#define ADJUST_L 11
+#define ADJUST_R 12
 
 //fast turn code
 #define SEARCH 0

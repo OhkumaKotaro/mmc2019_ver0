@@ -71,7 +71,7 @@
 
 #define SETTING       0x80  //0b1000 0000 8bitの上位bitを立てると
 
-#define GYRO_FACTOR  16.4f
+#define GYRO_FACTOR  16.5f//16.4f
 #define ACCEL_FACTOR 418.0f//4096/9.80665(-16~+16[/g])
 
 #define TRUE 0
@@ -270,7 +270,7 @@ void gyro_offset_calc(void){
 void Spi_UpdateGyro_Z(void){
   if(flag_gyro_calc == TRUE){
     gyro_z.velocity = (float)get_gyro_z()/GYRO_FACTOR;
-    gyro_z.degree += gyro_z.velocity*0.001;
+    gyro_z.degree += gyro_z.velocity*0.001f;
   }else{
     gyro_offset_calc();
   }

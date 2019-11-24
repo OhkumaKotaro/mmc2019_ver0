@@ -81,7 +81,7 @@ void MX_ADC1_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig;
 
-  /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
     */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
@@ -100,7 +100,7 @@ void MX_ADC1_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
     */
   sConfig.Channel = ADC_CHANNEL_15;
   sConfig.Rank = 1;
@@ -109,13 +109,14 @@ void MX_ADC1_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
+
 }
 /* ADC2 init function */
 void MX_ADC2_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig;
 
-  /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
     */
   hadc2.Instance = ADC2;
   hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
@@ -134,7 +135,7 @@ void MX_ADC2_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
     */
   sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = 1;
@@ -144,7 +145,7 @@ void MX_ADC2_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
     */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = 2;
@@ -153,7 +154,7 @@ void MX_ADC2_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
     */
   sConfig.Channel = ADC_CHANNEL_10;
   sConfig.Rank = 3;
@@ -162,7 +163,7 @@ void MX_ADC2_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
     */
   sConfig.Channel = ADC_CHANNEL_11;
   sConfig.Rank = 4;
@@ -170,20 +171,21 @@ void MX_ADC2_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
+
 }
 
-void HAL_ADC_MspInit(ADC_HandleTypeDef *adcHandle)
+void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct;
-  if (adcHandle->Instance == ADC1)
+  if(adcHandle->Instance==ADC1)
   {
-    /* USER CODE BEGIN ADC1_MspInit 0 */
+  /* USER CODE BEGIN ADC1_MspInit 0 */
 
-    /* USER CODE END ADC1_MspInit 0 */
+  /* USER CODE END ADC1_MspInit 0 */
     /* ADC1 clock enable */
     __HAL_RCC_ADC1_CLK_ENABLE();
-
+  
     /**ADC1 GPIO Configuration    
     PC5     ------> ADC1_IN15 
     */
@@ -192,30 +194,30 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *adcHandle)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    /* USER CODE BEGIN ADC1_MspInit 1 */
+  /* USER CODE BEGIN ADC1_MspInit 1 */
 
-    /* USER CODE END ADC1_MspInit 1 */
+  /* USER CODE END ADC1_MspInit 1 */
   }
-  else if (adcHandle->Instance == ADC2)
+  else if(adcHandle->Instance==ADC2)
   {
-    /* USER CODE BEGIN ADC2_MspInit 0 */
+  /* USER CODE BEGIN ADC2_MspInit 0 */
 
-    /* USER CODE END ADC2_MspInit 0 */
+  /* USER CODE END ADC2_MspInit 0 */
     /* ADC2 clock enable */
     __HAL_RCC_ADC2_CLK_ENABLE();
-
+  
     /**ADC2 GPIO Configuration    
     PC0     ------> ADC2_IN10
     PC1     ------> ADC2_IN11
     PA2     ------> ADC2_IN2
     PA3     ------> ADC2_IN3 
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
+    GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_3;
+    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -237,59 +239,59 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *adcHandle)
       _Error_Handler(__FILE__, __LINE__);
     }
 
-    __HAL_LINKDMA(adcHandle, DMA_Handle, hdma_adc2);
+    __HAL_LINKDMA(adcHandle,DMA_Handle,hdma_adc2);
 
-    /* USER CODE BEGIN ADC2_MspInit 1 */
+  /* USER CODE BEGIN ADC2_MspInit 1 */
 
-    /* USER CODE END ADC2_MspInit 1 */
+  /* USER CODE END ADC2_MspInit 1 */
   }
 }
 
-void HAL_ADC_MspDeInit(ADC_HandleTypeDef *adcHandle)
+void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 {
 
-  if (adcHandle->Instance == ADC1)
+  if(adcHandle->Instance==ADC1)
   {
-    /* USER CODE BEGIN ADC1_MspDeInit 0 */
+  /* USER CODE BEGIN ADC1_MspDeInit 0 */
 
-    /* USER CODE END ADC1_MspDeInit 0 */
+  /* USER CODE END ADC1_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_ADC1_CLK_DISABLE();
-
+  
     /**ADC1 GPIO Configuration    
     PC5     ------> ADC1_IN15 
     */
     HAL_GPIO_DeInit(GPIOC, GPIO_PIN_5);
 
-    /* USER CODE BEGIN ADC1_MspDeInit 1 */
+  /* USER CODE BEGIN ADC1_MspDeInit 1 */
 
-    /* USER CODE END ADC1_MspDeInit 1 */
+  /* USER CODE END ADC1_MspDeInit 1 */
   }
-  else if (adcHandle->Instance == ADC2)
+  else if(adcHandle->Instance==ADC2)
   {
-    /* USER CODE BEGIN ADC2_MspDeInit 0 */
+  /* USER CODE BEGIN ADC2_MspDeInit 0 */
 
-    /* USER CODE END ADC2_MspDeInit 0 */
+  /* USER CODE END ADC2_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_ADC2_CLK_DISABLE();
-
+  
     /**ADC2 GPIO Configuration    
     PC0     ------> ADC2_IN10
     PC1     ------> ADC2_IN11
     PA2     ------> ADC2_IN2
     PA3     ------> ADC2_IN3 
     */
-    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_0 | GPIO_PIN_1);
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_0|GPIO_PIN_1);
 
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2 | GPIO_PIN_3);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2|GPIO_PIN_3);
 
     /* ADC2 DMA DeInit */
     HAL_DMA_DeInit(adcHandle->DMA_Handle);
-    /* USER CODE BEGIN ADC2_MspDeInit 1 */
+  /* USER CODE BEGIN ADC2_MspDeInit 1 */
 
-    /* USER CODE END ADC2_MspDeInit 1 */
+  /* USER CODE END ADC2_MspDeInit 1 */
   }
-}
+} 
 
 /* USER CODE BEGIN 1 */
 void Adc_SetSensorValue(void)
@@ -301,7 +303,7 @@ void Adc_SetSensorValue(void)
   sen_front_reference_f = 117;//117
   sen_front.threshold = 102;//109
 
-  sen_r.reference = 153;//162
+  sen_r.reference = 151;//162
   sen_r.threshold = 120;//off118//130
 }
 
