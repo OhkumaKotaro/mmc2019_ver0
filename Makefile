@@ -13,7 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = mmc2019_ver0
+TARGET = mmc2019_ver1
 
 
 ######################################
@@ -81,7 +81,8 @@ Src/motion.c \
 Src/control.c \
 Src/Map.c \
 Src/Maze.c \
-Src/flash.c
+Src/flash.c \
+Src/buzzer.c
 
 # ASM sources
 ASM_SOURCES =  \

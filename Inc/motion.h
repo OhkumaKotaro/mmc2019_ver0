@@ -49,7 +49,8 @@ extern "C"
     void Motion_FastestAdjust_R(uint16_t step, float velo_s);
     void Motion_FastestLeftTurn(uint8_t type, float v_end);
     void Motion_FastestRightTurn(uint8_t type, float v_end);
-    
+    void Motion_FastestDiagonalLeft(uint8_t step);
+    void Motion_FastestDiagonalRight(uint8_t step);
 
 #ifdef __cplusplus
 }

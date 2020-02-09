@@ -5,6 +5,8 @@
  extern "C" {
 #endif
 
+#include "stdint.h"
+
 typedef struct
 {
     float up_term;
@@ -16,9 +18,23 @@ typedef struct
     float error;
 } target_t;
 
+typedef struct
+{
+    int16_t sen_l;
+    int16_t sen_r;
+    int16_t sen_d_l;
+    int16_t sen_d_r;
+    float dist_l;
+    float dist_r;
+    float dist_d_l;
+    float dist_d_r;
+}walledge_t;
+
+
 void Control_StrCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir);
 void Control_AngCalculator(float var,float velo_s,float velo_m,float velo_e,float accel,float dir);
-void Control_EdgeSet(float offset);
+void Control_WallEdgeSet(walledge_t walledge_data);
+void Control_WallEdgeAble(uint8_t side);
 void Control_PrintLoger(void);
 void Control_UpdatePwm(void);
 void Control_ResetVelo(void);

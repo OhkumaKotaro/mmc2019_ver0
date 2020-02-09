@@ -296,14 +296,14 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 /* USER CODE BEGIN 1 */
 void Adc_SetSensorValue(void)
 {
-  sen_l.reference = 108;//111
-  sen_l.threshold = 87;//off80
+  sen_l.reference = 103;//111
+  sen_l.threshold = 84;//off80
 
   sen_front.reference = 230;//220
   sen_front_reference_f = 117;//117
-  sen_front.threshold = 102;//109
+  sen_front.threshold = 100;//109
 
-  sen_r.reference = 151;//162
+  sen_r.reference = 147;//162
   sen_r.threshold = 120;//off118//130
 }
 

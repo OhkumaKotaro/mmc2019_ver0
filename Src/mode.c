@@ -29,6 +29,9 @@ extern volatile uint8_t control_wall_flag;
 extern uint8_t counter_s;
 
 unsigned char gx = 1, gy = 0;
+walledge_t walledge_search={-8,-8,0,0,107.0f,109.0f,0,0};
+walledge_t walledge_800 = {-10,-10,-10,-10,13.0f,13.0f,20.0f,21.0f};
+walledge_t walledge_1200 = {-11,-19,-10,-10,11.0f,19.0f,20.0f,20.0f};
 
 //Prototype Function
 void SensorCheck(void);
@@ -70,8 +73,9 @@ void Mode_Mouse(int8_t mode)
         SearchRun();
         break;
     case 1:
-        Tim_FanPwm(400);
+        //Tim_FanPwm(4);
         //Mode_FastRun(FALSE, 160.0f, 1, 3);
+        Mode_FastRun(TRUE, 0.0f, 7, 5);
         break;
     case 2:
         /*
@@ -79,12 +83,13 @@ void Mode_Mouse(int8_t mode)
         control_wall_flag = FALSE;
         Motion_enkai();
         */
-        //Mode_FastRun(TRUE, 0.0f, 7, 5);
-        Mode_FastestRun(FALSE, 100.0f, 1, 3);
+        Mode_FastRun(TRUE, 120.0f, 7, 5);
+        //Mode_FastestRun(FALSE, 100.0f, 1, 3);
         break;
     case 3:
+        Mode_FastRun(FALSE, 120.0f, 1, 3);
         //Mode_FastRun(TRUE, 160.0f, 7, 5);
-        SensorCheck();
+        //SensorCheck();
         break;
     //CYAN
     case 4:
@@ -98,29 +103,25 @@ void Mode_Mouse(int8_t mode)
         control_wall_flag = 0;
         CheckDiagonal(4, 1);
         */
-        /*
         control_wall_flag = 1;
-        CheckStraight(6);
-        */
+        CheckStraight(0);
         /*
        control_wall_flag = 2;
        CheckFastStraight(6);
        */
-
+        /*
         control_wall_flag = 0;
         CheckFastestStraight(4);
+        */
         break;
     case 7: //turn
-        control_wall_flag = 3;
-        CheckDiagonal(4, 1);
-        /*
-       control_wall_flag = 0;
-       CheckTurn(4);
-       */
+            //control_wall_flag = 3;
+            //CheckDiagonal(4, 1);
+        control_wall_flag = 0;
+        CheckTurn(1);
         break;
     //YELLOW
     case 8: //left turn
-        /*
         control_wall_flag = FALSE;
         SetRunMode(0);
         Motion_Start();
@@ -132,12 +133,10 @@ void Mode_Mouse(int8_t mode)
         Tim_BuzzerPwm(HZ_C_H, 300);
         HAL_Delay(200);
         Tim_BuzzerPwm(HZ_NORMAL, 0);
-        */
-        control_wall_flag = FALSE;
-        FastestTurnTest(1, SEARCH);
+        //control_wall_flag = FALSE;
+        //FastestTurnTest(1, SEARCH);
         break;
     case 9: //right turn
-        /*
         control_wall_flag = FALSE;
         SetRunMode(0);
         Motion_Start();
@@ -149,9 +148,8 @@ void Mode_Mouse(int8_t mode)
         Tim_BuzzerPwm(HZ_C_H, 300);
         HAL_Delay(200);
         Tim_BuzzerPwm(HZ_NORMAL, 0);
-        */
-        control_wall_flag = FALSE;
-        FastestTurnTest(-1, SEARCH);
+        //control_wall_flag = FALSE;
+        //FastestTurnTest(-1, SEARCH);
         break;
     case 10: //circuit left
         control_wall_flag = FALSE;
@@ -188,20 +186,13 @@ void Mode_Mouse(int8_t mode)
         break;
     //MAGENTA
     case 16:
-        control_wall_flag = 0;
-        //TurnBig90_Test(LEFT);
-        FastestTurnTest(1, T_90);
+        Mode_FastestRun(TRUE, 0.0f, 7, 5);
         break;
     case 17:
-        control_wall_flag = 0;
-        //TurnBig90_Test(RIGHT);
-        FastestTurnTest(-1, T_90);
+        Mode_FastestRun(TRUE, 100.0f, 7, 5);
         break;
     case 18:
-        control_wall_flag = 0;
-        //TurnBig180_Test(LEFT);
-        //TurnV90_Test(LEFT);
-        FastestTurnTest(1, T_180);
+        Mode_FastestRun(TRUE, 180.0f, 7, 5);
         break;
     case 19:
         control_wall_flag = 0;
@@ -338,6 +329,8 @@ void SetRunMode(uint8_t fan_flag)
     Tim_BuzzerPwm(HZ_C_H, 300);
     HAL_Delay(100);
     Tim_BuzzerPwm(HZ_NORMAL, 0);
+    Gpio_FullColor(DARK);
+    Gpio_SideLed(0);
     HAL_Delay(5000);
     Spi_GyroReset();
     HAL_Delay(1200);
@@ -417,6 +410,7 @@ void SearchRun(void)
     control_wall_flag = 1;
     //counter set
     counter_s = 0;
+    Control_WallEdgeSet(walledge_search);
     SetRunMode(0);
     Motion_Start();
     while (1)
@@ -427,8 +421,14 @@ void SearchRun(void)
 
         Map_addWall(&wall_data, &mypos, n_wall, e_wall, w_wall, s_wall);
         Map_DelWall(&wall_data_fast, &mypos, n_wall, e_wall, w_wall, s_wall);
+        Map_AddUnknownWall(mypos.x,mypos.y,&wall_data,Maze_GetGoalSize(),gx,gy);
 
         Maze_UpdateStepMap(&flag_goal, gx, gy, &wall_data);
+
+        if(flag_goal==0 && Maze_GetStep(mypos.x,mypos.y)==MAX_STEP){
+            Maze_ResetWall(&wall_data,mypos);
+        }
+        
         nextdir = Maze_GetNextMotion(&mypos, &wall_data);
         nextdir = Maze_KnownStepAccel(&mypos, &wall_data, nextdir);
         //Maze_UpdatePosition(nextdir, &mypos);
@@ -495,6 +495,7 @@ void Mode_FastRun(uint8_t diagonal_flag, float gain, uint8_t w_str, uint8_t w_tu
     Flash_Load(start_address, (uint8_t *)&wallData, sizeof(wallData_t));
     Maze_UpdateStepMapEx(&wallData, w_str, w_turn, gx, gy);
     Motion_MaxVeloSet(gain);
+    Control_WallEdgeSet(walledge_800);
     pos.dir = NORTH;
     pos.x = 0;
     pos.y = 1;
@@ -590,7 +591,7 @@ void Mode_FastRun(uint8_t diagonal_flag, float gain, uint8_t w_str, uint8_t w_tu
     Tim_BuzzerPwm(HZ_NORMAL, 0);
 }
 
-void Mode_FastestRun(uint8_t diagonal_flag, float gain, uint8_t w_str, uint8_t w_turn)//GainMax=193
+void Mode_FastestRun(uint8_t diagonal_flag, float gain, uint8_t w_str, uint8_t w_turn) //GainMax=193
 {
     wallData_t wallData;
     pos_t pos;
@@ -601,6 +602,7 @@ void Mode_FastestRun(uint8_t diagonal_flag, float gain, uint8_t w_str, uint8_t w
     Flash_Load(start_address, (uint8_t *)&wallData, sizeof(wallData_t));
     Maze_UpdateStepMapEx(&wallData, w_str, w_turn, gx, gy);
     Motion_MaxVeloSet(gain);
+    Control_WallEdgeSet(walledge_1200);
     pos.dir = NORTH;
     pos.x = 0;
     pos.y = 1;
@@ -663,10 +665,10 @@ void Mode_FastestRun(uint8_t diagonal_flag, float gain, uint8_t w_str, uint8_t w
             Motion_FastestStraight(motion[head] >> 4, (float)(velocity[head] >> 16), (float)(velocity[head] & 0xffff));
             break;
         case DIAGONAL_L:
-            Motion_DiagonalLeft(motion[head] >> 4);
+            Motion_FastestDiagonalLeft(motion[head] >> 4);
             break;
         case DIAGONAL_R:
-            Motion_DiagonalRight(motion[head] >> 4);
+            Motion_FastestDiagonalRight(motion[head] >> 4);
             break;
         case RIGHT:
             Motion_FastestRightTurn(motion[head] >> 4, (float)(velocity[head] & 0xffff));
@@ -783,7 +785,7 @@ void CheckTurn(uint8_t num)
         Motion_TestTurn();
     }
     motor_flag = FALSE;
-    loger.velo_ang[loger.cnt] = (int16_t)gyro_z.degree;
+    //loger.velo_ang[loger.cnt] = (int16_t)gyro_z.degree;
     Flash_Write(start_address, (uint8_t *)&loger, sizeof(loger_t));
     Tim_BuzzerPwm(HZ_C_H, 300);
     HAL_Delay(200);
@@ -1302,6 +1304,26 @@ void FastestTurnTest(uint8_t dir, uint8_t deg)
             Tim_FanPwm(0);
         }
         break;
+    case T_45IN:
+        if (dir == 1)
+        {
+            Motion_FastestStart(4, VELO_EST);
+            Motion_FastestLeftTurn(deg, VELO_EST);
+            Motion_FastestGoal(1, VELO_EST);
+            motor_flag = FALSE;
+            Tim_FanPwm(0);
+        }
+        else
+        {
+            Motion_FastestStart(4, VELO_EST);
+            Motion_FastestRightTurn(deg, VELO_EST);
+            Motion_FastestGoal(1, VELO_EST);
+            motor_flag = FALSE;
+            Tim_FanPwm(0);
+        }
+        break;
+    default:
+    break;
     }
 
     HAL_Delay(500);

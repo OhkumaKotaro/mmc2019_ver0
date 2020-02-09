@@ -317,10 +317,52 @@ void Maze_UpdateStepMap(unsigned char *goal_flag, unsigned char gx, unsigned cha
 			}
 		}
 	}
-	if (step[0][0] == MAX_STEP)
+	if (step[0][0] == MAX_STEP && *goal_flag==1)
 	{
 		*goal_flag = 2;
 	}
+}
+
+void Maze_ResetWall(wallData_t *wall, pos_t pos) {
+	unsigned char x = pos.x;
+	unsigned char y = pos.y;
+	for (unsigned char j=0; j < MAZE_SIZE; j++) {
+		for (unsigned char i=0; i < MAZE_SIZE; i++) {
+			if (step[i][j] == MAX_STEP) {
+				if (i != x && j != y) {
+					if (j > 0) {
+						if (step[i][j - 1] != MAX_STEP) {
+							//Remobe south wall
+							wall->horizontal[j] &= (~(1 << i));
+							wall->horizontal_known[j] &= (~(1 << i));
+						}
+					}
+					if (i > 0) {
+						if (step[i - 1][j] != MAX_STEP) {
+							//Remobe weat wall
+							wall->vertical[i] &= (~(1 << j));
+							wall->vertical_known[i] &= (~(1 << j));
+						}
+					}
+					if (j < (MAX_STEP - 1)) {
+						if (step[i][j + 1] != MAX_STEP) {
+							//Remobe north wall
+							wall->horizontal[j + 1] &= (~(1 << i));
+							wall->horizontal_known[j + 1] &= (~(1 << i));
+						}
+					}
+					if (i < (MAX_STEP - 1)) {
+						if (step[i + 1][j] != MAX_STEP) {
+							//Remove east wall
+							wall->vertical[i + 1] &= (~(1 << j));
+							wall->vertical_known[i + 1] &= (~(1 << j));
+						}
+					}
+				}
+			}
+		}
+	}
+	wall->vertical[1] |= 0b1;
 }
 
 unsigned char Maze_GetNextMotion(pos_t *mypos, wallData_t *wall)
@@ -885,6 +927,7 @@ void Maze_UpdateStepMapEx(wallData_t *wallDate, uint16_t weight_s, uint16_t weig
 		}
 	}
 }
+
 
 uint16_t Maze_GetNextMotionEx(pos_t *mypos, wallData_t *wall)
 {
