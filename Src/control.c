@@ -646,7 +646,7 @@ void Control_UpdatePwm(void)
                 Tim_FanPwm(0);
             }
         }
-        if(error_ang_sum > 100 || error_sum < -100){
+        if(error_ang_sum > 80 || error_sum < -80){
             if (straight.dir != -1)
             {
                 motor_flag = FALSE;

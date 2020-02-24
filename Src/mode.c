@@ -29,7 +29,7 @@ extern volatile uint8_t control_wall_flag;
 extern uint8_t counter_s;
 
 unsigned char gx = 1, gy = 0;
-walledge_t walledge_search={-8,-8,0,0,107.0f,109.0f,0,0};
+walledge_t walledge_search={-8,-8,0,0,17.0f,19.0f,0,0};//{-8,-8,0,0,107.0f,109.0f,0,0};
 walledge_t walledge_800 = {-10,-10,-10,-10,13.0f,13.0f,20.0f,21.0f};
 walledge_t walledge_1200 = {-11,-19,-10,-10,11.0f,19.0f,20.0f,20.0f};
 
@@ -99,12 +99,15 @@ void Mode_Mouse(int8_t mode)
         PrintWallData();
         break;
     case 6: //straight
+        SensorCheck();
         /*
         control_wall_flag = 0;
         CheckDiagonal(4, 1);
         */
+       /*
         control_wall_flag = 1;
         CheckStraight(0);
+        */
         /*
        control_wall_flag = 2;
        CheckFastStraight(6);
@@ -431,6 +434,7 @@ void SearchRun(void)
         
         nextdir = Maze_GetNextMotion(&mypos, &wall_data);
         nextdir = Maze_KnownStepAccel(&mypos, &wall_data, nextdir);
+        Maze_UnknownStepAccel(&mypos,&wall_data,nextdir);
         //Maze_UpdatePosition(nextdir, &mypos);
         Motion_Switch(nextdir);
         if (mypos.x == gx && mypos.y == gy)

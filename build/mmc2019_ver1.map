@@ -141,6 +141,7 @@ sen_front_reference_f
 pFlash              0x20              build/stm32f4xx_hal_flash.o
 gyro_y              0x4               build/spi.o
 enc                 0xc               build/tim.o
+after_next_motion   0x1               build/Maze.o
 sen_front           0x1e              build/adc.o
 sen_l               0x1e              build/adc.o
 htim3               0x3c              build/tim.o
@@ -426,8 +427,6 @@ Discarded input sections
  .bss           0x00000000        0x0 build/adc.o
  .text.HAL_ADC_MspDeInit
                 0x00000000       0x60 build/adc.o
- .text.Adc_IrSensorFinish
-                0x00000000       0x28 build/adc.o
  .text          0x00000000        0x0 build/stm32f4xx_hal_spi.o
  .data          0x00000000        0x0 build/stm32f4xx_hal_spi.o
  .bss           0x00000000        0x0 build/stm32f4xx_hal_spi.o
@@ -1098,8 +1097,8 @@ Discarded input sections
  .text          0x00000000        0x0 build/mode.o
  .data          0x00000000        0x0 build/mode.o
  .bss           0x00000000        0x0 build/mode.o
- .text.SensorCheck
-                0x00000000       0xec build/mode.o
+ .text.CheckStraight
+                0x00000000       0x70 build/mode.o
  .text.CheckFastStraight
                 0x00000000       0xa4 build/mode.o
  .text.CheckFastestStraight
@@ -1125,13 +1124,13 @@ Discarded input sections
                 0x00000000       0x78 build/mode.o
  .rodata.PrintMotion.str1.4
                 0x00000000      0x30e build/mode.o
- .rodata.SensorCheck.str1.4
-                0x00000000       0x1e build/mode.o
  .text          0x00000000        0x0 build/motion.o
  .data          0x00000000        0x0 build/motion.o
  .bss           0x00000000        0x0 build/motion.o
  .text.Motion_enkai
                 0x00000000       0x48 build/motion.o
+ .text.Motion_Straight
+                0x00000000      0x154 build/motion.o
  .text.Motion_Diagonal
                 0x00000000       0x80 build/motion.o
  .text          0x00000000        0x0 build/control.o
@@ -1537,7 +1536,7 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gc
                 0x08000000                g_pfnVectors
                 0x08000188                . = ALIGN (0x4)
 
-.text           0x08000190     0xf4b8
+.text           0x08000190     0xf868
                 0x08000190                . = ALIGN (0x4)
  *(.text)
  .text          0x08000190       0x40 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
@@ -1707,998 +1706,1013 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gc
  .text.Adc_IrSensorStart
                 0x08002190       0x20 build/adc.o
                 0x08002190                Adc_IrSensorStart
+ .text.Adc_IrSensorFinish
+                0x080021b0       0x28 build/adc.o
+                0x080021b0                Adc_IrSensorFinish
  .text.Adc_CheckConvert
-                0x080021b0       0x30 build/adc.o
-                0x080021b0                Adc_CheckConvert
+                0x080021d8       0x30 build/adc.o
+                0x080021d8                Adc_CheckConvert
  .text.Adc_GetSensor
-                0x080021e0      0x154 build/adc.o
-                0x080021e0                Adc_GetSensor
+                0x08002208      0x154 build/adc.o
+                0x08002208                Adc_GetSensor
  .text.Adc_GetBatt
-                0x08002334       0xd8 build/adc.o
-                0x08002334                Adc_GetBatt
+                0x0800235c       0xd8 build/adc.o
+                0x0800235c                Adc_GetBatt
  .text.SPI_WaitFlagStateUntilTimeout
-                0x0800240c       0x96 build/stm32f4xx_hal_spi.o
+                0x08002434       0x96 build/stm32f4xx_hal_spi.o
  .text.SPI_CheckFlag_BSY
-                0x080024a2       0x28 build/stm32f4xx_hal_spi.o
+                0x080024ca       0x28 build/stm32f4xx_hal_spi.o
  .text.HAL_SPI_Init
-                0x080024ca       0x80 build/stm32f4xx_hal_spi.o
-                0x080024ca                HAL_SPI_Init
+                0x080024f2       0x80 build/stm32f4xx_hal_spi.o
+                0x080024f2                HAL_SPI_Init
  .text.HAL_SPI_Transmit
-                0x0800254a      0x1a6 build/stm32f4xx_hal_spi.o
-                0x0800254a                HAL_SPI_Transmit
+                0x08002572      0x1a6 build/stm32f4xx_hal_spi.o
+                0x08002572                HAL_SPI_Transmit
  .text.HAL_SPI_TransmitReceive
-                0x080026f0      0x238 build/stm32f4xx_hal_spi.o
-                0x080026f0                HAL_SPI_TransmitReceive
+                0x08002718      0x238 build/stm32f4xx_hal_spi.o
+                0x08002718                HAL_SPI_TransmitReceive
  .text.HAL_SPI_Receive
-                0x08002928      0x168 build/stm32f4xx_hal_spi.o
-                0x08002928                HAL_SPI_Receive
+                0x08002950      0x168 build/stm32f4xx_hal_spi.o
+                0x08002950                HAL_SPI_Receive
  .text.HAL_RCC_OscConfig
-                0x08002a90      0x398 build/stm32f4xx_hal_rcc.o
-                0x08002a90                HAL_RCC_OscConfig
+                0x08002ab8      0x398 build/stm32f4xx_hal_rcc.o
+                0x08002ab8                HAL_RCC_OscConfig
  .text.HAL_RCC_GetSysClockFreq
-                0x08002e28       0xa8 build/stm32f4xx_hal_rcc.o
-                0x08002e28                HAL_RCC_GetSysClockFreq
+                0x08002e50       0xa8 build/stm32f4xx_hal_rcc.o
+                0x08002e50                HAL_RCC_GetSysClockFreq
  .text.HAL_RCC_ClockConfig
-                0x08002ed0      0x158 build/stm32f4xx_hal_rcc.o
-                0x08002ed0                HAL_RCC_ClockConfig
+                0x08002ef8      0x158 build/stm32f4xx_hal_rcc.o
+                0x08002ef8                HAL_RCC_ClockConfig
  .text.HAL_RCC_GetHCLKFreq
-                0x08003028        0xc build/stm32f4xx_hal_rcc.o
-                0x08003028                HAL_RCC_GetHCLKFreq
+                0x08003050        0xc build/stm32f4xx_hal_rcc.o
+                0x08003050                HAL_RCC_GetHCLKFreq
  .text.HAL_RCC_GetPCLK1Freq
-                0x08003034       0x20 build/stm32f4xx_hal_rcc.o
-                0x08003034                HAL_RCC_GetPCLK1Freq
+                0x0800305c       0x20 build/stm32f4xx_hal_rcc.o
+                0x0800305c                HAL_RCC_GetPCLK1Freq
  .text.HAL_RCC_GetPCLK2Freq
-                0x08003054       0x20 build/stm32f4xx_hal_rcc.o
-                0x08003054                HAL_RCC_GetPCLK2Freq
+                0x0800307c       0x20 build/stm32f4xx_hal_rcc.o
+                0x0800307c                HAL_RCC_GetPCLK2Freq
  .text.HAL_InitTick
-                0x08003074       0x4c build/stm32f4xx_hal.o
-                0x08003074                HAL_InitTick
+                0x0800309c       0x4c build/stm32f4xx_hal.o
+                0x0800309c                HAL_InitTick
  .text.HAL_Init
-                0x080030c0       0x34 build/stm32f4xx_hal.o
-                0x080030c0                HAL_Init
+                0x080030e8       0x34 build/stm32f4xx_hal.o
+                0x080030e8                HAL_Init
  .text.HAL_IncTick
-                0x080030f4       0x18 build/stm32f4xx_hal.o
-                0x080030f4                HAL_IncTick
+                0x0800311c       0x18 build/stm32f4xx_hal.o
+                0x0800311c                HAL_IncTick
  .text.HAL_GetTick
-                0x0800310c        0xc build/stm32f4xx_hal.o
-                0x0800310c                HAL_GetTick
+                0x08003134        0xc build/stm32f4xx_hal.o
+                0x08003134                HAL_GetTick
  .text.HAL_Delay
-                0x08003118       0x28 build/stm32f4xx_hal.o
-                0x08003118                HAL_Delay
+                0x08003140       0x28 build/stm32f4xx_hal.o
+                0x08003140                HAL_Delay
  .text.MX_USART3_UART_Init
-                0x08003140       0x3c build/usart.o
-                0x08003140                MX_USART3_UART_Init
+                0x08003168       0x3c build/usart.o
+                0x08003168                MX_USART3_UART_Init
  .text.HAL_UART_MspInit
-                0x0800317c       0x58 build/usart.o
-                0x0800317c                HAL_UART_MspInit
+                0x080031a4       0x58 build/usart.o
+                0x080031a4                HAL_UART_MspInit
  .text.DMA_SetConfig
-                0x080031d4       0x2c build/stm32f4xx_hal_dma.o
+                0x080031fc       0x2c build/stm32f4xx_hal_dma.o
  .text.DMA_CalcBaseAndBitshift
-                0x08003200       0x3c build/stm32f4xx_hal_dma.o
+                0x08003228       0x3c build/stm32f4xx_hal_dma.o
  .text.DMA_CheckFifoParam
-                0x0800323c       0x8e build/stm32f4xx_hal_dma.o
- *fill*         0x080032ca        0x2 
+                0x08003264       0x8e build/stm32f4xx_hal_dma.o
+ *fill*         0x080032f2        0x2 
  .text.HAL_DMA_Init
-                0x080032cc       0xcc build/stm32f4xx_hal_dma.o
-                0x080032cc                HAL_DMA_Init
+                0x080032f4       0xcc build/stm32f4xx_hal_dma.o
+                0x080032f4                HAL_DMA_Init
  .text.HAL_DMA_Start_IT
-                0x08003398       0x74 build/stm32f4xx_hal_dma.o
-                0x08003398                HAL_DMA_Start_IT
+                0x080033c0       0x74 build/stm32f4xx_hal_dma.o
+                0x080033c0                HAL_DMA_Start_IT
  .text.HAL_DMA_Abort
-                0x0800340c       0x94 build/stm32f4xx_hal_dma.o
-                0x0800340c                HAL_DMA_Abort
+                0x08003434       0x94 build/stm32f4xx_hal_dma.o
+                0x08003434                HAL_DMA_Abort
  .text.HAL_DMA_IRQHandler
-                0x080034a0      0x1dc build/stm32f4xx_hal_dma.o
-                0x080034a0                HAL_DMA_IRQHandler
+                0x080034c8      0x1dc build/stm32f4xx_hal_dma.o
+                0x080034c8                HAL_DMA_IRQHandler
  .text.MX_GPIO_Init
-                0x0800367c       0xd8 build/gpio.o
-                0x0800367c                MX_GPIO_Init
+                0x080036a4       0xd8 build/gpio.o
+                0x080036a4                MX_GPIO_Init
  .text.Gpio_FullColor
-                0x08003754       0x3c build/gpio.o
-                0x08003754                Gpio_FullColor
+                0x0800377c       0x3c build/gpio.o
+                0x0800377c                Gpio_FullColor
  .text.Gpio_SideLed
-                0x08003790       0x2c build/gpio.o
-                0x08003790                Gpio_SideLed
+                0x080037b8       0x2c build/gpio.o
+                0x080037b8                Gpio_SideLed
  .text.HAL_NVIC_SetPriorityGrouping
-                0x080037bc       0x24 build/stm32f4xx_hal_cortex.o
-                0x080037bc                HAL_NVIC_SetPriorityGrouping
+                0x080037e4       0x24 build/stm32f4xx_hal_cortex.o
+                0x080037e4                HAL_NVIC_SetPriorityGrouping
  .text.HAL_NVIC_SetPriority
-                0x080037e0       0x68 build/stm32f4xx_hal_cortex.o
-                0x080037e0                HAL_NVIC_SetPriority
+                0x08003808       0x68 build/stm32f4xx_hal_cortex.o
+                0x08003808                HAL_NVIC_SetPriority
  .text.HAL_NVIC_EnableIRQ
-                0x08003848       0x18 build/stm32f4xx_hal_cortex.o
-                0x08003848                HAL_NVIC_EnableIRQ
+                0x08003870       0x18 build/stm32f4xx_hal_cortex.o
+                0x08003870                HAL_NVIC_EnableIRQ
  .text.HAL_SYSTICK_Config
-                0x08003860       0x2c build/stm32f4xx_hal_cortex.o
-                0x08003860                HAL_SYSTICK_Config
+                0x08003888       0x2c build/stm32f4xx_hal_cortex.o
+                0x08003888                HAL_SYSTICK_Config
  .text.HAL_SYSTICK_CLKSourceConfig
-                0x0800388c       0x20 build/stm32f4xx_hal_cortex.o
-                0x0800388c                HAL_SYSTICK_CLKSourceConfig
+                0x080038b4       0x20 build/stm32f4xx_hal_cortex.o
+                0x080038b4                HAL_SYSTICK_CLKSourceConfig
  .text.HAL_SYSTICK_Callback
-                0x080038ac        0x2 build/stm32f4xx_hal_cortex.o
-                0x080038ac                HAL_SYSTICK_Callback
+                0x080038d4        0x2 build/stm32f4xx_hal_cortex.o
+                0x080038d4                HAL_SYSTICK_Callback
  .text.HAL_SYSTICK_IRQHandler
-                0x080038ae        0x8 build/stm32f4xx_hal_cortex.o
-                0x080038ae                HAL_SYSTICK_IRQHandler
- *fill*         0x080038b6        0x2 
+                0x080038d6        0x8 build/stm32f4xx_hal_cortex.o
+                0x080038d6                HAL_SYSTICK_IRQHandler
+ *fill*         0x080038de        0x2 
  .text.FLASH_Program_DoubleWord
-                0x080038b8       0x2c build/stm32f4xx_hal_flash.o
+                0x080038e0       0x2c build/stm32f4xx_hal_flash.o
  .text.FLASH_Program_Word
-                0x080038e4       0x24 build/stm32f4xx_hal_flash.o
+                0x0800390c       0x24 build/stm32f4xx_hal_flash.o
  .text.FLASH_Program_HalfWord
-                0x08003908       0x24 build/stm32f4xx_hal_flash.o
+                0x08003930       0x24 build/stm32f4xx_hal_flash.o
  .text.FLASH_Program_Byte
-                0x0800392c       0x20 build/stm32f4xx_hal_flash.o
+                0x08003954       0x20 build/stm32f4xx_hal_flash.o
  .text.FLASH_SetErrorCode
-                0x0800394c       0x8c build/stm32f4xx_hal_flash.o
+                0x08003974       0x8c build/stm32f4xx_hal_flash.o
  .text.HAL_FLASH_Unlock
-                0x080039d8       0x30 build/stm32f4xx_hal_flash.o
-                0x080039d8                HAL_FLASH_Unlock
+                0x08003a00       0x30 build/stm32f4xx_hal_flash.o
+                0x08003a00                HAL_FLASH_Unlock
  .text.HAL_FLASH_Lock
-                0x08003a08       0x14 build/stm32f4xx_hal_flash.o
-                0x08003a08                HAL_FLASH_Lock
+                0x08003a30       0x14 build/stm32f4xx_hal_flash.o
+                0x08003a30                HAL_FLASH_Lock
  .text.FLASH_WaitForLastOperation
-                0x08003a1c       0x64 build/stm32f4xx_hal_flash.o
-                0x08003a1c                FLASH_WaitForLastOperation
+                0x08003a44       0x64 build/stm32f4xx_hal_flash.o
+                0x08003a44                FLASH_WaitForLastOperation
  .text.HAL_FLASH_Program
-                0x08003a80       0x80 build/stm32f4xx_hal_flash.o
-                0x08003a80                HAL_FLASH_Program
+                0x08003aa8       0x80 build/stm32f4xx_hal_flash.o
+                0x08003aa8                HAL_FLASH_Program
  .text.__io_putchar
-                0x08003b00       0x20 build/main.o
-                0x08003b00                __io_putchar
+                0x08003b28       0x20 build/main.o
+                0x08003b28                __io_putchar
  .text.Init_Main
-                0x08003b20       0x70 build/main.o
-                0x08003b20                Init_Main
+                0x08003b48       0x70 build/main.o
+                0x08003b48                Init_Main
  .text._Error_Handler
-                0x08003b90        0x2 build/main.o
-                0x08003b90                _Error_Handler
- *fill*         0x08003b92        0x2 
+                0x08003bb8        0x2 build/main.o
+                0x08003bb8                _Error_Handler
+ *fill*         0x08003bba        0x2 
  .text.SystemClock_Config
-                0x08003b94       0xc0 build/main.o
-                0x08003b94                SystemClock_Config
- .text.main     0x08003c54       0x42 build/main.o
-                0x08003c54                main
+                0x08003bbc       0xc0 build/main.o
+                0x08003bbc                SystemClock_Config
+ .text.main     0x08003c7c       0x42 build/main.o
+                0x08003c7c                main
  .text.HAL_TIMEx_MasterConfigSynchronization
-                0x08003c96       0x52 build/stm32f4xx_hal_tim_ex.o
-                0x08003c96                HAL_TIMEx_MasterConfigSynchronization
+                0x08003cbe       0x52 build/stm32f4xx_hal_tim_ex.o
+                0x08003cbe                HAL_TIMEx_MasterConfigSynchronization
  .text.UART_SetConfig
-                0x08003ce8      0x334 build/stm32f4xx_hal_uart.o
+                0x08003d10      0x334 build/stm32f4xx_hal_uart.o
  .text.UART_WaitOnFlagUntilTimeout
-                0x0800401c       0x62 build/stm32f4xx_hal_uart.o
+                0x08004044       0x62 build/stm32f4xx_hal_uart.o
  .text.HAL_UART_Init
-                0x0800407e       0x5e build/stm32f4xx_hal_uart.o
-                0x0800407e                HAL_UART_Init
+                0x080040a6       0x5e build/stm32f4xx_hal_uart.o
+                0x080040a6                HAL_UART_Init
  .text.HAL_UART_Transmit
-                0x080040dc       0xe0 build/stm32f4xx_hal_uart.o
-                0x080040dc                HAL_UART_Transmit
+                0x08004104       0xe0 build/stm32f4xx_hal_uart.o
+                0x08004104                HAL_UART_Transmit
  .text.TIM_OC1_SetConfig
-                0x080041bc       0x5c build/stm32f4xx_hal_tim.o
+                0x080041e4       0x5c build/stm32f4xx_hal_tim.o
  .text.TIM_OC3_SetConfig
-                0x08004218       0x60 build/stm32f4xx_hal_tim.o
+                0x08004240       0x60 build/stm32f4xx_hal_tim.o
  .text.TIM_OC4_SetConfig
-                0x08004278       0x50 build/stm32f4xx_hal_tim.o
+                0x080042a0       0x50 build/stm32f4xx_hal_tim.o
  .text.TIM_Base_SetConfig
-                0x080042c8       0xc0 build/stm32f4xx_hal_tim.o
-                0x080042c8                TIM_Base_SetConfig
+                0x080042f0       0xc0 build/stm32f4xx_hal_tim.o
+                0x080042f0                TIM_Base_SetConfig
  .text.HAL_TIM_PWM_Init
-                0x08004388       0x32 build/stm32f4xx_hal_tim.o
-                0x08004388                HAL_TIM_PWM_Init
+                0x080043b0       0x32 build/stm32f4xx_hal_tim.o
+                0x080043b0                HAL_TIM_PWM_Init
  .text.HAL_TIM_Encoder_Init
-                0x080043ba       0x98 build/stm32f4xx_hal_tim.o
-                0x080043ba                HAL_TIM_Encoder_Init
- *fill*         0x08004452        0x2 
+                0x080043e2       0x98 build/stm32f4xx_hal_tim.o
+                0x080043e2                HAL_TIM_Encoder_Init
+ *fill*         0x0800447a        0x2 
  .text.TIM_OC2_SetConfig
-                0x08004454       0x64 build/stm32f4xx_hal_tim.o
-                0x08004454                TIM_OC2_SetConfig
+                0x0800447c       0x64 build/stm32f4xx_hal_tim.o
+                0x0800447c                TIM_OC2_SetConfig
  .text.HAL_TIM_PWM_ConfigChannel
-                0x080044b8       0xdc build/stm32f4xx_hal_tim.o
-                0x080044b8                HAL_TIM_PWM_ConfigChannel
+                0x080044e0       0xdc build/stm32f4xx_hal_tim.o
+                0x080044e0                HAL_TIM_PWM_ConfigChannel
  .text.TIM_CCxChannelCmd
-                0x08004594       0x1e build/stm32f4xx_hal_tim.o
-                0x08004594                TIM_CCxChannelCmd
- *fill*         0x080045b2        0x2 
+                0x080045bc       0x1e build/stm32f4xx_hal_tim.o
+                0x080045bc                TIM_CCxChannelCmd
+ *fill*         0x080045da        0x2 
  .text.HAL_TIM_PWM_Start
-                0x080045b4       0x38 build/stm32f4xx_hal_tim.o
-                0x080045b4                HAL_TIM_PWM_Start
+                0x080045dc       0x38 build/stm32f4xx_hal_tim.o
+                0x080045dc                HAL_TIM_PWM_Start
  .text.HAL_TIM_PWM_Stop
-                0x080045ec       0x68 build/stm32f4xx_hal_tim.o
-                0x080045ec                HAL_TIM_PWM_Stop
+                0x08004614       0x68 build/stm32f4xx_hal_tim.o
+                0x08004614                HAL_TIM_PWM_Stop
  .text.HAL_TIM_Encoder_Start
-                0x08004654       0x44 build/stm32f4xx_hal_tim.o
-                0x08004654                HAL_TIM_Encoder_Start
+                0x0800467c       0x44 build/stm32f4xx_hal_tim.o
+                0x0800467c                HAL_TIM_Encoder_Start
  .text.HAL_MspInit
-                0x08004698       0x5e build/stm32f4xx_hal_msp.o
-                0x08004698                HAL_MspInit
- *fill*         0x080046f6        0x2 
+                0x080046c0       0x5e build/stm32f4xx_hal_msp.o
+                0x080046c0                HAL_MspInit
+ *fill*         0x0800471e        0x2 
  .text.HAL_GPIO_Init
-                0x080046f8      0x1c8 build/stm32f4xx_hal_gpio.o
-                0x080046f8                HAL_GPIO_Init
+                0x08004720      0x1c8 build/stm32f4xx_hal_gpio.o
+                0x08004720                HAL_GPIO_Init
  .text.HAL_GPIO_WritePin
-                0x080048c0        0xc build/stm32f4xx_hal_gpio.o
-                0x080048c0                HAL_GPIO_WritePin
+                0x080048e8        0xc build/stm32f4xx_hal_gpio.o
+                0x080048e8                HAL_GPIO_WritePin
  .text.MX_SPI1_Init
-                0x080048cc       0x4c build/spi.o
-                0x080048cc                MX_SPI1_Init
+                0x080048f4       0x4c build/spi.o
+                0x080048f4                MX_SPI1_Init
  .text.HAL_SPI_MspInit
-                0x08004918       0x50 build/spi.o
-                0x08004918                HAL_SPI_MspInit
+                0x08004940       0x50 build/spi.o
+                0x08004940                HAL_SPI_MspInit
  .text.read_byte
-                0x08004968       0x54 build/spi.o
-                0x08004968                read_byte
+                0x08004990       0x54 build/spi.o
+                0x08004990                read_byte
  .text.read_shift_byte
-                0x080049bc       0x5c build/spi.o
-                0x080049bc                read_shift_byte
+                0x080049e4       0x5c build/spi.o
+                0x080049e4                read_shift_byte
  .text.write_byte
-                0x08004a18       0x54 build/spi.o
-                0x08004a18                write_byte
+                0x08004a40       0x54 build/spi.o
+                0x08004a40                write_byte
  .text.Spi_SetGyro
-                0x08004a6c       0x48 build/spi.o
-                0x08004a6c                Spi_SetGyro
+                0x08004a94       0x48 build/spi.o
+                0x08004a94                Spi_SetGyro
  .text.get_gyro_z
-                0x08004ab4       0x24 build/spi.o
-                0x08004ab4                get_gyro_z
+                0x08004adc       0x24 build/spi.o
+                0x08004adc                get_gyro_z
  .text.gyro_offset_calc
-                0x08004ad8       0x50 build/spi.o
-                0x08004ad8                gyro_offset_calc
+                0x08004b00       0x50 build/spi.o
+                0x08004b00                gyro_offset_calc
  .text.Spi_UpdateGyro_Z
-                0x08004b28       0x50 build/spi.o
-                0x08004b28                Spi_UpdateGyro_Z
+                0x08004b50       0x50 build/spi.o
+                0x08004b50                Spi_UpdateGyro_Z
  .text.Spi_UpdateGyro_Y
-                0x08004b78       0x34 build/spi.o
-                0x08004b78                Spi_UpdateGyro_Y
+                0x08004ba0       0x34 build/spi.o
+                0x08004ba0                Spi_UpdateGyro_Y
  .text.Spi_UpdateAccel
-                0x08004bac       0x7c build/spi.o
-                0x08004bac                Spi_UpdateAccel
+                0x08004bd4       0x7c build/spi.o
+                0x08004bd4                Spi_UpdateAccel
  .text.Spi_GyroReset
-                0x08004c28       0x1c build/spi.o
-                0x08004c28                Spi_GyroReset
+                0x08004c50       0x1c build/spi.o
+                0x08004c50                Spi_GyroReset
  .text.SystemInit
-                0x08004c44       0x4c build/system_stm32f4xx.o
-                0x08004c44                SystemInit
+                0x08004c6c       0x4c build/system_stm32f4xx.o
+                0x08004c6c                SystemInit
  .text.NMI_Handler
-                0x08004c90        0x2 build/stm32f4xx_it.o
-                0x08004c90                NMI_Handler
+                0x08004cb8        0x2 build/stm32f4xx_it.o
+                0x08004cb8                NMI_Handler
  .text.HardFault_Handler
-                0x08004c92        0x2 build/stm32f4xx_it.o
-                0x08004c92                HardFault_Handler
+                0x08004cba        0x2 build/stm32f4xx_it.o
+                0x08004cba                HardFault_Handler
  .text.MemManage_Handler
-                0x08004c94        0x2 build/stm32f4xx_it.o
-                0x08004c94                MemManage_Handler
+                0x08004cbc        0x2 build/stm32f4xx_it.o
+                0x08004cbc                MemManage_Handler
  .text.BusFault_Handler
-                0x08004c96        0x2 build/stm32f4xx_it.o
-                0x08004c96                BusFault_Handler
+                0x08004cbe        0x2 build/stm32f4xx_it.o
+                0x08004cbe                BusFault_Handler
  .text.UsageFault_Handler
-                0x08004c98        0x2 build/stm32f4xx_it.o
-                0x08004c98                UsageFault_Handler
+                0x08004cc0        0x2 build/stm32f4xx_it.o
+                0x08004cc0                UsageFault_Handler
  .text.SVC_Handler
-                0x08004c9a        0x2 build/stm32f4xx_it.o
-                0x08004c9a                SVC_Handler
+                0x08004cc2        0x2 build/stm32f4xx_it.o
+                0x08004cc2                SVC_Handler
  .text.DebugMon_Handler
-                0x08004c9c        0x2 build/stm32f4xx_it.o
-                0x08004c9c                DebugMon_Handler
+                0x08004cc4        0x2 build/stm32f4xx_it.o
+                0x08004cc4                DebugMon_Handler
  .text.PendSV_Handler
-                0x08004c9e        0x2 build/stm32f4xx_it.o
-                0x08004c9e                PendSV_Handler
+                0x08004cc6        0x2 build/stm32f4xx_it.o
+                0x08004cc6                PendSV_Handler
  .text.SysTick_Handler
-                0x08004ca0       0x24 build/stm32f4xx_it.o
-                0x08004ca0                SysTick_Handler
+                0x08004cc8       0x24 build/stm32f4xx_it.o
+                0x08004cc8                SysTick_Handler
  .text.DMA2_Stream2_IRQHandler
-                0x08004cc4       0x10 build/stm32f4xx_it.o
-                0x08004cc4                DMA2_Stream2_IRQHandler
+                0x08004cec       0x10 build/stm32f4xx_it.o
+                0x08004cec                DMA2_Stream2_IRQHandler
  .text.HAL_ADC_ConvHalfCpltCallback
-                0x08004cd4        0x8 build/stm32f4xx_it.o
-                0x08004cd4                HAL_ADC_ConvHalfCpltCallback
- .text._read    0x08004cdc       0x1c build/syscalls.o
-                0x08004cdc                _read
- .text._write   0x08004cf8       0x1c build/syscalls.o
-                0x08004cf8                _write
- .text._sbrk    0x08004d14       0x3c build/syscalls.o
-                0x08004d14                _sbrk
- .text._close   0x08004d50        0x6 build/syscalls.o
-                0x08004d50                _close
- .text._fstat   0x08004d56        0xa build/syscalls.o
-                0x08004d56                _fstat
- .text._isatty  0x08004d60        0x4 build/syscalls.o
-                0x08004d60                _isatty
- .text._lseek   0x08004d64        0x4 build/syscalls.o
-                0x08004d64                _lseek
+                0x08004cfc        0x8 build/stm32f4xx_it.o
+                0x08004cfc                HAL_ADC_ConvHalfCpltCallback
+ .text._read    0x08004d04       0x1c build/syscalls.o
+                0x08004d04                _read
+ .text._write   0x08004d20       0x1c build/syscalls.o
+                0x08004d20                _write
+ .text._sbrk    0x08004d3c       0x3c build/syscalls.o
+                0x08004d3c                _sbrk
+ .text._close   0x08004d78        0x6 build/syscalls.o
+                0x08004d78                _close
+ .text._fstat   0x08004d7e        0xa build/syscalls.o
+                0x08004d7e                _fstat
+ .text._isatty  0x08004d88        0x4 build/syscalls.o
+                0x08004d88                _isatty
+ .text._lseek   0x08004d8c        0x4 build/syscalls.o
+                0x08004d8c                _lseek
  .text.Mode_Select
-                0x08004d68      0x16c build/mode.o
-                0x08004d68                Mode_Select
+                0x08004d90      0x16c build/mode.o
+                0x08004d90                Mode_Select
+ .text.SensorCheck
+                0x08004efc       0xec build/mode.o
+                0x08004efc                SensorCheck
  .text.SetRunMode
-                0x08004ed4       0xb0 build/mode.o
-                0x08004ed4                SetRunMode
+                0x08004fe8       0xb0 build/mode.o
+                0x08004fe8                SetRunMode
  .text.Get_WallData
-                0x08004f84       0x84 build/mode.o
-                0x08004f84                Get_WallData
+                0x08005098       0x84 build/mode.o
+                0x08005098                Get_WallData
  .text.SearchRun
-                0x08005008      0x29c build/mode.o
-                0x08005008                SearchRun
+                0x0800511c      0x2a8 build/mode.o
+                0x0800511c                SearchRun
  .text.Mode_FastRun
-                0x080052a4      0x2ec build/mode.o
-                0x080052a4                Mode_FastRun
+                0x080053c4      0x2ec build/mode.o
+                0x080053c4                Mode_FastRun
  .text.Mode_FastestRun
-                0x08005590      0x2ec build/mode.o
-                0x08005590                Mode_FastestRun
- .text.CheckStraight
-                0x0800587c       0x70 build/mode.o
-                0x0800587c                CheckStraight
+                0x080056b0      0x2ec build/mode.o
+                0x080056b0                Mode_FastestRun
  .text.CheckTurn
-                0x080058ec       0x60 build/mode.o
-                0x080058ec                CheckTurn
+                0x0800599c       0x60 build/mode.o
+                0x0800599c                CheckTurn
  .text.PrintOutPut
-                0x0800594c       0x70 build/mode.o
-                0x0800594c                PrintOutPut
+                0x080059fc       0x70 build/mode.o
+                0x080059fc                PrintOutPut
  .text.PrintWallData
-                0x080059bc       0xd0 build/mode.o
-                0x080059bc                PrintWallData
+                0x08005a6c       0xd0 build/mode.o
+                0x08005a6c                PrintWallData
  .text.TestComb
-                0x08005a8c       0x5c build/mode.o
-                0x08005a8c                TestComb
+                0x08005b3c       0x5c build/mode.o
+                0x08005b3c                TestComb
  .text.Turn135_Test
-                0x08005ae8      0x110 build/mode.o
-                0x08005ae8                Turn135_Test
+                0x08005b98      0x110 build/mode.o
+                0x08005b98                Turn135_Test
  .text.FastestTurnTest
-                0x08005bf8      0x1ec build/mode.o
-                0x08005bf8                FastestTurnTest
+                0x08005ca8      0x1ec build/mode.o
+                0x08005ca8                FastestTurnTest
  .text.Mode_Mouse
-                0x08005de4      0x1e4 build/mode.o
-                0x08005de4                Mode_Mouse
+                0x08005e94      0x1dc build/mode.o
+                0x08005e94                Mode_Mouse
  .text.Motion_MaxVeloSet
-                0x08005fc8        0xc build/motion.o
-                0x08005fc8                Motion_MaxVeloSet
+                0x08006070        0xc build/motion.o
+                0x08006070                Motion_MaxVeloSet
  .text.Motion_TestTurn
-                0x08005fd4       0x98 build/motion.o
-                0x08005fd4                Motion_TestTurn
+                0x0800607c       0x98 build/motion.o
+                0x0800607c                Motion_TestTurn
  .text.Motion_Start
-                0x0800606c       0x74 build/motion.o
-                0x0800606c                Motion_Start
+                0x08006114       0x74 build/motion.o
+                0x08006114                Motion_Start
  .text.Motion_Restart
-                0x080060e0      0x22c build/motion.o
-                0x080060e0                Motion_Restart
+                0x08006188      0x22c build/motion.o
+                0x08006188                Motion_Restart
  .text.Motion_End
-                0x0800630c       0x9c build/motion.o
-                0x0800630c                Motion_End
- .text.Motion_Straight
-                0x080063a8      0x154 build/motion.o
-                0x080063a8                Motion_Straight
+                0x080063b4       0x9c build/motion.o
+                0x080063b4                Motion_End
+ .text.Motion_SearchStraight
+                0x08006450      0x3cc build/motion.o
+                0x08006450                Motion_SearchStraight
  .text.Motion_SpinTurn
-                0x080064fc      0x204 build/motion.o
-                0x080064fc                Motion_SpinTurn
+                0x0800681c      0x238 build/motion.o
+                0x0800681c                Motion_SpinTurn
  .text.Motion_WallSpinTurn
-                0x08006700      0x23c build/motion.o
-                0x08006700                Motion_WallSpinTurn
+                0x08006a54      0x268 build/motion.o
+                0x08006a54                Motion_WallSpinTurn
  .text.Motion_LeftTurn
-                0x0800693c      0x17c build/motion.o
-                0x0800693c                Motion_LeftTurn
+                0x08006cbc      0x17c build/motion.o
+                0x08006cbc                Motion_LeftTurn
  .text.Motion_RightTurn
-                0x08006ab8      0x17c build/motion.o
-                0x08006ab8                Motion_RightTurn
+                0x08006e38      0x17c build/motion.o
+                0x08006e38                Motion_RightTurn
  .text.Motion_Switch
-                0x08006c34       0x40 build/motion.o
-                0x08006c34                Motion_Switch
+                0x08006fb4       0x40 build/motion.o
+                0x08006fb4                Motion_Switch
  .text.Motion_FastStart
-                0x08006c74       0xe0 build/motion.o
-                0x08006c74                Motion_FastStart
+                0x08006ff4       0xe0 build/motion.o
+                0x08006ff4                Motion_FastStart
  .text.Motion_FastStraight
-                0x08006d54       0xa8 build/motion.o
-                0x08006d54                Motion_FastStraight
+                0x080070d4       0xa8 build/motion.o
+                0x080070d4                Motion_FastStraight
  .text.Motion_Adjust
-                0x08006dfc       0xc4 build/motion.o
-                0x08006dfc                Motion_Adjust
+                0x0800717c       0xc4 build/motion.o
+                0x0800717c                Motion_Adjust
  .text.Motion_Adjust_L
-                0x08006ec0      0x108 build/motion.o
-                0x08006ec0                Motion_Adjust_L
+                0x08007240      0x108 build/motion.o
+                0x08007240                Motion_Adjust_L
  .text.Motion_Adjust_R
-                0x08006fc8      0x108 build/motion.o
-                0x08006fc8                Motion_Adjust_R
+                0x08007348      0x108 build/motion.o
+                0x08007348                Motion_Adjust_R
  .text.Motion_FastGoal
-                0x080070d0       0xe0 build/motion.o
-                0x080070d0                Motion_FastGoal
+                0x08007450       0xe0 build/motion.o
+                0x08007450                Motion_FastGoal
  .text.Motion_DiagonalLeft
-                0x080071b0      0x10c build/motion.o
-                0x080071b0                Motion_DiagonalLeft
+                0x08007530      0x10c build/motion.o
+                0x08007530                Motion_DiagonalLeft
  .text.Motion_DiagonalRight
-                0x080072bc      0x108 build/motion.o
-                0x080072bc                Motion_DiagonalRight
+                0x0800763c      0x108 build/motion.o
+                0x0800763c                Motion_DiagonalRight
  .text.Motion_DiagonalStart
-                0x080073c4       0x88 build/motion.o
-                0x080073c4                Motion_DiagonalStart
+                0x08007744       0x88 build/motion.o
+                0x08007744                Motion_DiagonalStart
  .text.Motion_DiagonalStop
-                0x0800744c       0xa8 build/motion.o
-                0x0800744c                Motion_DiagonalStop
+                0x080077cc       0xa8 build/motion.o
+                0x080077cc                Motion_DiagonalStop
  .text.Motion_InLeft45Turn
-                0x080074f4      0x120 build/motion.o
-                0x080074f4                Motion_InLeft45Turn
+                0x08007874      0x120 build/motion.o
+                0x08007874                Motion_InLeft45Turn
  .text.Motion_InRight45Turn
-                0x08007614      0x120 build/motion.o
-                0x08007614                Motion_InRight45Turn
+                0x08007994      0x120 build/motion.o
+                0x08007994                Motion_InRight45Turn
  .text.Motion_OutLeft45Turn
-                0x08007734      0x1a0 build/motion.o
-                0x08007734                Motion_OutLeft45Turn
+                0x08007ab4      0x1a0 build/motion.o
+                0x08007ab4                Motion_OutLeft45Turn
  .text.Motion_OutRight45Turn
-                0x080078d4      0x1a0 build/motion.o
-                0x080078d4                Motion_OutRight45Turn
+                0x08007c54      0x1a0 build/motion.o
+                0x08007c54                Motion_OutRight45Turn
  .text.Motion_Left90Turn
-                0x08007a74      0x1a8 build/motion.o
-                0x08007a74                Motion_Left90Turn
+                0x08007df4      0x1a8 build/motion.o
+                0x08007df4                Motion_Left90Turn
  .text.Motion_Right90Turn
-                0x08007c1c      0x198 build/motion.o
-                0x08007c1c                Motion_Right90Turn
- .text.Turn     0x08007db4      0x204 build/motion.o
-                0x08007db4                Turn
+                0x08007f9c      0x198 build/motion.o
+                0x08007f9c                Motion_Right90Turn
+ .text.Turn     0x08008134      0x204 build/motion.o
+                0x08008134                Turn
  .text.Motion_FastLeftTurn
-                0x08007fb8      0x11c build/motion.o
-                0x08007fb8                Motion_FastLeftTurn
+                0x08008338      0x11c build/motion.o
+                0x08008338                Motion_FastLeftTurn
  .text.Motion_FastRightTurn
-                0x080080d4      0x11c build/motion.o
-                0x080080d4                Motion_FastRightTurn
+                0x08008454      0x11c build/motion.o
+                0x08008454                Motion_FastRightTurn
  .text.Motion_FastestStart
-                0x080081f0       0xd8 build/motion.o
-                0x080081f0                Motion_FastestStart
+                0x08008570       0xd8 build/motion.o
+                0x08008570                Motion_FastestStart
  .text.Motion_FastestStraight
-                0x080082c8       0xa8 build/motion.o
-                0x080082c8                Motion_FastestStraight
+                0x08008648       0xa8 build/motion.o
+                0x08008648                Motion_FastestStraight
  .text.Motion_FastestGoal
-                0x08008370       0xdc build/motion.o
-                0x08008370                Motion_FastestGoal
+                0x080086f0       0xdc build/motion.o
+                0x080086f0                Motion_FastestGoal
  .text.Motion_FastestAdjust_L
-                0x0800844c      0x104 build/motion.o
-                0x0800844c                Motion_FastestAdjust_L
+                0x080087cc      0x104 build/motion.o
+                0x080087cc                Motion_FastestAdjust_L
  .text.Motion_FastestAdjust_R
-                0x08008550       0xf8 build/motion.o
-                0x08008550                Motion_FastestAdjust_R
+                0x080088d0       0xf8 build/motion.o
+                0x080088d0                Motion_FastestAdjust_R
  .text.Fastest_StrTurn
-                0x08008648      0x11c build/motion.o
-                0x08008648                Fastest_StrTurn
+                0x080089c8      0x11c build/motion.o
+                0x080089c8                Fastest_StrTurn
  .text.Fastest_DgnInTurn
-                0x08008764      0x130 build/motion.o
-                0x08008764                Fastest_DgnInTurn
+                0x08008ae4      0x130 build/motion.o
+                0x08008ae4                Fastest_DgnInTurn
  .text.Fastest_DgnOutTurn
-                0x08008894      0x12c build/motion.o
-                0x08008894                Fastest_DgnOutTurn
+                0x08008c14      0x12c build/motion.o
+                0x08008c14                Fastest_DgnOutTurn
  .text.Fastest_DgnTurn
-                0x080089c0      0x130 build/motion.o
-                0x080089c0                Fastest_DgnTurn
+                0x08008d40      0x130 build/motion.o
+                0x08008d40                Fastest_DgnTurn
  .text.Motion_FastestLeftSearch
-                0x08008af0      0x124 build/motion.o
-                0x08008af0                Motion_FastestLeftSearch
+                0x08008e70      0x124 build/motion.o
+                0x08008e70                Motion_FastestLeftSearch
  .text.Motion_FastestRightSearch
-                0x08008c14      0x120 build/motion.o
-                0x08008c14                Motion_FastestRightSearch
+                0x08008f94      0x120 build/motion.o
+                0x08008f94                Motion_FastestRightSearch
  .text.Motion_FastestLeftTurn
-                0x08008d34      0x168 build/motion.o
-                0x08008d34                Motion_FastestLeftTurn
+                0x080090b4      0x168 build/motion.o
+                0x080090b4                Motion_FastestLeftTurn
  .text.Motion_FastestRightTurn
-                0x08008e9c      0x164 build/motion.o
-                0x08008e9c                Motion_FastestRightTurn
+                0x0800921c      0x164 build/motion.o
+                0x0800921c                Motion_FastestRightTurn
  .text.Motion_FastestDiagonalLeft
-                0x08009000      0x104 build/motion.o
-                0x08009000                Motion_FastestDiagonalLeft
+                0x08009380      0x104 build/motion.o
+                0x08009380                Motion_FastestDiagonalLeft
  .text.Motion_FastestDiagonalRight
-                0x08009104      0x100 build/motion.o
-                0x08009104                Motion_FastestDiagonalRight
+                0x08009484      0x100 build/motion.o
+                0x08009484                Motion_FastestDiagonalRight
  .text.PID_value
-                0x08009204       0x40 build/control.o
-                0x08009204                PID_value
+                0x08009584       0x40 build/control.o
+                0x08009584                PID_value
  .text.Control_StrCalculator
-                0x08009244       0x68 build/control.o
-                0x08009244                Control_StrCalculator
+                0x080095c4       0x68 build/control.o
+                0x080095c4                Control_StrCalculator
  .text.Control_AngCalculator
-                0x080092ac       0x68 build/control.o
-                0x080092ac                Control_AngCalculator
+                0x0800962c       0x68 build/control.o
+                0x0800962c                Control_AngCalculator
  .text.UpdateTargets
-                0x08009314       0x58 build/control.o
-                0x08009314                UpdateTargets
+                0x08009694       0x58 build/control.o
+                0x08009694                UpdateTargets
  .text.UpdateStrTarget
-                0x0800936c       0xcc build/control.o
-                0x0800936c                UpdateStrTarget
+                0x080096ec       0xcc build/control.o
+                0x080096ec                UpdateStrTarget
  .text.Control_WallEdgeSet
-                0x08009438       0x24 build/control.o
-                0x08009438                Control_WallEdgeSet
+                0x080097b8       0x24 build/control.o
+                0x080097b8                Control_WallEdgeSet
  .text.Control_WallEdgeAble
-                0x0800945c        0xc build/control.o
-                0x0800945c                Control_WallEdgeAble
+                0x080097dc        0xc build/control.o
+                0x080097dc                Control_WallEdgeAble
  .text.WallEdgeFix
-                0x08009468      0x118 build/control.o
-                0x08009468                WallEdgeFix
+                0x080097e8      0x118 build/control.o
+                0x080097e8                WallEdgeFix
  .text.SideWallFix
-                0x08009580      0x220 build/control.o
-                0x08009580                SideWallFix
+                0x08009900      0x220 build/control.o
+                0x08009900                SideWallFix
  .text.SideWallFiX_Fast
-                0x080097a0      0x164 build/control.o
-                0x080097a0                SideWallFiX_Fast
+                0x08009b20      0x164 build/control.o
+                0x08009b20                SideWallFiX_Fast
  .text.SideWallFiX_Fastest
-                0x08009904      0x14c build/control.o
-                0x08009904                SideWallFiX_Fastest
+                0x08009c84      0x14c build/control.o
+                0x08009c84                SideWallFiX_Fastest
  .text.DiagonalSideWall
-                0x08009a50       0xa8 build/control.o
-                0x08009a50                DiagonalSideWall
+                0x08009dd0       0xa8 build/control.o
+                0x08009dd0                DiagonalSideWall
  .text.Control_FrontWall
-                0x08009af8       0x4c build/control.o
-                0x08009af8                Control_FrontWall
+                0x08009e78       0x4c build/control.o
+                0x08009e78                Control_FrontWall
  .text.UpdateAngTarget
-                0x08009b44       0xbc build/control.o
-                0x08009b44                UpdateAngTarget
+                0x08009ec4       0xbc build/control.o
+                0x08009ec4                UpdateAngTarget
  .text.Control_UpdatePwm
-                0x08009c00      0x2bc build/control.o
-                0x08009c00                Control_UpdatePwm
+                0x08009f80      0x2c0 build/control.o
+                0x08009f80                Control_UpdatePwm
  .text.Control_ResetVelo
-                0x08009ebc       0x70 build/control.o
-                0x08009ebc                Control_ResetVelo
+                0x0800a240       0x70 build/control.o
+                0x0800a240                Control_ResetVelo
  .text.Control_SetupStraightPID
-                0x08009f2c       0x20 build/control.o
-                0x08009f2c                Control_SetupStraightPID
+                0x0800a2b0       0x20 build/control.o
+                0x0800a2b0                Control_SetupStraightPID
  .text.Control_SetupTurnPID
-                0x08009f4c       0x20 build/control.o
-                0x08009f4c                Control_SetupTurnPID
+                0x0800a2d0       0x20 build/control.o
+                0x0800a2d0                Control_SetupTurnPID
  .text.Map_AddUnknownWall
-                0x08009f6c      0x66c build/Map.o
-                0x08009f6c                Map_AddUnknownWall
+                0x0800a2f0      0x66c build/Map.o
+                0x0800a2f0                Map_AddUnknownWall
  .text.Map_addWall
-                0x0800a5d8       0x9a build/Map.o
-                0x0800a5d8                Map_addWall
+                0x0800a95c       0x9a build/Map.o
+                0x0800a95c                Map_addWall
  .text.Map_DelWall
-                0x0800a672       0xa6 build/Map.o
-                0x0800a672                Map_DelWall
+                0x0800a9f6       0xa6 build/Map.o
+                0x0800a9f6                Map_DelWall
  .text.Map_Init
-                0x0800a718       0x58 build/Map.o
-                0x0800a718                Map_Init
+                0x0800aa9c       0x58 build/Map.o
+                0x0800aa9c                Map_Init
  .text.Map_InitFast
-                0x0800a770       0x5a build/Map.o
-                0x0800a770                Map_InitFast
- *fill*         0x0800a7ca        0x2 
+                0x0800aaf4       0x5a build/Map.o
+                0x0800aaf4                Map_InitFast
+ *fill*         0x0800ab4e        0x2 
  .text.Maze_GetGoalSize
-                0x0800a7cc        0xc build/Maze.o
-                0x0800a7cc                Maze_GetGoalSize
+                0x0800ab50        0xc build/Maze.o
+                0x0800ab50                Maze_GetGoalSize
  .text.Maze_UpdatePosition
-                0x0800a7d8       0xfe build/Maze.o
-                0x0800a7d8                Maze_UpdatePosition
- *fill*         0x0800a8d6        0x2 
+                0x0800ab5c       0xfe build/Maze.o
+                0x0800ab5c                Maze_UpdatePosition
+ *fill*         0x0800ac5a        0x2 
  .text.Search_UnknownWall
-                0x0800a8d8       0xa4 build/Maze.o
-                0x0800a8d8                Search_UnknownWall
+                0x0800ac5c       0xa4 build/Maze.o
+                0x0800ac5c                Search_UnknownWall
  .text.Maze_UpdateStepMap
-                0x0800a97c      0x1ec build/Maze.o
-                0x0800a97c                Maze_UpdateStepMap
+                0x0800ad00      0x1ec build/Maze.o
+                0x0800ad00                Maze_UpdateStepMap
  .text.Maze_ResetWall
-                0x0800ab68      0x148 build/Maze.o
-                0x0800ab68                Maze_ResetWall
+                0x0800aeec      0x148 build/Maze.o
+                0x0800aeec                Maze_ResetWall
  .text.Maze_GetNextMotion
-                0x0800acb0      0x2c4 build/Maze.o
-                0x0800acb0                Maze_GetNextMotion
+                0x0800b034      0x2c4 build/Maze.o
+                0x0800b034                Maze_GetNextMotion
  .text.Maze_GetStep
-                0x0800af74       0x10 build/Maze.o
-                0x0800af74                Maze_GetStep
+                0x0800b2f8       0x10 build/Maze.o
+                0x0800b2f8                Maze_GetStep
  .text.Maze_UpdateStepMapEx
-                0x0800af84      0x990 build/Maze.o
-                0x0800af84                Maze_UpdateStepMapEx
+                0x0800b308      0x990 build/Maze.o
+                0x0800b308                Maze_UpdateStepMapEx
  .text.Maze_GetNextMotionEx
-                0x0800b914      0x378 build/Maze.o
-                0x0800b914                Maze_GetNextMotionEx
+                0x0800bc98      0x378 build/Maze.o
+                0x0800bc98                Maze_GetNextMotionEx
  .text.Maze_KnownStepAccel
-                0x0800bc8c       0xc4 build/Maze.o
-                0x0800bc8c                Maze_KnownStepAccel
+                0x0800c010       0xc4 build/Maze.o
+                0x0800c010                Maze_KnownStepAccel
  .text.Compress_T90
-                0x0800bd50      0x2b4 build/Maze.o
-                0x0800bd50                Compress_T90
+                0x0800c0d4      0x2b4 build/Maze.o
+                0x0800c0d4                Compress_T90
  .text.Compress_T180
-                0x0800c004      0x172 build/Maze.o
-                0x0800c004                Compress_T180
+                0x0800c388      0x172 build/Maze.o
+                0x0800c388                Compress_T180
  .text.Compress_Diagonal
-                0x0800c176      0x562 build/Maze.o
-                0x0800c176                Compress_Diagonal
+                0x0800c4fa      0x562 build/Maze.o
+                0x0800c4fa                Compress_Diagonal
  .text.Maze_Compress
-                0x0800c6d8      0x52a build/Maze.o
-                0x0800c6d8                Maze_Compress
+                0x0800ca5c      0x52a build/Maze.o
+                0x0800ca5c                Maze_Compress
+ *fill*         0x0800cf86        0x2 
+ .text.Maze_UnknownStepAccel
+                0x0800cf88       0x18 build/Maze.o
+                0x0800cf88                Maze_UnknownStepAccel
+ .text.Maze_GetAfterNextMotion
+                0x0800cfa0        0xc build/Maze.o
+                0x0800cfa0                Maze_GetAfterNextMotion
  .text.Flash_Erase
-                0x0800cc02       0x26 build/flash.o
-                0x0800cc02                Flash_Erase
+                0x0800cfac       0x26 build/flash.o
+                0x0800cfac                Flash_Erase
  .text.Flash_Write
-                0x0800cc28       0x2e build/flash.o
-                0x0800cc28                Flash_Write
+                0x0800cfd2       0x2e build/flash.o
+                0x0800cfd2                Flash_Write
  .text.Flash_Load
-                0x0800cc56        0xe build/flash.o
-                0x0800cc56                Flash_Load
+                0x0800d000        0xe build/flash.o
+                0x0800d000                Flash_Load
+ *fill*         0x0800d00e        0x2 
  .text.Reset_Handler
-                0x0800cc64       0x50 build/startup_stm32f405xx.o
-                0x0800cc64                Reset_Handler
+                0x0800d010       0x50 build/startup_stm32f405xx.o
+                0x0800d010                Reset_Handler
  .text.Default_Handler
-                0x0800ccb4        0x2 build/startup_stm32f405xx.o
-                0x0800ccb4                RTC_Alarm_IRQHandler
-                0x0800ccb4                HASH_RNG_IRQHandler
-                0x0800ccb4                EXTI2_IRQHandler
-                0x0800ccb4                TIM8_CC_IRQHandler
-                0x0800ccb4                TIM1_CC_IRQHandler
-                0x0800ccb4                DMA2_Stream5_IRQHandler
-                0x0800ccb4                DMA1_Stream5_IRQHandler
-                0x0800ccb4                PVD_IRQHandler
-                0x0800ccb4                SDIO_IRQHandler
-                0x0800ccb4                TAMP_STAMP_IRQHandler
-                0x0800ccb4                CAN2_RX1_IRQHandler
-                0x0800ccb4                EXTI3_IRQHandler
-                0x0800ccb4                TIM8_TRG_COM_TIM14_IRQHandler
-                0x0800ccb4                TIM1_UP_TIM10_IRQHandler
-                0x0800ccb4                TIM8_UP_TIM13_IRQHandler
-                0x0800ccb4                I2C3_ER_IRQHandler
-                0x0800ccb4                EXTI0_IRQHandler
-                0x0800ccb4                I2C2_EV_IRQHandler
-                0x0800ccb4                DMA1_Stream2_IRQHandler
-                0x0800ccb4                CAN1_RX0_IRQHandler
-                0x0800ccb4                FPU_IRQHandler
-                0x0800ccb4                OTG_HS_WKUP_IRQHandler
-                0x0800ccb4                CAN2_SCE_IRQHandler
-                0x0800ccb4                SPI1_IRQHandler
-                0x0800ccb4                TIM6_DAC_IRQHandler
-                0x0800ccb4                TIM1_BRK_TIM9_IRQHandler
-                0x0800ccb4                CAN2_RX0_IRQHandler
-                0x0800ccb4                DMA2_Stream3_IRQHandler
-                0x0800ccb4                USART6_IRQHandler
-                0x0800ccb4                USART3_IRQHandler
-                0x0800ccb4                CAN1_RX1_IRQHandler
-                0x0800ccb4                UART5_IRQHandler
-                0x0800ccb4                DMA2_Stream0_IRQHandler
-                0x0800ccb4                TIM4_IRQHandler
-                0x0800ccb4                I2C1_EV_IRQHandler
-                0x0800ccb4                DMA1_Stream6_IRQHandler
-                0x0800ccb4                DMA1_Stream1_IRQHandler
-                0x0800ccb4                UART4_IRQHandler
-                0x0800ccb4                TIM3_IRQHandler
-                0x0800ccb4                RCC_IRQHandler
-                0x0800ccb4                TIM8_BRK_TIM12_IRQHandler
-                0x0800ccb4                Default_Handler
-                0x0800ccb4                EXTI15_10_IRQHandler
-                0x0800ccb4                ADC_IRQHandler
-                0x0800ccb4                DMA1_Stream7_IRQHandler
-                0x0800ccb4                TIM7_IRQHandler
-                0x0800ccb4                CAN2_TX_IRQHandler
-                0x0800ccb4                TIM5_IRQHandler
-                0x0800ccb4                DMA2_Stream7_IRQHandler
-                0x0800ccb4                I2C3_EV_IRQHandler
-                0x0800ccb4                EXTI9_5_IRQHandler
-                0x0800ccb4                RTC_WKUP_IRQHandler
-                0x0800ccb4                SPI2_IRQHandler
-                0x0800ccb4                OTG_HS_EP1_IN_IRQHandler
-                0x0800ccb4                DMA1_Stream0_IRQHandler
-                0x0800ccb4                CAN1_TX_IRQHandler
-                0x0800ccb4                EXTI4_IRQHandler
-                0x0800ccb4                FSMC_IRQHandler
-                0x0800ccb4                OTG_HS_EP1_OUT_IRQHandler
-                0x0800ccb4                WWDG_IRQHandler
-                0x0800ccb4                TIM2_IRQHandler
-                0x0800ccb4                OTG_FS_WKUP_IRQHandler
-                0x0800ccb4                TIM1_TRG_COM_TIM11_IRQHandler
-                0x0800ccb4                OTG_HS_IRQHandler
-                0x0800ccb4                EXTI1_IRQHandler
-                0x0800ccb4                USART2_IRQHandler
-                0x0800ccb4                I2C2_ER_IRQHandler
-                0x0800ccb4                DMA2_Stream1_IRQHandler
-                0x0800ccb4                CAN1_SCE_IRQHandler
-                0x0800ccb4                FLASH_IRQHandler
-                0x0800ccb4                DMA2_Stream4_IRQHandler
-                0x0800ccb4                USART1_IRQHandler
-                0x0800ccb4                OTG_FS_IRQHandler
-                0x0800ccb4                SPI3_IRQHandler
-                0x0800ccb4                DMA1_Stream4_IRQHandler
-                0x0800ccb4                I2C1_ER_IRQHandler
-                0x0800ccb4                DMA2_Stream6_IRQHandler
-                0x0800ccb4                DMA1_Stream3_IRQHandler
- *fill*         0x0800ccb6        0x2 
- .text.__errno  0x0800ccb8        0xc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-errno.o)
-                0x0800ccb8                __errno
+                0x0800d060        0x2 build/startup_stm32f405xx.o
+                0x0800d060                RTC_Alarm_IRQHandler
+                0x0800d060                HASH_RNG_IRQHandler
+                0x0800d060                EXTI2_IRQHandler
+                0x0800d060                TIM8_CC_IRQHandler
+                0x0800d060                TIM1_CC_IRQHandler
+                0x0800d060                DMA2_Stream5_IRQHandler
+                0x0800d060                DMA1_Stream5_IRQHandler
+                0x0800d060                PVD_IRQHandler
+                0x0800d060                SDIO_IRQHandler
+                0x0800d060                TAMP_STAMP_IRQHandler
+                0x0800d060                CAN2_RX1_IRQHandler
+                0x0800d060                EXTI3_IRQHandler
+                0x0800d060                TIM8_TRG_COM_TIM14_IRQHandler
+                0x0800d060                TIM1_UP_TIM10_IRQHandler
+                0x0800d060                TIM8_UP_TIM13_IRQHandler
+                0x0800d060                I2C3_ER_IRQHandler
+                0x0800d060                EXTI0_IRQHandler
+                0x0800d060                I2C2_EV_IRQHandler
+                0x0800d060                DMA1_Stream2_IRQHandler
+                0x0800d060                CAN1_RX0_IRQHandler
+                0x0800d060                FPU_IRQHandler
+                0x0800d060                OTG_HS_WKUP_IRQHandler
+                0x0800d060                CAN2_SCE_IRQHandler
+                0x0800d060                SPI1_IRQHandler
+                0x0800d060                TIM6_DAC_IRQHandler
+                0x0800d060                TIM1_BRK_TIM9_IRQHandler
+                0x0800d060                CAN2_RX0_IRQHandler
+                0x0800d060                DMA2_Stream3_IRQHandler
+                0x0800d060                USART6_IRQHandler
+                0x0800d060                USART3_IRQHandler
+                0x0800d060                CAN1_RX1_IRQHandler
+                0x0800d060                UART5_IRQHandler
+                0x0800d060                DMA2_Stream0_IRQHandler
+                0x0800d060                TIM4_IRQHandler
+                0x0800d060                I2C1_EV_IRQHandler
+                0x0800d060                DMA1_Stream6_IRQHandler
+                0x0800d060                DMA1_Stream1_IRQHandler
+                0x0800d060                UART4_IRQHandler
+                0x0800d060                TIM3_IRQHandler
+                0x0800d060                RCC_IRQHandler
+                0x0800d060                TIM8_BRK_TIM12_IRQHandler
+                0x0800d060                Default_Handler
+                0x0800d060                EXTI15_10_IRQHandler
+                0x0800d060                ADC_IRQHandler
+                0x0800d060                DMA1_Stream7_IRQHandler
+                0x0800d060                TIM7_IRQHandler
+                0x0800d060                CAN2_TX_IRQHandler
+                0x0800d060                TIM5_IRQHandler
+                0x0800d060                DMA2_Stream7_IRQHandler
+                0x0800d060                I2C3_EV_IRQHandler
+                0x0800d060                EXTI9_5_IRQHandler
+                0x0800d060                RTC_WKUP_IRQHandler
+                0x0800d060                SPI2_IRQHandler
+                0x0800d060                OTG_HS_EP1_IN_IRQHandler
+                0x0800d060                DMA1_Stream0_IRQHandler
+                0x0800d060                CAN1_TX_IRQHandler
+                0x0800d060                EXTI4_IRQHandler
+                0x0800d060                FSMC_IRQHandler
+                0x0800d060                OTG_HS_EP1_OUT_IRQHandler
+                0x0800d060                WWDG_IRQHandler
+                0x0800d060                TIM2_IRQHandler
+                0x0800d060                OTG_FS_WKUP_IRQHandler
+                0x0800d060                TIM1_TRG_COM_TIM11_IRQHandler
+                0x0800d060                OTG_HS_IRQHandler
+                0x0800d060                EXTI1_IRQHandler
+                0x0800d060                USART2_IRQHandler
+                0x0800d060                I2C2_ER_IRQHandler
+                0x0800d060                DMA2_Stream1_IRQHandler
+                0x0800d060                CAN1_SCE_IRQHandler
+                0x0800d060                FLASH_IRQHandler
+                0x0800d060                DMA2_Stream4_IRQHandler
+                0x0800d060                USART1_IRQHandler
+                0x0800d060                OTG_FS_IRQHandler
+                0x0800d060                SPI3_IRQHandler
+                0x0800d060                DMA1_Stream4_IRQHandler
+                0x0800d060                I2C1_ER_IRQHandler
+                0x0800d060                DMA2_Stream6_IRQHandler
+                0x0800d060                DMA1_Stream3_IRQHandler
+ *fill*         0x0800d062        0x2 
+ .text.__errno  0x0800d064        0xc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-errno.o)
+                0x0800d064                __errno
  .text.__libc_init_array
-                0x0800ccc4       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-init.o)
-                0x0800ccc4                __libc_init_array
- .text.memcpy   0x0800cd0c       0x16 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memcpy-stub.o)
-                0x0800cd0c                memcpy
- .text.memset   0x0800cd22       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memset.o)
-                0x0800cd22                memset
- .text.__cvt    0x0800cd32       0xc2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
-                0x0800cd32                __cvt
+                0x0800d070       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-init.o)
+                0x0800d070                __libc_init_array
+ .text.memcpy   0x0800d0b8       0x16 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memcpy-stub.o)
+                0x0800d0b8                memcpy
+ .text.memset   0x0800d0ce       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memset.o)
+                0x0800d0ce                memset
+ .text.__cvt    0x0800d0de       0xc2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
+                0x0800d0de                __cvt
  .text.__exponent
-                0x0800cdf4       0x66 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
-                0x0800cdf4                __exponent
- *fill*         0x0800ce5a        0x2 
+                0x0800d1a0       0x66 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
+                0x0800d1a0                __exponent
+ *fill*         0x0800d206        0x2 
  .text._printf_float
-                0x0800ce5c      0x480 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
-                0x0800ce5c                _printf_float
+                0x0800d208      0x480 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
+                0x0800d208                _printf_float
  .text._printf_common
-                0x0800d2dc       0xea c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
-                0x0800d2dc                _printf_common
- *fill*         0x0800d3c6        0x2 
+                0x0800d688       0xea c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
+                0x0800d688                _printf_common
+ *fill*         0x0800d772        0x2 
  .text._printf_i
-                0x0800d3c8      0x224 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
-                0x0800d3c8                _printf_i
- .text.printf   0x0800d5ec       0x30 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-printf.o)
-                0x0800d5ec                iprintf
-                0x0800d5ec                printf
- .text.putchar  0x0800d61c       0x28 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putchar.o)
-                0x0800d61c                putchar
- .text._puts_r  0x0800d644       0xb8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-puts.o)
-                0x0800d644                _puts_r
- .text.puts     0x0800d6fc       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-puts.o)
-                0x0800d6fc                puts
- .text.setbuf   0x0800d70c       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setbuf.o)
-                0x0800d70c                setbuf
- .text.setvbuf  0x0800d71c      0x15c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setvbuf.o)
-                0x0800d71c                setvbuf
+                0x0800d774      0x224 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
+                0x0800d774                _printf_i
+ .text.printf   0x0800d998       0x30 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-printf.o)
+                0x0800d998                iprintf
+                0x0800d998                printf
+ .text.putchar  0x0800d9c8       0x28 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putchar.o)
+                0x0800d9c8                putchar
+ .text._puts_r  0x0800d9f0       0xb8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-puts.o)
+                0x0800d9f0                _puts_r
+ .text.puts     0x0800daa8       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-puts.o)
+                0x0800daa8                puts
+ .text.setbuf   0x0800dab8       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setbuf.o)
+                0x0800dab8                setbuf
+ .text.setvbuf  0x0800dac8      0x15c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setvbuf.o)
+                0x0800dac8                setvbuf
  .text.__swbuf_r
-                0x0800d878       0xa4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wbuf.o)
-                0x0800d878                __swbuf_r
+                0x0800dc24       0xa4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wbuf.o)
+                0x0800dc24                __swbuf_r
  .text.__swsetup_r
-                0x0800d91c       0xdc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wsetup.o)
-                0x0800d91c                __swsetup_r
- .text.quorem   0x0800d9f8      0x118 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
- .text._dtoa_r  0x0800db10      0xb70 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
-                0x0800db10                _dtoa_r
+                0x0800dcc8       0xdc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wsetup.o)
+                0x0800dcc8                __swsetup_r
+ .text.quorem   0x0800dda4      0x118 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
+ *fill*         0x0800debc        0x4 
+ .text._dtoa_r  0x0800dec0      0xb70 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
+                0x0800dec0                _dtoa_r
  .text.__sflush_r
-                0x0800e680      0x10c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fflush.o)
-                0x0800e680                __sflush_r
+                0x0800ea30      0x10c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fflush.o)
+                0x0800ea30                __sflush_r
  .text._fflush_r
-                0x0800e78c       0x54 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fflush.o)
-                0x0800e78c                _fflush_r
- .text.std      0x0800e7e0       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800eb3c       0x54 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fflush.o)
+                0x0800eb3c                _fflush_r
+ .text.std      0x0800eb90       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
  .text._cleanup_r
-                0x0800e828        0xc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0800e828                _cleanup_r
+                0x0800ebd8        0xc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800ebd8                _cleanup_r
  .text.__sfmoreglue
-                0x0800e834       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0800e834                __sfmoreglue
- .text.__sinit  0x0800e860       0x60 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0800e860                __sinit
- .text.__sfp    0x0800e8c0       0x78 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0800e8c0                __sfp
+                0x0800ebe4       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800ebe4                __sfmoreglue
+ .text.__sinit  0x0800ec10       0x60 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800ec10                __sinit
+ .text.__sfp    0x0800ec70       0x78 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800ec70                __sfp
  .text._fwalk_reent
-                0x0800e938       0x3c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fwalk.o)
-                0x0800e938                _fwalk_reent
+                0x0800ece8       0x3c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fwalk.o)
+                0x0800ece8                _fwalk_reent
  .text._localeconv_r
-                0x0800e974       0x1c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-localeconv.o)
-                0x0800e974                _localeconv_r
+                0x0800ed24       0x1c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-localeconv.o)
+                0x0800ed24                _localeconv_r
  .text.__swhatbuf_r
-                0x0800e990       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-makebuf.o)
-                0x0800e990                __swhatbuf_r
+                0x0800ed40       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-makebuf.o)
+                0x0800ed40                __swhatbuf_r
  .text.__smakebuf_r
-                0x0800e9d8       0x80 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-makebuf.o)
-                0x0800e9d8                __smakebuf_r
- .text.malloc   0x0800ea58       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-malloc.o)
-                0x0800ea58                malloc
- .text._Balloc  0x0800ea68       0x68 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ea68                _Balloc
- .text._Bfree   0x0800ead0       0x2e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ead0                _Bfree
+                0x0800ed88       0x80 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-makebuf.o)
+                0x0800ed88                __smakebuf_r
+ .text.malloc   0x0800ee08       0x10 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-malloc.o)
+                0x0800ee08                malloc
+ .text._Balloc  0x0800ee18       0x68 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800ee18                _Balloc
+ .text._Bfree   0x0800ee80       0x2e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800ee80                _Bfree
  .text.__multadd
-                0x0800eafe       0x76 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800eafe                __multadd
+                0x0800eeae       0x76 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800eeae                __multadd
  .text.__hi0bits
-                0x0800eb74       0x3e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800eb74                __hi0bits
+                0x0800ef24       0x3e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800ef24                __hi0bits
  .text.__lo0bits
-                0x0800ebb2       0x5e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ebb2                __lo0bits
- .text.__i2b    0x0800ec10       0x12 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ec10                __i2b
+                0x0800ef62       0x5e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800ef62                __lo0bits
+ .text.__i2b    0x0800efc0       0x12 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800efc0                __i2b
  .text.__multiply
-                0x0800ec22      0x12c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ec22                __multiply
- *fill*         0x0800ed4e        0x2 
+                0x0800efd2      0x12c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800efd2                __multiply
+ *fill*         0x0800f0fe        0x2 
  .text.__pow5mult
-                0x0800ed50       0x9c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ed50                __pow5mult
+                0x0800f100       0x9c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800f100                __pow5mult
  .text.__lshift
-                0x0800edec       0xa8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800edec                __lshift
- .text.__mcmp   0x0800ee94       0x34 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ee94                __mcmp
- .text.__mdiff  0x0800eec8       0xba c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800eec8                __mdiff
- .text.__d2b    0x0800ef82       0x9e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800ef82                __d2b
+                0x0800f19c       0xa8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800f19c                __lshift
+ .text.__mcmp   0x0800f244       0x34 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800f244                __mcmp
+ .text.__mdiff  0x0800f278       0xba c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800f278                __mdiff
+ .text.__d2b    0x0800f332       0x9e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800f332                __d2b
  .text._calloc_r
-                0x0800f020       0x1c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-callocr.o)
-                0x0800f020                _calloc_r
- .text._free_r  0x0800f03c       0x9c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-freer.o)
-                0x0800f03c                _free_r
+                0x0800f3d0       0x1c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-callocr.o)
+                0x0800f3d0                _calloc_r
+ .text._free_r  0x0800f3ec       0x9c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-freer.o)
+                0x0800f3ec                _free_r
  .text._malloc_r
-                0x0800f0d8       0xb4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
-                0x0800f0d8                _malloc_r
+                0x0800f488       0xb4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+                0x0800f488                _malloc_r
  .text.__sfputc_r
-                0x0800f18c       0x2e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
+                0x0800f53c       0x2e c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
  .text.__sfputs_r
-                0x0800f1ba       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
-                0x0800f1ba                __sfputs_r
- *fill*         0x0800f1de        0x2 
+                0x0800f56a       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
+                0x0800f56a                __sfputs_r
+ *fill*         0x0800f58e        0x2 
  .text._vfprintf_r
-                0x0800f1e0      0x228 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
-                0x0800f1e0                _vfprintf_r
-                0x0800f1e0                _vfiprintf_r
- .text._putc_r  0x0800f408       0x6c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putc.o)
-                0x0800f408                _putc_r
- .text._sbrk_r  0x0800f474       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-sbrkr.o)
-                0x0800f474                _sbrk_r
- .text.__sread  0x0800f494       0x22 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
-                0x0800f494                __sread
+                0x0800f590      0x228 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
+                0x0800f590                _vfprintf_r
+                0x0800f590                _vfiprintf_r
+ .text._putc_r  0x0800f7b8       0x6c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putc.o)
+                0x0800f7b8                _putc_r
+ .text._sbrk_r  0x0800f824       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-sbrkr.o)
+                0x0800f824                _sbrk_r
+ .text.__sread  0x0800f844       0x22 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
+                0x0800f844                __sread
  .text.__swrite
-                0x0800f4b6       0x38 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
-                0x0800f4b6                __swrite
- .text.__sseek  0x0800f4ee       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
-                0x0800f4ee                __sseek
+                0x0800f866       0x38 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
+                0x0800f866                __swrite
+ .text.__sseek  0x0800f89e       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
+                0x0800f89e                __sseek
  .text.__sclose
-                0x0800f512        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
-                0x0800f512                __sclose
- *fill*         0x0800f51a        0x2 
+                0x0800f8c2        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
+                0x0800f8c2                __sclose
+ *fill*         0x0800f8ca        0x2 
  .text._write_r
-                0x0800f51c       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-writer.o)
-                0x0800f51c                _write_r
+                0x0800f8cc       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-writer.o)
+                0x0800f8cc                _write_r
  .text._close_r
-                0x0800f540       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-closer.o)
-                0x0800f540                _close_r
+                0x0800f8f0       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-closer.o)
+                0x0800f8f0                _close_r
  .text._fstat_r
-                0x0800f560       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fstatr.o)
-                0x0800f560                _fstat_r
+                0x0800f910       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fstatr.o)
+                0x0800f910                _fstat_r
  .text._isatty_r
-                0x0800f584       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-isattyr.o)
-                0x0800f584                _isatty_r
+                0x0800f934       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-isattyr.o)
+                0x0800f934                _isatty_r
  .text._lseek_r
-                0x0800f5a4       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-lseekr.o)
-                0x0800f5a4                _lseek_r
+                0x0800f954       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-lseekr.o)
+                0x0800f954                _lseek_r
  .text.__ascii_mbtowc
-                0x0800f5c8       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mbtowc_r.o)
-                0x0800f5c8                __ascii_mbtowc
+                0x0800f978       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mbtowc_r.o)
+                0x0800f978                __ascii_mbtowc
  .text.__malloc_lock
-                0x0800f5ec        0x2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mlock.o)
-                0x0800f5ec                __malloc_lock
+                0x0800f99c        0x2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mlock.o)
+                0x0800f99c                __malloc_lock
  .text.__malloc_unlock
-                0x0800f5ee        0x2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mlock.o)
-                0x0800f5ee                __malloc_unlock
- .text._read_r  0x0800f5f0       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-readr.o)
-                0x0800f5f0                _read_r
+                0x0800f99e        0x2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mlock.o)
+                0x0800f99e                __malloc_unlock
+ .text._read_r  0x0800f9a0       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-readr.o)
+                0x0800f9a0                _read_r
  .text.__ascii_wctomb
-                0x0800f614       0x1a c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wctomb_r.o)
-                0x0800f614                __ascii_wctomb
+                0x0800f9c4       0x1a c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wctomb_r.o)
+                0x0800f9c4                __ascii_wctomb
  *(.glue_7)
- .glue_7        0x0800f62e        0x0 linker stubs
+ .glue_7        0x0800f9de        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x0800f62e        0x0 linker stubs
+ .glue_7t       0x0800f9de        0x0 linker stubs
  *(.eh_frame)
- *fill*         0x0800f62e        0x2 
- .eh_frame      0x0800f630        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
+ *fill*         0x0800f9de        0x2 
+ .eh_frame      0x0800f9e0        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
  *(.init)
- .init          0x0800f630        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crti.o
-                0x0800f630                _init
- .init          0x0800f634        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
+ .init          0x0800f9e0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crti.o
+                0x0800f9e0                _init
+ .init          0x0800f9e4        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
  *(.fini)
- .fini          0x0800f63c        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crti.o
-                0x0800f63c                _fini
- .fini          0x0800f640        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
-                0x0800f648                . = ALIGN (0x4)
-                0x0800f648                _etext = .
+ .fini          0x0800f9ec        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crti.o
+                0x0800f9ec                _fini
+ .fini          0x0800f9f0        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
+                0x0800f9f8                . = ALIGN (0x4)
+                0x0800f9f8                _etext = .
 
-.vfp11_veneer   0x0800f648        0x0
- .vfp11_veneer  0x0800f648        0x0 linker stubs
+.vfp11_veneer   0x0800f9f8        0x0
+ .vfp11_veneer  0x0800f9f8        0x0 linker stubs
 
-.v4_bx          0x0800f648        0x0
- .v4_bx         0x0800f648        0x0 linker stubs
+.v4_bx          0x0800f9f8        0x0
+ .v4_bx         0x0800f9f8        0x0 linker stubs
 
-.iplt           0x0800f648        0x0
- .iplt          0x0800f648        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
+.iplt           0x0800f9f8        0x0
+ .iplt          0x0800f9f8        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
 
-.rodata         0x0800f648      0x360
-                0x0800f648                . = ALIGN (0x4)
+.rodata         0x0800f9f8      0x380
+                0x0800f9f8                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
  .rodata.MX_TIM1_Init.str1.4
-                0x0800f648        0xa build/tim.o
- *fill*         0x0800f652        0x2 
+                0x0800f9f8        0xa build/tim.o
+ *fill*         0x0800fa02        0x2 
  .rodata.MX_ADC1_Init.str1.4
-                0x0800f654        0xa build/adc.o
- *fill*         0x0800f65e        0x2 
+                0x0800fa04        0xa build/adc.o
+ *fill*         0x0800fa0e        0x2 
  .rodata.MX_USART3_UART_Init.str1.4
-                0x0800f660        0xc build/usart.o
+                0x0800fa10        0xc build/usart.o
  .rodata.flagBitshiftOffset.9184
-                0x0800f66c        0x8 build/stm32f4xx_hal_dma.o
+                0x0800fa1c        0x8 build/stm32f4xx_hal_dma.o
  .rodata.Init_Main.str1.4
-                0x0800f674        0xa build/main.o
- *fill*         0x0800f67e        0x2 
+                0x0800fa24        0xa build/main.o
+ *fill*         0x0800fa2e        0x2 
  .rodata.SystemClock_Config.str1.4
-                0x0800f680        0xb build/main.o
- *fill*         0x0800f68b        0x1 
+                0x0800fa30        0xb build/main.o
+ *fill*         0x0800fa3b        0x1 
  .rodata.MX_SPI1_Init.str1.4
-                0x0800f68c        0xa build/spi.o
- *fill*         0x0800f696        0x2 
+                0x0800fa3c        0xa build/spi.o
+ *fill*         0x0800fa46        0x2 
  .rodata.Spi_SetGyro.str1.4
-                0x0800f698        0xe build/spi.o
- *fill*         0x0800f6a6        0x2 
+                0x0800fa48        0xe build/spi.o
+ *fill*         0x0800fa56        0x2 
  .rodata.AHBPrescTable
-                0x0800f6a8       0x10 build/system_stm32f4xx.o
-                0x0800f6a8                AHBPrescTable
+                0x0800fa58       0x10 build/system_stm32f4xx.o
+                0x0800fa58                AHBPrescTable
  .rodata.APBPrescTable
-                0x0800f6b8        0x8 build/system_stm32f4xx.o
-                0x0800f6b8                APBPrescTable
+                0x0800fa68        0x8 build/system_stm32f4xx.o
+                0x0800fa68                APBPrescTable
  .rodata.Mode_Select.str1.4
-                0x0800f6c0        0x4 build/mode.o
+                0x0800fa70        0x4 build/mode.o
  .rodata.PrintOutPut.str1.4
-                0x0800f6c4        0xe build/mode.o
- *fill*         0x0800f6d2        0x2 
+                0x0800fa74        0xe build/mode.o
+ *fill*         0x0800fa82        0x2 
  .rodata.PrintWallData.str1.4
-                0x0800f6d4        0xc build/mode.o
+                0x0800fa84        0xc build/mode.o
                                  0x10 (size before relaxing)
+ .rodata.SensorCheck.str1.4
+                0x0800fa90       0x20 build/mode.o
+                                 0x1e (size before relaxing)
  .rodata.start_address
-                0x0800f6e0        0x4 build/flash.o
-                0x0800f6e0                start_address
+                0x0800fab0        0x4 build/flash.o
+                0x0800fab0                start_address
  .rodata._global_impure_ptr
-                0x0800f6e4        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-impure.o)
-                0x0800f6e4                _global_impure_ptr
+                0x0800fab4        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-impure.o)
+                0x0800fab4                _global_impure_ptr
  .rodata._printf_float.str1.1
-                0x0800f6e8       0x12 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
+                0x0800fab8       0x12 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
  .rodata._printf_i.str1.1
-                0x0800f6fa       0x22 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
+                0x0800faca       0x22 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
  .rodata._dtoa_r.str1.1
-                0x0800f71c        0xd c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
+                0x0800faec        0xd c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
                                   0xf (size before relaxing)
- *fill*         0x0800f729        0x3 
+ *fill*         0x0800faf9        0x3 
  .rodata.__sf_fake_stderr
-                0x0800f72c       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0800f72c                __sf_fake_stderr
+                0x0800fafc       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800fafc                __sf_fake_stderr
  .rodata.__sf_fake_stdin
-                0x0800f74c       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0800f74c                __sf_fake_stdin
+                0x0800fb1c       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800fb1c                __sf_fake_stdin
  .rodata.__sf_fake_stdout
-                0x0800f76c       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0800f76c                __sf_fake_stdout
- *fill*         0x0800f78c        0x4 
+                0x0800fb3c       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0800fb3c                __sf_fake_stdout
+ *fill*         0x0800fb5c        0x4 
  .rodata.__mprec_bigtens
-                0x0800f790       0x28 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800f790                __mprec_bigtens
+                0x0800fb60       0x28 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800fb60                __mprec_bigtens
  .rodata.__mprec_tens
-                0x0800f7b8       0xc8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0800f7b8                __mprec_tens
+                0x0800fb88       0xc8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800fb88                __mprec_tens
  .rodata.p05.7359
-                0x0800f880        0xc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0800fc50        0xc c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
  .rodata._vfprintf_r.str1.1
-                0x0800f88c       0x11 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
+                0x0800fc5c       0x11 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
  .rodata._setlocale_r.str1.1
-                0x0800f89d        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
+                0x0800fc6d        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
                                   0x9 (size before relaxing)
  .rodata.str1.1
-                0x0800f8a5        0x2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
+                0x0800fc75        0x2 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
  .rodata._ctype_
-                0x0800f8a7      0x101 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-ctype_.o)
-                0x0800f8a7                _ctype_
-                0x0800f9a8                . = ALIGN (0x4)
+                0x0800fc77      0x101 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-ctype_.o)
+                0x0800fc77                _ctype_
+                0x0800fd78                . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x0800f9a8        0x8
-                0x0800f9a8                __exidx_start = .
+.ARM            0x0800fd78        0x8
+                0x0800fd78                __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x0800f9a8        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_udivmoddi4.o)
-                0x0800f9b0                __exidx_end = .
+ .ARM.exidx     0x0800fd78        0x8 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_udivmoddi4.o)
+                0x0800fd80                __exidx_end = .
 
-.rel.dyn        0x0800f9b0        0x0
- .rel.iplt      0x0800f9b0        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
+.rel.dyn        0x0800fd80        0x0
+ .rel.iplt      0x0800fd80        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
 
-.preinit_array  0x0800f9b0        0x0
-                0x0800f9b0                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x0800fd80        0x0
+                0x0800fd80                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x0800f9b0                PROVIDE (__preinit_array_end, .)
+                0x0800fd80                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x0800f9b0        0x4
-                0x0800f9b0                PROVIDE (__init_array_start, .)
+.init_array     0x0800fd80        0x4
+                0x0800fd80                PROVIDE (__init_array_start, .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x0800f9b0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
-                0x0800f9b4                PROVIDE (__init_array_end, .)
+ .init_array    0x0800fd80        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
+                0x0800fd84                PROVIDE (__init_array_end, .)
 
-.fini_array     0x0800f9b4        0x4
+.fini_array     0x0800fd84        0x4
                 [!provide]                PROVIDE (__fini_array_start, .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0800f9b4        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
+ .fini_array    0x0800fd84        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
                 [!provide]                PROVIDE (__fini_array_end, .)
-                0x0800f9b8                _sidata = LOADADDR (.data)
+                0x0800fd88                _sidata = LOADADDR (.data)
 
-.data           0x20000000      0x244 load address 0x0800f9b8
+.data           0x20000000      0x290 load address 0x0800fd88
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -2727,36 +2741,48 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gc
  .data.walledge_search
                 0x20000044       0x18 build/mode.o
                 0x20000044                walledge_search
- .data.ang_d    0x2000005c        0x4 build/control.o
-                0x2000005c                ang_d
- .data.ang_i    0x20000060        0x4 build/control.o
-                0x20000060                ang_i
- .data.ang_p    0x20000064        0x4 build/control.o
-                0x20000064                ang_p
- .data.str_i    0x20000068        0x4 build/control.o
-                0x20000068                str_i
- .data.str_p    0x2000006c        0x4 build/control.o
-                0x2000006c                str_p
+ .data.velocity_now
+                0x2000005c        0x4 build/motion.o
+                0x2000005c                velocity_now
+ .data.walledge600
+                0x20000060       0x18 build/motion.o
+                0x20000060                walledge600
+ .data.walledge800
+                0x20000078       0x18 build/motion.o
+                0x20000078                walledge800
+ .data.walledgeRestart
+                0x20000090       0x18 build/motion.o
+                0x20000090                walledgeRestart
+ .data.ang_d    0x200000a8        0x4 build/control.o
+                0x200000a8                ang_d
+ .data.ang_i    0x200000ac        0x4 build/control.o
+                0x200000ac                ang_i
+ .data.ang_p    0x200000b0        0x4 build/control.o
+                0x200000b0                ang_p
+ .data.str_i    0x200000b4        0x4 build/control.o
+                0x200000b4                str_i
+ .data.str_p    0x200000b8        0x4 build/control.o
+                0x200000b8                str_p
  .data.goal_size
-                0x20000070        0x1 build/Maze.o
-                0x20000070                goal_size
- *fill*         0x20000071        0x3 
+                0x200000bc        0x1 build/Maze.o
+                0x200000bc                goal_size
+ *fill*         0x200000bd        0x3 
  .data._impure_ptr
-                0x20000074        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-impure.o)
-                0x20000074                _impure_ptr
+                0x200000c0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-impure.o)
+                0x200000c0                _impure_ptr
  .data.impure_data
-                0x20000078       0x60 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-impure.o)
+                0x200000c4       0x60 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-impure.o)
  .data.__global_locale
-                0x200000d8      0x16c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
-                0x200000d8                __global_locale
-                0x20000244                . = ALIGN (0x4)
-                0x20000244                _edata = .
-                0x0800fbfc                _siccmram = LOADADDR (.ccmram)
+                0x20000124      0x16c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
+                0x20000124                __global_locale
+                0x20000290                . = ALIGN (0x4)
+                0x20000290                _edata = .
+                0x08010018                _siccmram = LOADADDR (.ccmram)
 
-.igot.plt       0x20000244        0x0 load address 0x0800fbfc
- .igot.plt      0x20000244        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
+.igot.plt       0x20000290        0x0 load address 0x08010018
+ .igot.plt      0x20000290        0x0 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
 
-.ccmram         0x10000000        0x0 load address 0x0800fbfc
+.ccmram         0x10000000        0x0 load address 0x08010018
                 0x10000000                . = ALIGN (0x4)
                 0x10000000                _sccmram = .
  *(.ccmram)
@@ -2765,133 +2791,134 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gc
                 0x10000000                _eccmram = .
                 0x10000000                . = ALIGN (0x4)
 
-.bss            0x20000244     0xa650
-                0x20000244                _sbss = .
-                0x20000244                __bss_start__ = _sbss
+.bss            0x20000290     0xa654
+                0x20000290                _sbss = .
+                0x20000290                __bss_start__ = _sbss
  *(.bss)
- .bss           0x20000244       0x1c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
+ .bss           0x20000290       0x1c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
  *(.bss*)
  .bss.heap_end.7234
-                0x20000260        0x4 build/syscalls.o
- .bss.gy        0x20000264        0x1 build/mode.o
-                0x20000264                gy
- *fill*         0x20000265        0x3 
+                0x200002ac        0x4 build/syscalls.o
+ .bss.gy        0x200002b0        0x1 build/mode.o
+                0x200002b0                gy
+ *fill*         0x200002b1        0x3 
  .bss.diagonal_step
-                0x20000268        0x4 build/motion.o
-                0x20000268                diagonal_step
+                0x200002b4        0x4 build/motion.o
+                0x200002b4                diagonal_step
  .bss.gain_velo
-                0x2000026c        0x4 build/motion.o
-                0x2000026c                gain_velo
+                0x200002b8        0x4 build/motion.o
+                0x200002b8                gain_velo
  .bss.prefront_flag
-                0x20000270        0x2 build/motion.o
-                0x20000270                prefront_flag
- .bss.add_l     0x20000272        0x1 build/control.o
-                0x20000272                add_l
- .bss.add_r     0x20000273        0x1 build/control.o
-                0x20000273                add_r
+                0x200002bc        0x2 build/motion.o
+                0x200002bc                prefront_flag
+ .bss.add_l     0x200002be        0x1 build/control.o
+                0x200002be                add_l
+ .bss.add_r     0x200002bf        0x1 build/control.o
+                0x200002bf                add_r
  .bss.ang_idial
-                0x20000274        0x4 build/control.o
-                0x20000274                ang_idial
+                0x200002c0        0x4 build/control.o
+                0x200002c0                ang_idial
  .bss.counter_ms
-                0x20000278        0x2 build/control.o
-                0x20000278                counter_ms
- *fill*         0x2000027a        0x2 
+                0x200002c4        0x2 build/control.o
+                0x200002c4                counter_ms
+ *fill*         0x200002c6        0x2 
  .bss.dist_idial
-                0x2000027c        0x4 build/control.o
-                0x2000027c                dist_idial
+                0x200002c8        0x4 build/control.o
+                0x200002c8                dist_idial
  .bss.front_wall_diff
-                0x20000280        0x4 build/control.o
-                0x20000280                front_wall_diff
- .bss.str_d     0x20000284        0x4 build/control.o
-                0x20000284                str_d
- .bss.wall_dif  0x20000288        0x4 build/control.o
-                0x20000288                wall_dif
+                0x200002cc        0x4 build/control.o
+                0x200002cc                front_wall_diff
+ .bss.str_d     0x200002d0        0x4 build/control.o
+                0x200002d0                str_d
+ .bss.wall_dif  0x200002d4        0x4 build/control.o
+                0x200002d4                wall_dif
  .bss.walledge_side
-                0x2000028c        0x1 build/control.o
-                0x2000028c                walledge_side
- *fill*         0x2000028d        0x3 
+                0x200002d8        0x1 build/control.o
+                0x200002d8                walledge_side
+ *fill*         0x200002d9        0x3 
  .bss.__malloc_free_list
-                0x20000290        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
-                0x20000290                __malloc_free_list
+                0x200002dc        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+                0x200002dc                __malloc_free_list
  .bss.__malloc_sbrk_start
-                0x20000294        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
-                0x20000294                __malloc_sbrk_start
+                0x200002e0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+                0x200002e0                __malloc_sbrk_start
  *(COMMON)
- COMMON         0x20000298      0x120 build/tim.o
-                0x20000298                htim8
-                0x200002d4                sMasterConfig
-                0x200002dc                enc
-                0x200002e8                htim3
-                0x20000324                sConfigOC
-                0x20000340                htim1
-                0x2000037c                htim2
- COMMON         0x200003b8      0x1b2 build/adc.o
-                0x200003b8                ADCOffData
-                0x200003c0                hadc2
-                0x20000408                ADCOntData
-                0x20000410                sen_front_reference_f
-                0x20000414                sen_front
-                0x20000434                sen_l
-                0x20000454                hadc1
-                0x2000049c                cnt_100ms
-                0x200004a0                sen_fr
-                0x200004c0                sen_fl
-                0x200004e0                ADCBuff
-                0x200004e8                sen_r
-                0x20000508                hdma_adc2
-                0x20000568                adc_counter
- *fill*         0x2000056a        0x2 
- COMMON         0x2000056c        0x4 build/stm32f4xx_hal.o
-                0x2000056c                uwTick
- COMMON         0x20000570       0x40 build/usart.o
-                0x20000570                huart3
- COMMON         0x200005b0       0x20 build/stm32f4xx_hal_flash.o
-                0x200005b0                pFlash
- COMMON         0x200005d0       0x84 build/spi.o
-                0x200005d0                flag_gyro_calc
-                0x200005d4                accel
-                0x200005e0                gyro_y
-                0x200005e4                gyro_x
-                0x200005e8                hspi1
-                0x20000640                gyro_z
- COMMON         0x20000654        0x1 build/motion.o
-                0x20000654                motion_end_flag
- *fill*         0x20000655        0x3 
- COMMON         0x20000658     0x9caf build/control.o
-                0x20000658                walledge
-                0x20000670                counter_s
-                0x20000674                straight
-                0x20000690                error_ang_old
-                0x20000694                error_ang_sum
-                0x20000698                error_sum
-                0x2000069c                front_wall_flag
-                0x200006a0                error_old
-                0x200006a4                control_wall_flag
-                0x200006a8                angle
-                0x200006c4                loger
-                0x2000a306                motor_flag
- *fill*         0x2000a307        0x1 
- COMMON         0x2000a308      0x588 build/Maze.o
-                0x2000a308                stepEx_v
-                0x2000a54c                stepEx_h
-                0x2000a790                step
- COMMON         0x2000a890        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-reent.o)
-                0x2000a890                errno
-                0x2000a894                . = ALIGN (0x4)
-                0x2000a894                _ebss = .
-                0x2000a894                __bss_end__ = _ebss
+ COMMON         0x200002e4      0x120 build/tim.o
+                0x200002e4                htim8
+                0x20000320                sMasterConfig
+                0x20000328                enc
+                0x20000334                htim3
+                0x20000370                sConfigOC
+                0x2000038c                htim1
+                0x200003c8                htim2
+ COMMON         0x20000404      0x1b2 build/adc.o
+                0x20000404                ADCOffData
+                0x2000040c                hadc2
+                0x20000454                ADCOntData
+                0x2000045c                sen_front_reference_f
+                0x20000460                sen_front
+                0x20000480                sen_l
+                0x200004a0                hadc1
+                0x200004e8                cnt_100ms
+                0x200004ec                sen_fr
+                0x2000050c                sen_fl
+                0x2000052c                ADCBuff
+                0x20000534                sen_r
+                0x20000554                hdma_adc2
+                0x200005b4                adc_counter
+ *fill*         0x200005b6        0x2 
+ COMMON         0x200005b8        0x4 build/stm32f4xx_hal.o
+                0x200005b8                uwTick
+ COMMON         0x200005bc       0x40 build/usart.o
+                0x200005bc                huart3
+ COMMON         0x200005fc       0x20 build/stm32f4xx_hal_flash.o
+                0x200005fc                pFlash
+ COMMON         0x2000061c       0x84 build/spi.o
+                0x2000061c                flag_gyro_calc
+                0x20000620                accel
+                0x2000062c                gyro_y
+                0x20000630                gyro_x
+                0x20000634                hspi1
+                0x2000068c                gyro_z
+ COMMON         0x200006a0        0x1 build/motion.o
+                0x200006a0                motion_end_flag
+ *fill*         0x200006a1        0x3 
+ COMMON         0x200006a4     0x9caf build/control.o
+                0x200006a4                walledge
+                0x200006bc                counter_s
+                0x200006c0                straight
+                0x200006dc                error_ang_old
+                0x200006e0                error_ang_sum
+                0x200006e4                error_sum
+                0x200006e8                front_wall_flag
+                0x200006ec                error_old
+                0x200006f0                control_wall_flag
+                0x200006f4                angle
+                0x20000710                loger
+                0x2000a352                motor_flag
+ *fill*         0x2000a353        0x1 
+ COMMON         0x2000a354      0x58c build/Maze.o
+                0x2000a354                after_next_motion
+                0x2000a358                stepEx_v
+                0x2000a59c                stepEx_h
+                0x2000a7e0                step
+ COMMON         0x2000a8e0        0x4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-reent.o)
+                0x2000a8e0                errno
+                0x2000a8e4                . = ALIGN (0x4)
+                0x2000a8e4                _ebss = .
+                0x2000a8e4                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000a894      0x604
-                0x2000a898                . = ALIGN (0x8)
- *fill*         0x2000a894        0x4 
-                0x2000a898                PROVIDE (end, .)
+                0x2000a8e4      0x604
+                0x2000a8e8                . = ALIGN (0x8)
+ *fill*         0x2000a8e4        0x4 
+                0x2000a8e8                PROVIDE (end, .)
                 [!provide]                PROVIDE (_end, .)
-                0x2000aa98                . = (. + _Min_Heap_Size)
- *fill*         0x2000a898      0x200 
-                0x2000ae98                . = (. + _Min_Stack_Size)
- *fill*         0x2000aa98      0x400 
-                0x2000ae98                . = ALIGN (0x8)
+                0x2000aae8                . = (. + _Min_Heap_Size)
+ *fill*         0x2000a8e8      0x200 
+                0x2000aee8                . = (. + _Min_Stack_Size)
+ *fill*         0x2000aae8      0x400 
+                0x2000aee8                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -3073,7 +3100,7 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gc
                 0x000010bf       0x22 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
 OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
 
-.debug_info     0x00000000    0x32c9e
+.debug_info     0x00000000    0x3331b
  .debug_info    0x00000000     0x17f4 build/stm32f4xx_hal_adc.o
  .debug_info    0x000017f4     0x1181 build/stm32f4xx_hal_flash_ex.o
  .debug_info    0x00002975     0x220a build/tim.o
@@ -3097,15 +3124,15 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .debug_info    0x0001f5a0      0xe82 build/system_stm32f4xx.o
  .debug_info    0x00020422     0x16d8 build/stm32f4xx_it.o
  .debug_info    0x00021afa     0x114b build/syscalls.o
- .debug_info    0x00022c45     0x47d8 build/mode.o
- .debug_info    0x0002741d     0x6f18 build/motion.o
- .debug_info    0x0002e335     0x21d4 build/control.o
- .debug_info    0x00030509      0x3ac build/Map.o
- .debug_info    0x000308b5     0x178a build/Maze.o
- .debug_info    0x0003203f      0xc3d build/flash.o
- .debug_info    0x00032c7c       0x22 build/startup_stm32f405xx.o
+ .debug_info    0x00022c45     0x4808 build/mode.o
+ .debug_info    0x0002744d     0x74d5 build/motion.o
+ .debug_info    0x0002e922     0x21d4 build/control.o
+ .debug_info    0x00030af6      0x3ac build/Map.o
+ .debug_info    0x00030ea2     0x181a build/Maze.o
+ .debug_info    0x000326bc      0xc3d build/flash.o
+ .debug_info    0x000332f9       0x22 build/startup_stm32f405xx.o
 
-.debug_abbrev   0x00000000     0x51e7
+.debug_abbrev   0x00000000     0x5222
  .debug_abbrev  0x00000000      0x300 build/stm32f4xx_hal_adc.o
  .debug_abbrev  0x00000300      0x315 build/stm32f4xx_hal_flash_ex.o
  .debug_abbrev  0x00000615      0x312 build/tim.o
@@ -3130,14 +3157,14 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .debug_abbrev  0x00003ba8      0x224 build/stm32f4xx_it.o
  .debug_abbrev  0x00003dcc      0x2d3 build/syscalls.o
  .debug_abbrev  0x0000409f      0x32f build/mode.o
- .debug_abbrev  0x000043ce      0x2e6 build/motion.o
- .debug_abbrev  0x000046b4      0x43c build/control.o
- .debug_abbrev  0x00004af0      0x155 build/Map.o
- .debug_abbrev  0x00004c45      0x37b build/Maze.o
- .debug_abbrev  0x00004fc0      0x215 build/flash.o
- .debug_abbrev  0x000051d5       0x12 build/startup_stm32f405xx.o
+ .debug_abbrev  0x000043ce      0x307 build/motion.o
+ .debug_abbrev  0x000046d5      0x43c build/control.o
+ .debug_abbrev  0x00004b11      0x155 build/Map.o
+ .debug_abbrev  0x00004c66      0x395 build/Maze.o
+ .debug_abbrev  0x00004ffb      0x215 build/flash.o
+ .debug_abbrev  0x00005210       0x12 build/startup_stm32f405xx.o
 
-.debug_loc      0x00000000    0x132a4
+.debug_loc      0x00000000    0x13439
  .debug_loc     0x00000000      0xbd0 build/stm32f4xx_hal_adc.o
  .debug_loc     0x00000bd0      0x650 build/stm32f4xx_hal_flash_ex.o
  .debug_loc     0x00001220      0x4cb build/tim.o
@@ -3162,13 +3189,13 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .debug_loc     0x0000d1e9       0x81 build/stm32f4xx_it.o
  .debug_loc     0x0000d26a      0x51b build/syscalls.o
  .debug_loc     0x0000d785     0x11e9 build/mode.o
- .debug_loc     0x0000e96e     0x2017 build/motion.o
- .debug_loc     0x00010985      0x62d build/control.o
- .debug_loc     0x00010fb2      0x4b2 build/Map.o
- .debug_loc     0x00011464     0x1cdd build/Maze.o
- .debug_loc     0x00013141      0x163 build/flash.o
+ .debug_loc     0x0000e96e     0x20fc build/motion.o
+ .debug_loc     0x00010a6a      0x62d build/control.o
+ .debug_loc     0x00011097      0x4b2 build/Map.o
+ .debug_loc     0x00011549     0x1d8d build/Maze.o
+ .debug_loc     0x000132d6      0x163 build/flash.o
 
-.debug_aranges  0x00000000     0x1578
+.debug_aranges  0x00000000     0x1590
  .debug_aranges
                 0x00000000       0xe8 build/stm32f4xx_hal_adc.o
  .debug_aranges
@@ -3218,19 +3245,19 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .debug_aranges
                 0x00001108       0xf0 build/mode.o
  .debug_aranges
-                0x000011f8      0x190 build/motion.o
+                0x000011f8      0x198 build/motion.o
  .debug_aranges
-                0x00001388       0xb8 build/control.o
+                0x00001390       0xb8 build/control.o
  .debug_aranges
-                0x00001440       0x40 build/Map.o
+                0x00001448       0x40 build/Map.o
  .debug_aranges
-                0x00001480       0xa0 build/Maze.o
+                0x00001488       0xb0 build/Maze.o
  .debug_aranges
-                0x00001520       0x30 build/flash.o
+                0x00001538       0x30 build/flash.o
  .debug_aranges
-                0x00001550       0x28 build/startup_stm32f405xx.o
+                0x00001568       0x28 build/startup_stm32f405xx.o
 
-.debug_ranges   0x00000000     0x1588
+.debug_ranges   0x00000000     0x15d0
  .debug_ranges  0x00000000       0xd8 build/stm32f4xx_hal_adc.o
  .debug_ranges  0x000000d8       0x88 build/stm32f4xx_hal_flash_ex.o
  .debug_ranges  0x00000160       0x88 build/tim.o
@@ -3255,14 +3282,14 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .debug_ranges  0x00000f28       0x60 build/stm32f4xx_it.o
  .debug_ranges  0x00000f88       0xa0 build/syscalls.o
  .debug_ranges  0x00001028      0x148 build/mode.o
- .debug_ranges  0x00001170      0x180 build/motion.o
- .debug_ranges  0x000012f0       0xa8 build/control.o
- .debug_ranges  0x00001398       0x30 build/Map.o
- .debug_ranges  0x000013c8      0x180 build/Maze.o
- .debug_ranges  0x00001548       0x20 build/flash.o
- .debug_ranges  0x00001568       0x20 build/startup_stm32f405xx.o
+ .debug_ranges  0x00001170      0x1b8 build/motion.o
+ .debug_ranges  0x00001328       0xa8 build/control.o
+ .debug_ranges  0x000013d0       0x30 build/Map.o
+ .debug_ranges  0x00001400      0x190 build/Maze.o
+ .debug_ranges  0x00001590       0x20 build/flash.o
+ .debug_ranges  0x000015b0       0x20 build/startup_stm32f405xx.o
 
-.debug_line     0x00000000     0xad73
+.debug_line     0x00000000     0xae22
  .debug_line    0x00000000      0x758 build/stm32f4xx_hal_adc.o
  .debug_line    0x00000758      0x488 build/stm32f4xx_hal_flash_ex.o
  .debug_line    0x00000be0      0x553 build/tim.o
@@ -3287,14 +3314,14 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .debug_line    0x00007bed      0x3b9 build/stm32f4xx_it.o
  .debug_line    0x00007fa6      0x3a7 build/syscalls.o
  .debug_line    0x0000834d      0x9d6 build/mode.o
- .debug_line    0x00008d23      0xb61 build/motion.o
- .debug_line    0x00009884      0x668 build/control.o
- .debug_line    0x00009eec      0x276 build/Map.o
- .debug_line    0x0000a162      0x8f7 build/Maze.o
- .debug_line    0x0000aa59      0x2a6 build/flash.o
- .debug_line    0x0000acff       0x74 build/startup_stm32f405xx.o
+ .debug_line    0x00008d23      0xbeb build/motion.o
+ .debug_line    0x0000990e      0x668 build/control.o
+ .debug_line    0x00009f76      0x276 build/Map.o
+ .debug_line    0x0000a1ec      0x91c build/Maze.o
+ .debug_line    0x0000ab08      0x2a6 build/flash.o
+ .debug_line    0x0000adae       0x74 build/startup_stm32f405xx.o
 
-.debug_str      0x00000000     0x5bf0
+.debug_str      0x00000000     0x5c77
  .debug_str     0x00000000      0xc48 build/stm32f4xx_hal_adc.o
                                 0xd62 (size before relaxing)
  .debug_str     0x00000c48      0x34a build/stm32f4xx_hal_flash_ex.o
@@ -3341,19 +3368,19 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
                                 0xee2 (size before relaxing)
  .debug_str     0x00004c9d      0x256 build/syscalls.o
                                 0x832 (size before relaxing)
- .debug_str     0x00004ef3      0x76b build/mode.o
-                               0x16d8 (size before relaxing)
- .debug_str     0x0000565e      0x1de build/motion.o
-                               0x1384 (size before relaxing)
- .debug_str     0x0000583c      0x1c9 build/control.o
+ .debug_str     0x00004ef3      0x781 build/mode.o
+                               0x16ee (size before relaxing)
+ .debug_str     0x00005674      0x241 build/motion.o
+                               0x1436 (size before relaxing)
+ .debug_str     0x000058b5      0x1c9 build/control.o
                                0x1263 (size before relaxing)
- .debug_str     0x00005a05       0x2e build/Map.o
+ .debug_str     0x00005a7e       0x2e build/Map.o
                                 0x265 (size before relaxing)
- .debug_str     0x00005a33      0x15f build/Maze.o
-                                0x84e (size before relaxing)
- .debug_str     0x00005b92       0x39 build/flash.o
+ .debug_str     0x00005aac      0x16d build/Maze.o
+                                0x896 (size before relaxing)
+ .debug_str     0x00005c19       0x39 build/flash.o
                                 0x6e1 (size before relaxing)
- .debug_str     0x00005bcb       0x25 build/startup_stm32f405xx.o
+ .debug_str     0x00005c52       0x25 build/startup_stm32f405xx.o
                                  0x5a (size before relaxing)
 
 .comment        0x00000000       0x7e
@@ -3388,7 +3415,7 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .comment       0x0000007e       0x7f build/Maze.o
  .comment       0x0000007e       0x7f build/flash.o
 
-.debug_frame    0x00000000     0x539c
+.debug_frame    0x00000000     0x540c
  .debug_frame   0x00000000      0x2b8 build/stm32f4xx_hal_adc.o
  .debug_frame   0x000002b8      0x194 build/stm32f4xx_hal_flash_ex.o
  .debug_frame   0x0000044c      0x1e8 build/tim.o
@@ -3413,58 +3440,58 @@ OUTPUT(build/mmc2019_ver1.elf elf32-littlearm)
  .debug_frame   0x00002ed0       0xe4 build/stm32f4xx_it.o
  .debug_frame   0x00002fb4      0x1d8 build/syscalls.o
  .debug_frame   0x0000318c      0x46c build/mode.o
- .debug_frame   0x000035f8      0x7f0 build/motion.o
- .debug_frame   0x00003de8      0x228 build/control.o
- .debug_frame   0x00004010       0xc0 build/Map.o
- .debug_frame   0x000040d0      0x284 build/Maze.o
- .debug_frame   0x00004354       0x68 build/flash.o
- .debug_frame   0x000043bc       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-errno.o)
- .debug_frame   0x000043dc       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-init.o)
- .debug_frame   0x00004408       0x28 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memcpy-stub.o)
- .debug_frame   0x00004430       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memset.o)
- .debug_frame   0x00004450       0x8c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
- .debug_frame   0x000044dc       0x60 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
- .debug_frame   0x0000453c       0x74 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-printf.o)
- .debug_frame   0x000045b0       0x58 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putchar.o)
- .debug_frame   0x00004608       0x3c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-puts.o)
- .debug_frame   0x00004644       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setbuf.o)
- .debug_frame   0x00004664       0x38 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setvbuf.o)
- .debug_frame   0x0000469c       0x40 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wbuf.o)
- .debug_frame   0x000046dc       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wsetup.o)
- .debug_frame   0x00004708       0x70 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
- .debug_frame   0x00004778       0x68 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fflush.o)
- .debug_frame   0x000047e0      0x11c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
- .debug_frame   0x000048fc       0x54 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fwalk.o)
- .debug_frame   0x00004950       0x40 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-localeconv.o)
- .debug_frame   0x00004990       0x58 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-makebuf.o)
- .debug_frame   0x000049e8       0x30 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-malloc.o)
- .debug_frame   0x00004a18      0x244 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
- .debug_frame   0x00004c5c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-callocr.o)
- .debug_frame   0x00004c88       0x38 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x00004cc0       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x00004cec       0xac c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
- .debug_frame   0x00004d98       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putc.o)
- .debug_frame   0x00004de0       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-sbrkr.o)
- .debug_frame   0x00004e0c       0x88 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
- .debug_frame   0x00004e94       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-writer.o)
- .debug_frame   0x00004ec0       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-closer.o)
- .debug_frame   0x00004eec       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fstatr.o)
- .debug_frame   0x00004f18       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-isattyr.o)
- .debug_frame   0x00004f44       0x68 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
- .debug_frame   0x00004fac       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-lseekr.o)
- .debug_frame   0x00004fd8       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mbtowc_r.o)
- .debug_frame   0x00005020       0x30 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mlock.o)
- .debug_frame   0x00005050       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-readr.o)
- .debug_frame   0x0000507c       0x5c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-reent.o)
- .debug_frame   0x000050d8       0x3c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wctomb_r.o)
- .debug_frame   0x00005114       0xac c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_addsubdf3.o)
- .debug_frame   0x000051c0       0x50 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_muldivdf3.o)
- .debug_frame   0x00005210       0xc4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_cmpdf2.o)
- .debug_frame   0x000052d4       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_unorddf2.o)
- .debug_frame   0x000052f4       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_fixdfsi.o)
- .debug_frame   0x00005318       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_truncdfsf2.o)
- .debug_frame   0x0000533c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_aeabi_uldivmod.o)
- .debug_frame   0x00005368       0x34 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x000035f8      0x830 build/motion.o
+ .debug_frame   0x00003e28      0x228 build/control.o
+ .debug_frame   0x00004050       0xc0 build/Map.o
+ .debug_frame   0x00004110      0x2b4 build/Maze.o
+ .debug_frame   0x000043c4       0x68 build/flash.o
+ .debug_frame   0x0000442c       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-errno.o)
+ .debug_frame   0x0000444c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-init.o)
+ .debug_frame   0x00004478       0x28 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x000044a0       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-memset.o)
+ .debug_frame   0x000044c0       0x8c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
+ .debug_frame   0x0000454c       0x60 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_frame   0x000045ac       0x74 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-printf.o)
+ .debug_frame   0x00004620       0x58 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putchar.o)
+ .debug_frame   0x00004678       0x3c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-puts.o)
+ .debug_frame   0x000046b4       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setbuf.o)
+ .debug_frame   0x000046d4       0x38 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-setvbuf.o)
+ .debug_frame   0x0000470c       0x40 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wbuf.o)
+ .debug_frame   0x0000474c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wsetup.o)
+ .debug_frame   0x00004778       0x70 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-dtoa.o)
+ .debug_frame   0x000047e8       0x68 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fflush.o)
+ .debug_frame   0x00004850      0x11c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-findfp.o)
+ .debug_frame   0x0000496c       0x54 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fwalk.o)
+ .debug_frame   0x000049c0       0x40 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-localeconv.o)
+ .debug_frame   0x00004a00       0x58 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-makebuf.o)
+ .debug_frame   0x00004a58       0x30 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-malloc.o)
+ .debug_frame   0x00004a88      0x244 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mprec.o)
+ .debug_frame   0x00004ccc       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-callocr.o)
+ .debug_frame   0x00004cf8       0x38 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x00004d30       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x00004d5c       0xac c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
+ .debug_frame   0x00004e08       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-putc.o)
+ .debug_frame   0x00004e50       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x00004e7c       0x88 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-stdio.o)
+ .debug_frame   0x00004f04       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-writer.o)
+ .debug_frame   0x00004f30       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-closer.o)
+ .debug_frame   0x00004f5c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-fstatr.o)
+ .debug_frame   0x00004f88       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-isattyr.o)
+ .debug_frame   0x00004fb4       0x68 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-locale.o)
+ .debug_frame   0x0000501c       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-lseekr.o)
+ .debug_frame   0x00005048       0x48 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mbtowc_r.o)
+ .debug_frame   0x00005090       0x30 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-mlock.o)
+ .debug_frame   0x000050c0       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-readr.o)
+ .debug_frame   0x000050ec       0x5c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-reent.o)
+ .debug_frame   0x00005148       0x3c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-wctomb_r.o)
+ .debug_frame   0x00005184       0xac c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_addsubdf3.o)
+ .debug_frame   0x00005230       0x50 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_muldivdf3.o)
+ .debug_frame   0x00005280       0xc4 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_cmpdf2.o)
+ .debug_frame   0x00005344       0x20 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_unorddf2.o)
+ .debug_frame   0x00005364       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_fixdfsi.o)
+ .debug_frame   0x00005388       0x24 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_arm_truncdfsf2.o)
+ .debug_frame   0x000053ac       0x2c c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x000053d8       0x34 c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/fpv4-sp/hard\libgcc.a(_udivmoddi4.o)
 
 Cross Reference Table
 
@@ -3526,6 +3553,7 @@ Control_UpdatePwm                                 build/control.o
 Control_WallEdgeAble                              build/control.o
                                                   build/motion.o
 Control_WallEdgeSet                               build/control.o
+                                                  build/motion.o
                                                   build/mode.o
 DMA1_Stream0_IRQHandler                           build/startup_stm32f405xx.o
 DMA1_Stream1_IRQHandler                           build/startup_stm32f405xx.o
@@ -4065,6 +4093,8 @@ Map_addWall                                       build/Map.o
                                                   build/mode.o
 Maze_Compress                                     build/Maze.o
                                                   build/mode.o
+Maze_GetAfterNextMotion                           build/Maze.o
+                                                  build/motion.o
 Maze_GetGoalSize                                  build/Maze.o
                                                   build/mode.o
 Maze_GetNextMotion                                build/Maze.o
@@ -4079,6 +4109,8 @@ Maze_GetWallData                                  build/Maze.o
 Maze_KnownStepAccel                               build/Maze.o
                                                   build/mode.o
 Maze_ResetWall                                    build/Maze.o
+                                                  build/mode.o
+Maze_UnknownStepAccel                             build/Maze.o
                                                   build/mode.o
 Maze_UpdatePosition                               build/Maze.o
                                                   build/mode.o
@@ -4161,6 +4193,7 @@ Motion_Right90Turn                                build/motion.o
                                                   build/mode.o
 Motion_RightTurn                                  build/motion.o
                                                   build/mode.o
+Motion_SearchStraight                             build/motion.o
 Motion_SpinTurn                                   build/motion.o
 Motion_Start                                      build/motion.o
                                                   build/mode.o
@@ -4662,6 +4695,7 @@ accel                                             build/spi.o
 adc_counter                                       build/adc.o
 add_l                                             build/control.o
 add_r                                             build/control.o
+after_next_motion                                 build/Maze.o
 ang_d                                             build/control.o
 ang_i                                             build/control.o
 ang_idial                                         build/control.o
@@ -4833,10 +4867,14 @@ update_sensor_data                                build/adc.o
 uwTick                                            build/stm32f4xx_hal.o
 uwTickFreq                                        build/stm32f4xx_hal.o
 uwTickPrio                                        build/stm32f4xx_hal.o
+velocity_now                                      build/motion.o
 vfiprintf                                         c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
 vfprintf                                          c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
 wall_dif                                          build/control.o
 walledge                                          build/control.o
+walledge600                                       build/motion.o
+walledge800                                       build/motion.o
+walledgeRestart                                   build/motion.o
 walledge_1200                                     build/mode.o
 walledge_800                                      build/mode.o
 walledge_cnt                                      build/control.o

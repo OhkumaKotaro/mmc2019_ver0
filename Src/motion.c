@@ -41,6 +41,11 @@ volatile uint8_t motion_end_flag;
 float gain_velo = 0;
 float diagonal_step = 0;
 uint16_t prefront_flag = 0;
+float velocity_now = VELO_S;
+
+walledge_t walledge600 = {-8,-8,0,0,17.0f,19.0f,0,0};
+walledge_t walledge800 = {-10,-10,-10,-10,13.0f,13.0f,20.0f,21.0f};
+walledge_t walledgeRestart = {-8,-8,0,0,107.0f,109.0f,0,0};
 
 void Motion_MaxVeloSet(float gain)
 {
@@ -170,7 +175,7 @@ void Motion_Straight(uint16_t step)
     {
         //if (prefront_flag)
         //{
-            Control_WallEdgeAble(0b11);
+        Control_WallEdgeAble(0b11);
         //}
         Control_StrCalculator(180.0f - enc.offset, VELO_S, VELO_S, VELO_S, ACCEL_S, 1);
         Control_AngCalculator(0, 0, 0, 0, 1, 0);
@@ -202,6 +207,94 @@ void Motion_Straight(uint16_t step)
         }
     }
     enc.offset = 0;
+    //prefront_flag = TRUE;
+}
+
+void Motion_SearchStraight(uint16_t step)
+{
+    if (step < 2)
+    {
+        //if (prefront_flag)
+        //{
+        Control_WallEdgeAble(0b11);
+        //}
+        Control_StrCalculator(90.0f - enc.offset, velocity_now, velocity_now, velocity_now, ACCEL_S, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+        enc.offset = 0;
+        if (sen_front.now < 84 && Maze_GetAfterNextMotion()==FRONT)
+        {
+            Control_StrCalculator(90.0f - enc.offset, velocity_now, VELO_S+200.0f, VELO_S+200.0f, 5000.0f, 1);
+            Control_AngCalculator(0, 0, 0, 0, 1, 0);
+            motion_end_flag = FALSE;
+            while (motion_end_flag == FALSE)
+            {
+            }
+            enc.offset = 0;
+            velocity_now = 800.0f;
+            Control_WallEdgeSet(walledge800);
+        }else{
+            Control_StrCalculator(90.0f - enc.offset, velocity_now, velocity_now, VELO_S, 5000.0f, 1);
+            Control_AngCalculator(0, 0, 0, 0, 1, 0);
+            motion_end_flag = FALSE;
+            while (motion_end_flag == FALSE)
+            {
+            }
+            enc.offset = 0;
+            velocity_now = VELO_S;
+            Control_WallEdgeSet(walledge600);
+        }
+    }
+    else
+    {
+        step--;
+        float velo = VELO_S + (float)(200 * step);
+        if (velo > 3000.0f)
+        {
+            velo = 3000.0f;
+        }
+        Control_WallEdgeSet(walledge800);
+        Control_StrCalculator(180.0f * (float)step - enc.offset, velocity_now, velo, 800.0f, 5000.0f, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+        enc.offset=0;
+        Control_WallEdgeAble(0b11);
+        Control_StrCalculator(90.0f-enc.offset, 800.0f, 800.0f, 800.0f, ACCEL_S, 1);
+        Control_AngCalculator(0, 0, 0, 0, 1, 0);
+        motion_end_flag = FALSE;
+        while (motion_end_flag == FALSE)
+        {
+        }
+        enc.offset = 0;
+        if (sen_front.now < 84 && Maze_GetAfterNextMotion()==FRONT)
+        {
+            Control_StrCalculator(90.0f - enc.offset, 800.0f, 800.0f, 800.0f, 5000.0f, 1);
+            Control_AngCalculator(0, 0, 0, 0, 1, 0);
+            motion_end_flag = FALSE;
+            while (motion_end_flag == FALSE)
+            {
+            }
+            enc.offset = 0;
+            velocity_now = 800.0f;
+            Control_WallEdgeSet(walledge800);
+        }else{
+            Control_StrCalculator(90.0f - enc.offset, 800.0f, 800.0f, VELO_S, 5000.0f, 1);
+            Control_AngCalculator(0, 0, 0, 0, 1, 0);
+            motion_end_flag = FALSE;
+            while (motion_end_flag == FALSE)
+            {
+            }
+            enc.offset = 0;
+            velocity_now = VELO_S;
+            Control_WallEdgeSet(walledge600);
+        }
+    }
     //prefront_flag = TRUE;
 }
 
@@ -242,16 +335,18 @@ void Motion_SpinTurn(void)
     error_old = 0.0f;
     error_ang_sum = 0.0f;
     error_ang_old = 0.0f;
+    Control_WallEdgeSet(walledgeRestart);
     HAL_Delay(500);
 
     Control_WallEdgeAble(0b11);
-    Control_StrCalculator(130.0f, 0, VELO_S, VELO_S, ACCEL_S, 1);
+    Control_StrCalculator(150.0f, 0, VELO_S, VELO_S, ACCEL_S, 1);//130
     Control_AngCalculator(0, 0, 0, 0, 1, 0);
     motion_end_flag = FALSE;
     while (motion_end_flag == FALSE)
     {
     }
     enc.offset = 0;
+    Control_WallEdgeSet(walledge600);
     //prefront_flag = TRUE;
 }
 
@@ -305,6 +400,7 @@ void Motion_WallSpinTurn(void)
     error_old = 0.0f;
     error_ang_sum = 0.0f;
     error_ang_old = 0.0f;
+    Control_WallEdgeSet(walledgeRestart);
     HAL_Delay(500);
     Control_WallEdgeAble(0b11);
     Control_StrCalculator(130.0f, 0, VELO_S, VELO_S, ACCEL_S, 1);
@@ -313,8 +409,8 @@ void Motion_WallSpinTurn(void)
     while (motion_end_flag == FALSE)
     {
     }
+    Control_WallEdgeSet(walledge600);
     enc.offset = 0.0f;
-    prefront_flag = TRUE;
 }
 
 void Motion_LeftTurn(void)
@@ -407,7 +503,7 @@ void Motion_Switch(uint8_t motion)
     switch (motion & 0xf)
     {
     case FRONT:
-        Motion_Straight(motion >> 4);
+        Motion_SearchStraight(motion >> 4);
         break;
     case RIGHT:
         Motion_RightTurn();

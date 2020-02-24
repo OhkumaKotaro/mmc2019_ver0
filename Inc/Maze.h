@@ -23,6 +23,8 @@ extern "C"
 	uint16_t Maze_GetStepEx_h(uint8_t x, uint8_t y);
 	uint16_t Maze_GetStepEx_v(uint8_t x, uint8_t y);
 	void Maze_Compress(uint8_t mode_FastTurn, uint16_t *motion, uint32_t *velocity, uint8_t *origin_tail, float v_search, float v_fast);
+	void Maze_UnknownStepAccel(pos_t *nextpos, wallData_t *wall ,uint16_t next_motion);
+	unsigned char Maze_GetAfterNextMotion(void);
 
 #ifdef __cplusplus
 }
